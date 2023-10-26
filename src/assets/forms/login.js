@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -40,6 +39,7 @@ function Login() {
       <Card
         sx={{
           bgcolor: '#E3DDE8',
+          width: '40%', 
         }}
       >
         <CardContent>
@@ -55,9 +55,16 @@ function Login() {
                 }}
               >
                 
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                  <LockOutlinedIcon />
-                </Avatar>
+                <Avatar
+  src="https://pbs.twimg.com/media/F9Y1kMVboAACobL?format=png&name=small"
+  alt="Logo de la empresa"
+  sx={{
+    width: 150,
+    height: 150,
+    marginBottom: 2,
+    border: 0,
+  }}
+/>
                 
                 <Typography component="h1" variant="h5">
                   Iniciar Sesión
@@ -95,7 +102,7 @@ function Login() {
                   <Grid container>
                     <Grid item xs>
                       <Link href="#" variant="body2">
-                        Olvidaste tu contraseña?
+                        {"Olvidaste tu contraseña?"}
                       </Link>
                     </Grid>
                     <Grid item>

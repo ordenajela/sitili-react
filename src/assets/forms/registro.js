@@ -10,20 +10,30 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+
 
 const defaultTheme = createTheme();
 
 function Registro() {
+  const [userType, setUserType] = React.useState('cliente'); // Establece el valor inicial como 'cliente'
+  
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
-      nombre: data.get('nombre'),
-      apellido: data.get('apellido'),
-      telefono: data.get('telefono'),
+      userType: userType,
     });
+    
   };
 
   return (
@@ -40,6 +50,7 @@ function Registro() {
       <Card
         sx={{
           bgcolor: '#E3DDE8',
+          width: '40%',
         }}
       >
         <CardContent>
@@ -48,75 +59,79 @@ function Registro() {
               <CssBaseline />
               <Box
                 sx={{
-                  marginTop: 8,
+                  marginTop: 5,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
                 <Avatar
-                    src="/images/logo.png"
-                    alt="Logo de la empresa"
-                    sx={{
-                        width: 100,
-                        height: 100, // Ajusta el tamaño según tus necesidades
-                        marginBottom: 2, // Espacio entre la imagen y el título
-                    }}
-                />
-                
+  src="https://pbs.twimg.com/media/F9Y1kMVboAACobL?format=png&name=small"
+  alt="Logo de la empresa"
+  sx={{
+    width: 150,
+    height: 150,
+    marginBottom: 2,
+    
+  }}
+/>
+
+
+
+
+
 
                 <Typography component="h1" variant="h5">
                   Crear Cuenta
                 </Typography>
+
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="email"
-                    label="Correo Electrónico"
-                    name="email"
-                    autoComplete="email"
-                    autoFocus
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="password"
-                    label="Contraseña"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="nombre"
-                    label="Nombre"
-                    name="nombre"
-                    autoComplete="given-name"
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="apellido"
-                    label="Apellido"
-                    name="apellido"
-                    autoComplete="family-name"
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="telefono"
-                    label="Teléfono"
-                    name="telefono"
-                    type="tel"
-                    autoComplete="tel"
-                  />
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel id="userTypeLabel">Tipo de Usuario</InputLabel>
+                        <Select
+                          labelId="userTypeLabel"
+                          value={userType}
+                          onChange={handleUserTypeChange}
+                          inputProps={{
+                            name: 'userType',
+                            id: 'userType',
+                          }}
+                        >
+                          <MenuItem value="cliente">Cliente</MenuItem>
+                          <MenuItem value="vendedor">Vendedor</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Correo Electrónico"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Contraseña"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        label="Confirmar Contraseña"
+                        name="password"
+                        type="password"
+                        autoComplete="current-password"
+                      />
+                    </Grid>
+                  </Grid>
                   <Button
                     type="submit"
                     fullWidth
@@ -126,13 +141,13 @@ function Registro() {
                   >
                     Registrarse
                   </Button>
-                  <Grid container>
+                  <Grid container sx={{ mb: 2 }}>
                     <Grid item xs>
                       <Link href="#" variant="body2">
                         Olvidaste tu contraseña?
                       </Link>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs>
                       <Link to="/login" variant="body2">
                         {"Ya tienes cuenta? Inicia aquí"}
                       </Link>
@@ -144,7 +159,9 @@ function Registro() {
           </ThemeProvider>
         </CardContent>
       </Card>
+      
     </Box>
+    
   );
 }
 
