@@ -10,6 +10,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
+import logoImage from '../../assets/images/logo.png';
+
 
 
 
@@ -39,7 +41,7 @@ function Login() {
       <Card
         sx={{
           bgcolor: '#E3DDE8',
-          width: '40%', 
+          width: '40%',
         }}
       >
         <CardContent>
@@ -48,25 +50,18 @@ function Login() {
               <CssBaseline />
               <Box
                 sx={{
-                  marginTop: 8,
+                  marginTop: '2%',
+                  marginBottom: '2%',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
-                
-                <Avatar
-  src="https://pbs.twimg.com/media/F9Y1kMVboAACobL?format=png&name=small"
-  alt="Logo de la empresa"
-  sx={{
-    width: 150,
-    height: 150,
-    marginBottom: 2,
-    border: 0,
-  }}
-/>
-                
-                <Typography component="h1" variant="h5">
+                <Link to="/">
+                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
+                </Link>
+
+                <Typography component="h1" variant="h5" style={{paddingTop: '5%'}}>
                   Iniciar Sesión
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>

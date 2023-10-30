@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -14,13 +13,14 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import logoImage from '../../assets/images/logo.png';
 
 
 const defaultTheme = createTheme();
 
 function Registro() {
-  const [userType, setUserType] = React.useState('cliente'); // Establece el valor inicial como 'cliente'
-  
+  const [userType, setUserType] = React.useState('cliente');
+
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
@@ -33,7 +33,7 @@ function Registro() {
       password: data.get('password'),
       userType: userType,
     });
-    
+
   };
 
   return (
@@ -59,29 +59,17 @@ function Registro() {
               <CssBaseline />
               <Box
                 sx={{
-                  marginTop: 5,
+                  marginTop: 1,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
-                <Avatar
-  src="https://pbs.twimg.com/media/F9Y1kMVboAACobL?format=png&name=small"
-  alt="Logo de la empresa"
-  sx={{
-    width: 150,
-    height: 150,
-    marginBottom: 2,
-    
-  }}
-/>
+                <Link to="/">
+                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block'}} />
+                </Link>
 
-
-
-
-
-
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{padding: '5%'}}>
                   Crear Cuenta
                 </Typography>
 
@@ -159,9 +147,9 @@ function Registro() {
           </ThemeProvider>
         </CardContent>
       </Card>
-      
+
     </Box>
-    
+
   );
 }
 
