@@ -6,6 +6,7 @@ import Login from './assets/forms/login';
 import DashboardAdmin from './assets/views/admin/dashboard_admin';
 
 
+
 function App() {
   return (
     <Router>
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={ <Productos/> } />
         <Route path="/login" element={ <Login/> } />
         <Route path="/dashboard" element={ <DashboardAdmin/> } />
+        
       </Routes>
     </Router>
   );
