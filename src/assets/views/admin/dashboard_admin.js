@@ -1,19 +1,22 @@
 
-import NavbarAdmin from "../../components/admin/navbar_admin";
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Item from '@mui/material/Grid';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-
+import { SidenavAdmin } from "../../components/admin/SidenavAdmin";
+import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Settings from "./pages/Settings";
 
 
 function DashboardAdmin() {
     return (
-      <div>
+      <>
         
-        <h1>Dashboard de Admin</h1>
+          <Routes>
+            <Route path="/home"  element={<Home/>} />
+            <Route path="/about"  element={<About/>} />
+            <Route path="/settings"  element={<Settings/>} />
+          </Routes>
         
-      </div>
+      </>
     );
   }
   
