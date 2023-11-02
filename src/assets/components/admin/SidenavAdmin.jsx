@@ -12,10 +12,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
+import GroupIcon from '@mui/icons-material/Group';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 const drawerWidth = 240;
 
@@ -71,9 +75,6 @@ export function SidenavAdmin() {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -87,9 +88,12 @@ export function SidenavAdmin() {
         <Divider />
         <List>
           {[
-            { text: 'Home', icon: <HomeIcon />, route: '/dashboard/home' },
-            { text: 'About', icon: <InfoIcon />, route: '/dashboard/about' },
-            { text: 'Settings', icon: <SettingsIcon />, route: '/dashboard/settings' },
+            { text: 'Principal', icon: <DashboardIcon />, route: '/dashboard/home' },
+            { text: 'Administradores', icon: <AdminPanelSettingsIcon />, route: '/dashboard/usersad' },
+            { text: 'Usuarios', icon: <GroupIcon />, route: '/dashboard/users' },
+            { text: 'Productos', icon: <Inventory2Icon />, route: '/dashboard/settings' },
+            { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/dashboard/users' },
+            { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/dashboard/settings' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton

@@ -1,10 +1,11 @@
 import React from "react";
-import { SidenavAdmin } from "../../../components/admin/SidenavAdmin";
+import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box } from "@mui/material";
-import NavbarAdmin from "../../../components/admin/NavbarAdmin";
+import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CardsHome from "./CardsHome";
 
-const Settings = ({ darkMode, setDarkMode }) => {
+const Home = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
@@ -20,7 +21,8 @@ const Settings = ({ darkMode, setDarkMode }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <h1>Settings</h1>
+            <h1>Hola Adminsitrador!</h1>
+            <CardsHome/>
             {/* Agrega el contenido de la página aquí */}
           </Box>
         </Box>
@@ -29,4 +31,4 @@ const Settings = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default Settings;
+export default Home;

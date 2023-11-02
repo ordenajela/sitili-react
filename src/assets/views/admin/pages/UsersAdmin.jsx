@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import NavbarAdmin from "../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const Settings = ({ darkMode, setDarkMode }) => {
+const UserAdmin = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
@@ -20,7 +20,7 @@ const Settings = ({ darkMode, setDarkMode }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <h1>Settings</h1>
+            <h1>User Admin</h1>
             {/* Agrega el contenido de la página aquí */}
           </Box>
         </Box>
@@ -29,4 +29,5 @@ const Settings = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default Settings;
+export default UserAdmin;
+
