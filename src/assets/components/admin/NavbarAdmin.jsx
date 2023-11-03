@@ -1,73 +1,31 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
-
-
-const Search = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center', // Centra verticalmente
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center', // Centra verticalmente
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
+import logoImage from '../../images/Logo-Horizintal-Blanco.png';
 
 const StyledTypography = styled(Typography)({
-  flex: 1, // Para que el texto MUI se centre horizontalmente
+  flex: 1, 
   display: 'flex',
-  alignItems: 'center', // Centra verticalmente
-  marginLeft: 'auto', // Empuja el texto hacia la izquierda
+  alignItems: 'center',
+  marginLeft: 'auto',
 });
 
 export default function NavbarAdmin({ darkMode, setDarkMode }) {
     const toggleDarkMode = () => {
-        setDarkMode(!darkMode); // Cambia el estado de modo oscuro en App.js
+        setDarkMode(!darkMode);
       };
    
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -179,15 +137,8 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
           >
             MUI
           </StyledTypography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          
+          <img src={logoImage} alt="Logo" style={{ borderRadius: '00%', maxWidth: '10%', margin: '0 auto', display: 'block' }} />
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             

@@ -11,9 +11,6 @@ import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
 
-
-
-
 const defaultTheme = createTheme();
 
 function Login() {

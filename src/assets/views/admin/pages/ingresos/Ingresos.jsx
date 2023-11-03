@@ -1,10 +1,10 @@
 import React from "react";
-import { SidenavAdmin } from "../../../components/admin/SidenavAdmin";
+import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box } from "@mui/material";
-import NavbarAdmin from "../../../components/admin/NavbarAdmin";
+import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const UserAdmin = ({ darkMode, setDarkMode }) => {
+const Ingresos = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
@@ -20,7 +20,7 @@ const UserAdmin = ({ darkMode, setDarkMode }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <h1>User Admin</h1>
+            <h1>Ingresos</h1>
             {/* Agrega el contenido de la página aquí */}
           </Box>
         </Box>
@@ -29,5 +29,4 @@ const UserAdmin = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default UserAdmin;
-
+export default Ingresos;

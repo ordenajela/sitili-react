@@ -12,7 +12,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
 import GroupIcon from '@mui/icons-material/Group';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
@@ -91,9 +90,9 @@ export function SidenavAdmin() {
             { text: 'Principal', icon: <DashboardIcon />, route: '/dashboard/home' },
             { text: 'Administradores', icon: <AdminPanelSettingsIcon />, route: '/dashboard/usersad' },
             { text: 'Usuarios', icon: <GroupIcon />, route: '/dashboard/users' },
-            { text: 'Productos', icon: <Inventory2Icon />, route: '/dashboard/settings' },
-            { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/dashboard/users' },
-            { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/dashboard/settings' },
+            { text: 'Productos', icon: <Inventory2Icon />, route: '/dashboard/productos' },
+            { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/dashboard/ingresos' },
+            { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/dashboard/pedidos' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
