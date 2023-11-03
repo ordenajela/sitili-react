@@ -1,6 +1,6 @@
 import React from "react";
 import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
-import { Box, Grid, IconButton } from "@mui/material";
+import { Box, Divider, Grid, IconButton } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
@@ -8,6 +8,8 @@ import { styled } from "@mui/material/styles";
 import CardAdminProfile from "./CardAdminProfile";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
+import Images from "./ImagesAdmin";
+import ImagesAdmin from "./ImagesAdmin";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -19,6 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Name = "Leo Messi";
 const Correo = "leo.messi@gmail.com"
+const Pass = "****"
 
 const ProfileAdmin = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -102,10 +105,43 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                       </Grid>
                     </Grid>
                   </Item>
-                  
+                  <Item
+                    sx={{ marginTop: 1 }}
+                  >
+                    <Grid
+                      container
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Grid item>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ fontSize: "18px" }}
+                        >
+                          <strong>Contraseña:</strong> {Pass}
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <IconButton>
+                          <EditIcon />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  </Item>
+                  <Divider
+                    sx={{marginTop:5}}
+                  />
+                  <ImagesAdmin
+                    sx={{marginBottom:5}}
+                  />
                 </Grid>
               </Grid>
             </Box>
+
+            
+
+
           </Box>
         </Box>
       </Box>
