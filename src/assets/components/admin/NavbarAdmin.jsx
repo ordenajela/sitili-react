@@ -13,12 +13,19 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import logoImage from '../../images/Logo-Horizintal-Blanco.png';
+import { Link  } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)({
   flex: 1, 
   display: 'flex',
   alignItems: 'center',
   marginLeft: 'auto',
+});
+
+const StyledLink = styled(Link)({
+  textDecoration: 'none', // Quitar la subrayado predeterminado
+  color: 'inherit', // Utilizar el color de texto heredado
+  // Otros estilos si es necesario
 });
 
 export default function NavbarAdmin({ darkMode, setDarkMode }) {
@@ -66,7 +73,10 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
+      <StyledLink component={StyledLink} to="/dashboard/perfil" >
+        <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
+      </StyledLink>
+     
       <MenuItem onClick={handleMenuClose}>Cerrar Sesion</MenuItem>
     </Menu>
   );
@@ -117,7 +127,10 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1,
+      
+      
+    }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
