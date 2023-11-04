@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -11,9 +10,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
-
-
-
 
 const defaultTheme = createTheme();
 

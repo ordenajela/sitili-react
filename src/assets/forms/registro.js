@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Card, CardContent } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Link } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -15,25 +16,61 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import logoImage from '../../assets/images/logo.png';
 
-
 const defaultTheme = createTheme();
 
 function Registro() {
-  const [userType, setUserType] = React.useState('cliente');
+  const [userType, setUserType] = useState('cliente');
+  const userTypeMap = {
+    cliente: 1,
+    vendedor: 2,
+  };
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      userType: userType,
-    });
+    const userTypeValue = userTypeMap[userType];
 
+    if (data.get('password') !== data.get('confirmPassword')) {
+      // Las contraseñas no coinciden, muestra un mensaje de error o realiza alguna acción apropiada
+      setPasswordError(true);
+      return;
+    }
+
+    // Las contraseñas coinciden
+    setPasswordError(false);
+
+    const apiUrl = 'http://tu-api-spring-url/aqui';
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: data.get('email'),
+          password: data.get('password'),
+          userType: userTypeValue,
+        }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        // Haz algo con la respuesta de la API, como mostrar un mensaje de éxito o redirigir al usuario.
+        console.log(responseData);
+        console.log("Datos correctos");
+      } else {
+        // Maneja errores de la API aquí, por ejemplo, mostrar un mensaje de error.
+        console.error('Error al realizar la solicitud a la API');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   };
 
   return (
@@ -66,14 +103,14 @@ function Registro() {
                 }}
               >
                 <Link to="/">
-                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block'}} />
+                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
                 </Link>
 
-                <Typography component="h1" variant="h5" style={{padding: '5%'}}>
+                <Typography component="h1" variant="h5" style={{ padding: '5%' }}>
                   Crear Cuenta
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <form onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <FormControl fullWidth>
@@ -114,9 +151,11 @@ function Registro() {
                       <TextField
                         fullWidth
                         label="Confirmar Contraseña"
-                        name="password"
+                        name="confirmPassword"
                         type="password"
                         autoComplete="current-password"
+                        error={passwordError}
+                        helperText={passwordError ? "Las contraseñas no coinciden" : ""}
                       />
                     </Grid>
                   </Grid>
@@ -124,7 +163,7 @@ function Registro() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="success"
+                    color="primary"
                     sx={{ mt: 3, mb: 2 }}
                   >
                     Registrarse
@@ -141,15 +180,14 @@ function Registro() {
                       </Link>
                     </Grid>
                   </Grid>
-                </Box>
+                </form>
               </Box>
             </Container>
           </ThemeProvider>
         </CardContent>
       </Card>
-
     </Box>
-
+    
   );
 }
 
