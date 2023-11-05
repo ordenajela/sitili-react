@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import messiImage from '../../../../images/messi.jpg';
+import twImage from '../../../../images/tw.jpg'
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -20,7 +20,7 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function CardAdminProfile() {
+export default function CardSellerProfile() {
   
   return (
     <Card sx={{ maxWidth: 450 }}>
@@ -29,11 +29,11 @@ export default function CardAdminProfile() {
         alt="green iguana"
         height="500"
         width="50"
-        image={messiImage}
+        image={twImage}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Leo Messi
+          The Weeknd
         </Typography>
         <Button
           component="label"
@@ -45,7 +45,7 @@ export default function CardAdminProfile() {
           <VisuallyHiddenInput type="file" />
         </Button>
         <Typography variant="body2" color="text.secondary" marginTop={2} >
-          Administrador de la pagina de SITILI, como administrador podras
+          Vendedor de la pagina de SITILI, como vendedor podras
           acceder al dashboard con los datos mas importantes, asi como tambien
           poder visualizar y crear usuarios, crear categorias para los proudctos, visualizar ganancias y el equipo conformado en SITILI
         </Typography>
