@@ -27,7 +27,7 @@ const StyledLink = styled(Link)({
   color: 'inherit', 
 });
 
-export default function NavbarAdmin({ darkMode, setDarkMode }) {
+export default function NavbarSeller({ darkMode, setDarkMode }) {
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
       };
@@ -72,7 +72,7 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <StyledLink component={StyledLink} to="/dashboard/perfil" >
+      <StyledLink component={StyledLink} to="/seller/perfil" >
         <MenuItem onClick={handleMenuClose}>Mi Perfil</MenuItem>
       </StyledLink>
      

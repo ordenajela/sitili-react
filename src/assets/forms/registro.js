@@ -15,16 +15,18 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import logoImage from '../../assets/images/logo.png';
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 function Registro() {
   const [userType, setUserType] = useState('cliente');
   const userTypeMap = {
-    cliente: 1,
+    cliente: 3,
     vendedor: 2,
   };
   const [passwordError, setPasswordError] = useState(false);
+  const [userData, setUserData] = useState(null); // Para almacenar los datos del usuario
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -36,37 +38,36 @@ function Registro() {
     const userTypeValue = userTypeMap[userType];
 
     if (data.get('password') !== data.get('confirmPassword')) {
-      // Las contraseñas no coinciden, muestra un mensaje de error o realiza alguna acción apropiada
       setPasswordError(true);
       return;
     }
 
-    // Las contraseñas coinciden
     setPasswordError(false);
 
-    const apiUrl = 'http://tu-api-spring-url/aqui';
+    const postApiUrl = 'http://localhost:8080/usuarios/crear'; // URL de tu servidor Spring Boot para crear usuarios
+    const getApiUrl = 'http://localhost:8080/usuarios/listar'; // URL de tu servidor Spring Boot para obtener la lista de usuarios
 
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: data.get('email'),
-          password: data.get('password'),
-          userType: userTypeValue,
-        }),
+      // Realizar solicitud POST para crear un usuario
+      const postResponse = await axios.post(postApiUrl, {
+        email: data.get('email'),
+        password: data.get('password'),
+        rol: userTypeValue,
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        // Haz algo con la respuesta de la API, como mostrar un mensaje de éxito o redirigir al usuario.
-        console.log(responseData);
-        console.log("Datos correctos");
+      if (postResponse.status === 201) {
+        console.log('Usuario creado exitosamente');
+
+        // Realizar solicitud GET para obtener la lista de usuarios
+        const getResponse = await axios.get(getApiUrl);
+
+        if (getResponse.status === 200) {
+          setUserData(getResponse.data);
+        } else {
+          console.error('Error en la solicitud GET');
+        }
       } else {
-        // Maneja errores de la API aquí, por ejemplo, mostrar un mensaje de error.
-        console.error('Error al realizar la solicitud a la API');
+        console.error('Error en la solicitud POST');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -155,7 +156,7 @@ function Registro() {
                         type="password"
                         autoComplete="current-password"
                         error={passwordError}
-                        helperText={passwordError ? "Las contraseñas no coinciden" : ""}
+                        helperText={passwordError ? 'Las contraseñas no coinciden' : ''}
                       />
                     </Grid>
                   </Grid>
@@ -187,7 +188,6 @@ function Registro() {
         </CardContent>
       </Card>
     </Box>
-    
   );
 }
 

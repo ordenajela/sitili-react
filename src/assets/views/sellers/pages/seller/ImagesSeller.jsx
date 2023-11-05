@@ -8,7 +8,7 @@ import proImage from '../../../../images/productos.jpg';
 const images = [
   {
     url: cajaImage,
-    title: 'Crear Usuario',
+    title: 'Crear Producto',
     width: '50%',
   },
   {
@@ -82,7 +82,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
   transition: theme.transitions.create('opacity'),
 }));
 
-export default function ImagesAdmin() {
+export default function ImagesSeller() {
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
       {images.map((image) => (
