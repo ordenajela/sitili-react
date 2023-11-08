@@ -11,6 +11,8 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import ProductImage from '../images/template-product.png';
 import { Link } from 'react-router-dom';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -53,7 +55,7 @@ export default function ResponsiveGridWithPagination() {
                                     <img src={ProductImage} alt="Product Image"
                                         style={{
                                             display: 'block',
-                                            margin: '0 auto',
+                                            margin: '2% auto',
                                             maxHeight: '150px',
                                             maxWidth: '150px',
                                             display: 'flex',
@@ -64,20 +66,28 @@ export default function ResponsiveGridWithPagination() {
                                     />
                                 </Link>
                                 <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
+                                    <Typography variant="h6" component="div">
                                         Product Name
                                     </Typography>
-                                    <Typography variant="subtitle2" color="text.secondary">
+                                    <Typography variant="body2" color="text.secondary">
                                         Seller.
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    <Typography variant="body1" color="text.secondary">
                                         Product description goes here.
                                     </Typography>
+                                    <Typography gutterBottom variant="h6" color ='primary'>
+                                        $10,000
+                                    </Typography>
+
+                                    <CardActions style={{ justifyContent: 'center' }}>
+                                        <Button size="small" variant="outlined" startIcon={<FavoriteIcon />}>
+                                            Guardar
+                                        </Button>
+                                        <Button size="small" variant="contained" startIcon={<ShoppingCartIcon />}>
+                                            Comprar
+                                        </Button>
+                                    </CardActions>
                                 </CardContent>
-                                <CardActions>
-                                    <Button size="small">Add to Cart</Button>
-                                    <Button size="small">Add to favorites</Button>
-                                </CardActions>
                             </Card>
                         </Grid>
                     ))}
