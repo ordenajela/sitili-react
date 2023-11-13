@@ -22,16 +22,14 @@ const defaultTheme = createTheme();
 function Registro() {
   const [userType, setUserType] = useState('cliente');
   const userTypeMap = {
-    cliente: 3,
-    vendedor: 2,
+    cliente: 4,
+    vendedor: 3,
   };
-  const [passwordError, setPasswordError] = useState(false);
-  const [userData, setUserData] = useState(null); // Para almacenar los datos del usuario
 
+  const [passwordError, setPasswordError] = useState(false);
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -44,33 +42,25 @@ function Registro() {
 
     setPasswordError(false);
 
-    const postApiUrl = 'http://localhost:8080/usuarios/crear'; // URL de tu servidor Spring Boot para crear usuarios
-    const getApiUrl = 'http://localhost:8080/usuarios/listar'; // URL de tu servidor Spring Boot para obtener la lista de usuarios
-
+    const postApiUrl = 'http://localhost:8090/registerNewUser'; 
+    
     try {
-      // Realizar solicitud POST para crear un usuario
       const postResponse = await axios.post(postApiUrl, {
         email: data.get('email'),
         password: data.get('password'),
-        rol: userTypeValue,
+        role: userTypeValue,
       });
 
-      if (postResponse.status === 201) {
+      if (postResponse.status === 200) {
         console.log('Usuario creado exitosamente');
+        console.log(postResponse);
 
-        // Realizar solicitud GET para obtener la lista de usuarios
-        const getResponse = await axios.get(getApiUrl);
-
-        if (getResponse.status === 200) {
-          setUserData(getResponse.data);
-        } else {
-          console.error('Error en la solicitud GET');
-        }
       } else {
         console.error('Error en la solicitud POST');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
+      
     }
   };
 

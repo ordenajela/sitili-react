@@ -6,6 +6,7 @@ import { Modal as BaseModal } from '@mui/base/Modal';
 import { Button } from '@mui/material';
 
 export default function ModalSeller() {
+  
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
