@@ -1,9 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import IconButton from '@mui/material/IconButton';
@@ -12,13 +10,12 @@ import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 
-
 export default function CardsHome() {
     const iconSize = 48;
     return (
         <Grid container spacing={2}>
             <Grid item xs={3}>
-                <Card style={{ backgroundColor: '#6D2D6D', marginLeft:10,  }}>
+                <Card style={{ backgroundColor: '#1976D2', marginLeft:10,  }}>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <IconButton color="primary">
@@ -29,19 +26,19 @@ export default function CardsHome() {
                             </Typography>
                         </Box>
                         <Typography color="text.primary"
-                            
+                            sx={{
+                                marginTop: 2
+                            }}
                         >
                             Productos en SITILI
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                        <Button size="small" sx={{ textTransform: 'none' }}>Ver mas</Button>
-                    </CardActions>
+
                 </Card>
             </Grid>
 
             <Grid item xs={3}>
-                <Card style={{ backgroundColor: '#2D696D' }}>
+                <Card style={{ backgroundColor: '#1976D2' }}>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <Typography variant="h6" component="div" sx={{ fontSize: '40px', fontWeight: 'bold' }}>
@@ -52,19 +49,19 @@ export default function CardsHome() {
                             </IconButton>
                         </Box>
                         <Typography color="text.primary"
-                           
+                           sx={{
+                            marginTop: 2
+                        }}
                         >
                             De Ventas totales
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                    <Button size="small" sx={{ textTransform: 'none' }}>Ver mas</Button>
-                    </CardActions>
+                    
                 </Card>
             </Grid>
 
             <Grid item xs={3}>
-                <Card style={{ backgroundColor: '#6D312D' }}>
+                <Card style={{ backgroundColor: '#1976D2' }}>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <IconButton color="primary">
@@ -75,19 +72,19 @@ export default function CardsHome() {
                             </Typography>
                         </Box>
                         <Typography color="text.primary"
-                            
+                            sx={{
+                                marginTop: 2
+                            }}
                         >
                             Integrantes de SITILI
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                    <Button size="small" sx={{ textTransform: 'none' }}>Ver mas</Button>
-                    </CardActions>
+                    
                 </Card>
             </Grid>
 
             <Grid item xs={3}>
-                <Card style={{ backgroundColor: '#00BFB2', marginRight:10 }}>
+                <Card style={{ backgroundColor: '#1976D2', marginRight:10 }}>
                     <CardContent>
                         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                             <Typography variant="h6" component="div" sx={{ fontSize: '40px', fontWeight: 'bold' }}>
@@ -98,14 +95,14 @@ export default function CardsHome() {
                             </IconButton>
                         </Box>
                         <Typography color="text.primary"
-                            
+                            sx={{
+                                marginTop: 2
+                            }}
                         >
                             Envios Realizados
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                    <Button size="small" sx={{ textTransform: 'none' }}>Ver mas</Button>
-                    </CardActions>
+                    
                 </Card>
             </Grid>
         </Grid>

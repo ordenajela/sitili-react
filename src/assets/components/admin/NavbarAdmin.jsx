@@ -147,7 +147,7 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            SITILI
           </StyledTypography>
           
           <img src={logoImage} alt="Logo" style={{ borderRadius: '00%', maxWidth: '10%', margin: '0 auto', display: 'block' }} />
