@@ -9,17 +9,19 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';  
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import logoImage from '../../assets/images/logo.png';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
-function Registro() {
+function Registro() {  
+  const navigate = useNavigate();
   const [userType, setUserType] = useState('cliente');
   const userTypeMap = {
     cliente: 4,
@@ -27,9 +29,11 @@ function Registro() {
   };
 
   const [passwordError, setPasswordError] = useState(false);
+
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -42,8 +46,8 @@ function Registro() {
 
     setPasswordError(false);
 
-    const postApiUrl = 'http://localhost:8090/registerNewUser'; 
-    
+    const postApiUrl = 'http://localhost:8090/registerNewUser';
+
     try {
       const postResponse = await axios.post(postApiUrl, {
         email: data.get('email'),
@@ -55,12 +59,19 @@ function Registro() {
         console.log('Usuario creado exitosamente');
         console.log(postResponse);
 
+        const authToken = postResponse.data.token;
+        localStorage.setItem('token', authToken);
+
+        if (userType === 'cliente') {
+          navigate('/cliente');
+        } else if (userType === 'vendedor') {
+          navigate('/seller/home');
+        }
       } else {
         console.error('Error en la solicitud POST');
       }
     } catch (error) {
       console.error('Error en la solicitud:', error);
-      
     }
   };
 
@@ -181,4 +192,4 @@ function Registro() {
   );
 }
 
-export default Registro;
+export default Registro;  

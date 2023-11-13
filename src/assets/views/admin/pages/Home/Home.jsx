@@ -5,13 +5,14 @@ import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CardsHome from "./CardsHome";
 
-const Home = ({ darkMode, setDarkMode }) => {
+const Home = ({ darkMode, setDarkMode, userData }) => {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
     },
   });
 
+  console.log("Datos de admin:", userData);
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>
@@ -22,8 +23,9 @@ const Home = ({ darkMode, setDarkMode }) => {
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Hola Adminsitrador!</h1>
+            
             <CardsHome/>
-            {/* Agrega el contenido de la página aquí */}
+           
           </Box>
         </Box>
       </Box>

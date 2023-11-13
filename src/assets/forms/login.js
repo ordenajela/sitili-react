@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -10,17 +10,56 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 function Login() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const [loginError, setLoginError] = useState(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    try {
+      const response = await axios.post('http://localhost:8090/authenticate', {
+        email: data.get('email'),
+        password: data.get('password'),
+      });
+
+      if (response.status === 200) {
+        // Login successful
+        console.log("Peticion correcta");
+        console.log(response.data.user.role[0].roleName);
+        const authToken = response.data.token;
+        localStorage.setItem('token', authToken);
+        setLoginError(false);
+        console.log(response);
+        
+        if (response.data.user.role[0].roleName === "Admin") {
+          console.log("Eres admin");
+          navigate('/dashboard/home', { state: { userData: response.data } });
+        } else if (response.data.user.role[0].roleName === "User") {
+          console.log("Eres User");
+          navigate('/productos', { state: { userData: response.data } });
+        } else if (response.data.user.role[0].roleName === "Vendedor") {
+          console.log("Eres admin");
+        } else if (response.data.user.role[0].roleName === "Root") {
+          console.log("Eres admin");
+        }
+
+
+      } else {
+        // Login failed
+        setLoginError(true);
+      }
+    } catch (error) {
+      // Handle error
+      console.error('Error en la solicitud de inicio de sesión:', error);
+      setLoginError(true);
+    }
   };
 
   return (
@@ -81,6 +120,11 @@ function Login() {
                     id="password"
                     autoComplete="current-password"
                   />
+                  {loginError && (
+                    <Typography variant="body2" color="error">
+                      Correo o contraseña incorrectos, intenta de nuevo.
+                    </Typography>
+                  )}
                   <Button
                     type="submit"
                     fullWidth

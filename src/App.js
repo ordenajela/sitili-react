@@ -18,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/registro" element={<Registro />} />
         <Route path="/" element={<Productos />} />
+        <Route path="/productos" element={<Productos />} />
         <Route path="/dashboard/*" element={<DashboardAdmin darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/seller/*" element={<DashboardSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/login" element={<Login />} />

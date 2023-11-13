@@ -48,7 +48,7 @@ export default function CardsHome() {
                                 <LocalAtmIcon sx={{ fontSize: iconSize, color: 'white' }} />
                             </IconButton>
                         </Box>
-                        <Typography color="text.primary"
+                        <Typography color="text-.primary"
                            sx={{
                             marginTop: 2
                         }}
