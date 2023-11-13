@@ -5,8 +5,12 @@ import ProductsSeller from './pages/products/ProductosSeller';
 import IngresosSeller from './pages/ingresos/IngresosSeller';
 import PedidosSeller from './pages/pedidos/PedidosSeller';
 import ProfileSeller from './pages/seller/ProfileSeller';
+import { Navigate } from 'react-router-dom';
 
 const dashboard_seller = ({ darkMode, setDarkMode }) => {
+  
+
+  
   return (
     <>
       <Routes>
