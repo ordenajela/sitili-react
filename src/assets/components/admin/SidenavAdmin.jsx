@@ -74,7 +74,6 @@ export function SidenavAdmin() {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

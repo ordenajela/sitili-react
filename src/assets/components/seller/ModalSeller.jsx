@@ -10,19 +10,14 @@ export default function ModalSeller() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  // Estados para los campos del formulario
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [userType, setUserType] = React.useState('');
 
   const handleAddUser = () => {
-    // Realiza alguna acción con los datos del formulario, por ejemplo, enviarlos al servidor
     console.log('Email:', email);
     console.log('Contraseña:', password);
     console.log('Tipo de usuario:', userType);
-
-    // Cierra el modal después de agregar el usuario
     handleClose();
   };
 
