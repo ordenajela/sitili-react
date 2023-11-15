@@ -30,11 +30,14 @@ function Login() {
       });
 
       if (response.status === 200) {
-        // Login successful
         console.log("Peticion correcta");
         console.log(response.data.user.role[0].roleName);
-        const authToken = response.data.token;
-        localStorage.setItem('token', authToken);
+        console.log("Los datos", response.data);
+        console.log("El token:", response.data.jwtToken);
+
+        localStorage.setItem("tokenAdmin", response.data.jwtToken);
+        
+
         setLoginError(false);
         console.log(response);
         
