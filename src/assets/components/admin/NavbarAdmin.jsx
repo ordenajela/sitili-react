@@ -13,8 +13,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import logoImage from '../../images/Logo-Horizintal-Blanco.png';
-import { Link, Route  } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)({

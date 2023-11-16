@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, ImageList, ImageListItem, Typography } from '@mui/material';
-import logoImage from '../../images/logo.png';
+import logoImage from '../../../images/logo.png';
 
 const Error404 = () => {
     return (

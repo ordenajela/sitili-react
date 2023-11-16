@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from "./pages/Home/Home";
-import UsersAdmin from "./pages/Usuarios/UsersAdmin";
-import UserAd from "./pages/usadmn/UserAd";
-import Products from './pages/products/Products';
-import Ingresos from './pages/ingresos/Ingresos';
-import Pedidos from './pages/pedidos/Pedidos';
-import ProfileAdmin from './pages/adm/ProfileAdmin';
+import { BrowserRouter as  Routes, Route, Navigate } from 'react-router-dom';
+import Home from "../views/admin/pages/Home/Home";
+import UsersAdmin from "../views/admin/pages/Usuarios/UsersAdmin";
+import UserAd from "../views/admin/pages/usadmn/UserAd";
+import Products from '../views/admin/pages/products/Products';
+import Ingresos from '../views/admin/pages/ingresos/Ingresos';
+import Pedidos from '../views/admin/pages/pedidos/Pedidos';
+import ProfileAdmin from '../views/admin/pages/adm/ProfileAdmin';
 
 function DashboardAdmin({darkMode, setDarkMode, userData}) {
 
@@ -40,7 +40,7 @@ function DashboardAdmin({darkMode, setDarkMode, userData}) {
 
       {/* Ruta para usuarios autenticados que no son administradores */}
       {isAuthenticated() && !isAdmin() && (
-        <Route path="/*" element={<Navigate to="/error" />} />
+        <Route path="/*" element={<Navigate to="/error/403" />} />
       )}
 
       {/* Ruta para usuarios no autenticados */}
