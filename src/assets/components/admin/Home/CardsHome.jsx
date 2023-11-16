@@ -12,10 +12,27 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 
 export default function CardsHome() {
   const iconSize = 48;
+
+  const cardStyles = {
+    borderRadius: 16,
+    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+    overflow: "hidden",
+  };
+
+  const gradientColors = {
+    purple: "linear-gradient(135deg, #663399 0%, #673AB7 100%)",
+    blue: "linear-gradient(135deg, #1976D2 0%, #2196F3 100%)",
+  };
+
+  const iconButtonStyles = {
+    backgroundColor: "white",
+    borderRadius: "50%",
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={3}>
-        <Card style={{ backgroundColor: "#1976D2", marginLeft: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
           <CardContent>
             <Box
               sx={{
@@ -24,8 +41,8 @@ export default function CardsHome() {
                 alignItems: "center",
               }}
             >
-              <IconButton color="primary">
-                <Inventory2Icon sx={{ fontSize: iconSize, color: "white" }} />
+              <IconButton color="primary" style={iconButtonStyles}>
+                <Inventory2Icon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
               </IconButton>
               <Typography
                 variant="h6"
@@ -34,6 +51,7 @@ export default function CardsHome() {
                   marginLeft: "auto",
                   fontSize: "40px",
                   fontWeight: "bold",
+                  color: "white",
                 }}
               >
                 12501
@@ -43,6 +61,7 @@ export default function CardsHome() {
               color="text.primary"
               sx={{
                 marginTop: 2,
+                color: "white",
               }}
             >
               Productos en SITILI
@@ -52,7 +71,7 @@ export default function CardsHome() {
       </Grid>
 
       <Grid item xs={3}>
-        <Card style={{ backgroundColor: "#1976D2" }}>
+        <Card style={{ ...cardStyles, background: gradientColors.blue }}>
           <CardContent>
             <Box
               sx={{
@@ -64,18 +83,19 @@ export default function CardsHome() {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ fontSize: "40px", fontWeight: "bold" }}
+                sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
               >
                 $150187
               </Typography>
-              <IconButton color="primary" sx={{ marginLeft: "auto" }}>
-                <LocalAtmIcon sx={{ fontSize: iconSize, color: "white" }} />
+              <IconButton color="primary" style={iconButtonStyles}>
+                <LocalAtmIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
               </IconButton>
             </Box>
             <Typography
               color="text-.primary"
               sx={{
                 marginTop: 2,
+                color: "white",
               }}
             >
               De Ventas totales
@@ -83,9 +103,8 @@ export default function CardsHome() {
           </CardContent>
         </Card>
       </Grid>
-
       <Grid item xs={3}>
-        <Card style={{ backgroundColor: "#1976D2" }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
           <CardContent>
             <Box
               sx={{
@@ -94,10 +113,8 @@ export default function CardsHome() {
                 alignItems: "center",
               }}
             >
-              <IconButton color="primary">
-                <SentimentSatisfiedAltIcon
-                  sx={{ fontSize: iconSize, color: "white" }}
-                />
+              <IconButton color="primary" style={iconButtonStyles}>
+                <SentimentSatisfiedAltIcon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
               </IconButton>
               <Typography
                 variant="h6"
@@ -106,15 +123,17 @@ export default function CardsHome() {
                   marginLeft: "auto",
                   fontSize: "40px",
                   fontWeight: "bold",
+                  color: "white",
                 }}
               >
-                150
+                500
               </Typography>
             </Box>
             <Typography
               color="text.primary"
               sx={{
                 marginTop: 2,
+                color: "white",
               }}
             >
               Integrantes de SITILI
@@ -124,7 +143,7 @@ export default function CardsHome() {
       </Grid>
 
       <Grid item xs={3}>
-        <Card style={{ backgroundColor: "#1976D2", marginRight: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.blue }}>
           <CardContent>
             <Box
               sx={{
@@ -136,20 +155,20 @@ export default function CardsHome() {
               <Typography
                 variant="h6"
                 component="div"
-                sx={{ fontSize: "40px", fontWeight: "bold" }}
+                sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto"  }}
               >
-                120
+                147
               </Typography>
-              <IconButton color="primary" sx={{ marginLeft: "auto" }}>
-                <LocalShippingIcon
-                  sx={{ fontSize: iconSize, color: "white" }}
-                />
+              <IconButton color="primary" style={iconButtonStyles}>
+                <LocalShippingIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
               </IconButton>
             </Box>
             <Typography
-              color="text.primary"
+              color="text-.primary"
               sx={{
                 marginTop: 2,
+                color: "white",
+                alignItems: "center",
               }}
             >
               Envios Realizados
@@ -157,6 +176,7 @@ export default function CardsHome() {
           </CardContent>
         </Card>
       </Grid>
+      
     </Grid>
   );
 }

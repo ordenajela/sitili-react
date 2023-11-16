@@ -3,7 +3,7 @@ import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CardsHome from "./CardsHome";
+import CardsHome from "../../../../components/admin/Home/CardsHome";
 
 const Home = ({ darkMode, setDarkMode, userData }) => {
   const theme = createTheme({

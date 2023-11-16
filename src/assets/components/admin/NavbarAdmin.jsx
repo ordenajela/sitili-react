@@ -14,6 +14,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import logoImage from '../../images/Logo-Horizintal-Blanco.png';
 import { Link  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)({
   flex: 1, 
@@ -28,6 +29,7 @@ const StyledLink = styled(Link)({
 });
 
 export default function NavbarAdmin({ darkMode, setDarkMode }) {
+  const navigate = useNavigate();
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
       };
@@ -47,8 +49,11 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
   };
 
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
+    navigate('/login');
     handleMobileMenuClose();
+    
   };
 
   const handleMobileMenuOpen = (event) => {

@@ -11,26 +11,6 @@ const Products = ({ darkMode, setDarkMode }) => {
     },
   });
 
-  const tokenAdmin = localStorage.getItem("tokenAdmin");
-
-  const userList = async () => {
-    try {
-      const res = await fetch("http://localhost:8090/product/listAll", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("tokenAdmin")}`,
-      },
-    });
-    const data = await res.json();
-    console.log("Data:", data);
-    } catch (error) {
-      console.log("Error:", error);
-    }
-    
-  }
-  console.log("UserList:", userList());
-
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>

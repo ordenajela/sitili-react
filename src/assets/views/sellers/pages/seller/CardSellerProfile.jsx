@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
-import twImage from '../../../../images/tw.jpg'
+import sellerImage from "../../../../images/VendedorSitili.jpg"
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -26,10 +26,10 @@ export default function CardSellerProfile() {
     <Card sx={{ maxWidth: 450 }}>
       <CardMedia
         component="img"
-        alt="green iguana"
+        alt="vendedor sitili"
         height="500"
         width="50"
-        image={twImage}
+        image={sellerImage}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

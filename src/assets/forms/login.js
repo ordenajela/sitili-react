@@ -35,31 +35,28 @@ function Login() {
         console.log("Los datos", response.data);
         console.log("El token:", response.data.jwtToken);
 
-        localStorage.setItem("tokenAdmin", response.data.jwtToken);
+        localStorage.setItem("token", response.data.jwtToken);
+        localStorage.setItem("rol", response.data.user.role[0].roleName)
         
-
         setLoginError(false);
         console.log(response);
         
         if (response.data.user.role[0].roleName === "Admin") {
           console.log("Eres admin");
-          navigate('/dashboard/home', { state: { userData: response.data } });
+          navigate('/dashboard/home');
         } else if (response.data.user.role[0].roleName === "User") {
           console.log("Eres User");
-          navigate('/productos', { state: { userData: response.data } });
+          navigate('/productos');
         } else if (response.data.user.role[0].roleName === "Vendedor") {
           console.log("Eres admin");
         } else if (response.data.user.role[0].roleName === "Root") {
           console.log("Eres admin");
         }
-
-
       } else {
-        // Login failed
+        console.log(response.data);
         setLoginError(true);
       }
     } catch (error) {
-      // Handle error
       console.error('Error en la solicitud de inicio de sesión:', error);
       setLoginError(true);
     }

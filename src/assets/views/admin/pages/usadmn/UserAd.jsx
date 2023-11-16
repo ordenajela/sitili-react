@@ -3,7 +3,7 @@ import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box, Grid } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import ModalUsers from "../../../../components/admin/ModalUsers";
+import ModalUsers from "../../../../components/admin/users/ModalUsers";
 import UsersTable from "../../../../components/admin/users/UsersTable";
 
 const UserAd = ({ darkMode, setDarkMode }) => {
@@ -33,15 +33,7 @@ const UserAd = ({ darkMode, setDarkMode }) => {
               <Grid item xs={6}>
                 <h1> Lista de Usuarios</h1>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                }}
-              >
+              <Grid item xs={6} sx={{display: "flex",justifyContent: "flex-end",alignItems: "center",}}>
                 <ModalUsers />
               </Grid>
             </Grid>
