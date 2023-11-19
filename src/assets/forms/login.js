@@ -22,6 +22,8 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
 
     try {
       const response = await axios.post('http://localhost:8090/authenticate', {

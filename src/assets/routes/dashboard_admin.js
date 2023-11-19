@@ -1,4 +1,4 @@
-import { BrowserRouter as  Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from "../views/admin/pages/Home/Home";
 import UsersAdmin from "../views/admin/pages/Usuarios/UsersAdmin";
 import UserAd from "../views/admin/pages/usadmn/UserAd";
@@ -8,7 +8,6 @@ import Pedidos from '../views/admin/pages/pedidos/Pedidos';
 import ProfileAdmin from '../views/admin/pages/adm/ProfileAdmin';
 
 function DashboardAdmin({darkMode, setDarkMode, userData}) {
-
   const datosAdm = localStorage.getItem("credencial");
   console.log("Datos de Admin:", datosAdm);
   const rol = localStorage.getItem("rol");
@@ -23,9 +22,8 @@ function DashboardAdmin({darkMode, setDarkMode, userData}) {
     return !!localStorage.getItem("tokenAdmin");
   };
 
-    return (
-      <Routes>
-
+  return (
+    <Routes>
       {isAdmin() && isAuthenticated() && (
         <>
           <Route path="/home" element={<Home darkMode={darkMode} setDarkMode={setDarkMode} userData={userData} />} />
@@ -48,7 +46,7 @@ function DashboardAdmin({darkMode, setDarkMode, userData}) {
         <Route path="/*" element={<Navigate to="/login" />} />
       )}
     </Routes>
-    );
-  }
-  
-  export default DashboardAdmin;
+  );
+}
+
+export default DashboardAdmin;
