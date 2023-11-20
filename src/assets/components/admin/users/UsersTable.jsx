@@ -12,11 +12,16 @@ import EditIcon from "@mui/icons-material/Edit";
 import UserEditModal from "./UserEditModal";
 import Grid from "@mui/material/Grid";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 
 const UsersTable = ({ darkMode, setDarkMode }) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alert, setAlert] = useState({ open: false, type: 'success', message: '' });
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,7 +30,7 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("tokenAdmin")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
         const data = await res.json();
@@ -48,8 +53,49 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
     setIsModalOpen(false);
   };
 
+  const toggleUserStatus = async (user) => {
+    try {
+      const response = await fetch("http://localhost:8090/users/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ email: user.email }),
+      });
+
+      if (response.ok) {
+        const updatedUsers = users.map((u) =>
+          u.email === user.email ? { ...u, status: !u.status } : u
+        );
+        setUsers(updatedUsers);
+        setAlert({ open: true, type: 'success', message: 'Estado cambiado exitosamente.' });
+        setTimeout(() => {
+          setAlert({ ...alert, open: false });
+        }, 3000);
+      } else {
+        console.error("Error al cambiar el estado del usuario");
+        setAlert({ open: true, type: 'error', message: 'Error al cambiar el estado del usuario.' });
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+      setAlert({ open: true, type: 'error', message: 'Error en la petición.' });
+    }
+  };
+
   return (
     <div>
+      {alert.open && (
+        <Alert
+          severity={alert.type}
+          onClose={() => setAlert({ ...alert, open: false })}
+          style={{ margin: '10px 0', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}
+        >
+          <AlertTitle>{alert.type === 'success' ? 'Éxito' : 'Error'}</AlertTitle>
+          {alert.message}
+        </Alert>
+      )}
+
       <TableContainer component={Paper}>
         <Table sx={{ width: "100%" }} aria-label="simple table">
           <TableHead>
@@ -129,6 +175,7 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
                         startIcon={
                          user.status ? <RemoveCircleOutlineIcon/> : <CheckCircleOutlineIcon/> }
                         sx={{ width: "130px" }} 
+                        onClick={() => toggleUserStatus(user)}
                       >
                         {user.status ? "Desactivar" : "Activar"}
                       </Button>

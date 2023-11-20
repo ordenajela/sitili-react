@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useState, useEffect} from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -11,7 +11,34 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 
 export default function CardsHome() {
+  const [totalUsers, setTotalUsers] = useState(null);
   const iconSize = 48;
+
+  useEffect(() => {
+    const fetchTotalUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:8090/users/totalUsers", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`, 
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTotalUsers(data);
+          console.log(data);
+        } else {
+          console.error("Error al obtener el total de usuarios");
+        }
+      } catch (error) {
+        console.error("Error en la petición:", error);
+      }
+    };
+
+    fetchTotalUsers();
+  }, []); 
 
   const cardStyles = {
     borderRadius: 16,
@@ -126,7 +153,7 @@ export default function CardsHome() {
                   color: "white",
                 }}
               >
-                500
+                {totalUsers}
               </Typography>
             </Box>
             <Typography
@@ -175,8 +202,7 @@ export default function CardsHome() {
             </Typography>
           </CardContent>
         </Card>
-      </Grid>
-      
+      </Grid>  
     </Grid>
   );
 }

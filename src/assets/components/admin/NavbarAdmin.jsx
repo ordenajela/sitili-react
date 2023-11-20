@@ -53,7 +53,6 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
     localStorage.removeItem("rol");
     navigate('/login');
     handleMobileMenuClose();
-    
   };
 
   const handleMobileMenuOpen = (event) => {
