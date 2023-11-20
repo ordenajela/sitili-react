@@ -3,6 +3,7 @@ import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import PendingTable from "../../../../components/admin/pendings/PendingTable";
 
 const UserAdmin = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -21,6 +22,7 @@ const UserAdmin = ({ darkMode, setDarkMode }) => {
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Usuarios Pendientes</h1>
+            <PendingTable/>
             {/* Agrega el contenido de la página aquí */}
           </Box>
         </Box>

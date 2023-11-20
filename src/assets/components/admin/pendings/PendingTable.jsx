@@ -15,7 +15,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
-const UsersTable = ({ darkMode, setDarkMode }) => {
+const PendingTable = ({ darkMode, setDarkMode }) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -207,4 +207,4 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
   );
 };
 
-export default UsersTable;
+export default PendingTable;
