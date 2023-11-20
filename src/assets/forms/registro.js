@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,32 +7,72 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Card, CardContent } from '@mui/material';
-import { Link } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Link, withRouter } from 'react-router-dom';  
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
+import logoImage from '../../assets/images/logo.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
-function Registro() {
-  const [userType, setUserType] = React.useState('cliente'); // Establece el valor inicial como 'cliente'
-  
+function Registro() {  
+  const navigate = useNavigate();
+  const [userType, setUserType] = useState('cliente');
+  const userTypeMap = {
+    cliente: 4,
+    vendedor: 3,
+  };
+
+  const [passwordError, setPasswordError] = useState(false);
+
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      userType: userType,
-    });
-    
+    const userTypeValue = userTypeMap[userType];
+
+    if (data.get('password') !== data.get('confirmPassword')) {
+      setPasswordError(true);
+      return;
+    }
+
+    setPasswordError(false);
+
+    const postApiUrl = 'http://54.237.80.64:8090/registerNewUser';
+
+    try {
+      const postResponse = await axios.post(postApiUrl, {
+        email: data.get('email'),
+        password: data.get('password'),
+        role: userTypeValue,
+      });
+
+      if (postResponse.status === 200) {
+        console.log('Usuario creado exitosamente');
+        console.log(postResponse);
+
+        const authToken = postResponse.data.token;
+        localStorage.setItem('token', authToken);
+
+        if (userType === 'cliente') {
+          navigate('/cliente');
+        } else if (userType === 'vendedor') {
+          navigate('/seller/home');
+        }
+      } else {
+        console.error('Error en la solicitud POST');
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+    }
   };
 
   return (
@@ -59,33 +98,21 @@ function Registro() {
               <CssBaseline />
               <Box
                 sx={{
-                  marginTop: 5,
+                  marginTop: 1,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                 }}
               >
-                <Avatar
-  src="https://pbs.twimg.com/media/F9Y1kMVboAACobL?format=png&name=small"
-  alt="Logo de la empresa"
-  sx={{
-    width: 150,
-    height: 150,
-    marginBottom: 2,
-    
-  }}
-/>
+                <Link to="/">
+                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
+                </Link>
 
-
-
-
-
-
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" style={{ padding: '5%' }}>
                   Crear Cuenta
                 </Typography>
 
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <form onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <FormControl fullWidth>
@@ -126,9 +153,11 @@ function Registro() {
                       <TextField
                         fullWidth
                         label="Confirmar Contraseña"
-                        name="password"
+                        name="confirmPassword"
                         type="password"
                         autoComplete="current-password"
+                        error={passwordError}
+                        helperText={passwordError ? 'Las contraseñas no coinciden' : ''}
                       />
                     </Grid>
                   </Grid>
@@ -136,7 +165,7 @@ function Registro() {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="success"
+                    color="primary"
                     sx={{ mt: 3, mb: 2 }}
                   >
                     Registrarse
@@ -153,16 +182,14 @@ function Registro() {
                       </Link>
                     </Grid>
                   </Grid>
-                </Box>
+                </form>
               </Box>
             </Container>
           </ThemeProvider>
         </CardContent>
       </Card>
-      
     </Box>
-    
   );
 }
 
-export default Registro;
+export default Registro;  
