@@ -7,6 +7,7 @@ import DashboardAdmin from './assets/routes/dashboard_admin'; // Asumiendo que e
 import DashboardSeller from './assets/views/sellers/dashboard_seller'; // Asumiendo que este es para el vendedor
 import React, { useState } from 'react';
 import RoutesError from './assets/routes/RoutesError';
+import UserActions from './assets/views/users/user-view';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -15,12 +16,13 @@ function App() {
     <Router>
       <Routes>
         <Route path="/registro" element={<Registro />} />
-        <Route path="/" element={<Productos />} />
-        <Route path="/productos" element={<Productos />} />
+        <Route path="/" element={<Productos darkMode={darkMode} setDarkMode={setDarkMode}/>} />
+        <Route path="/productos" element={<Productos darkMode={darkMode} setDarkMode={setDarkMode}/>} />
         <Route path="/dashboard/*" element={<DashboardAdmin darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/seller/*" element={<DashboardSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/login" element={<Login />} />
         <Route path='/error/*' element={<RoutesError/>} />
+        <Route path="/user/*" element={<UserActions darkMode={darkMode} setDarkMode={setDarkMode}/>} />
       </Routes>
     </Router>
   );

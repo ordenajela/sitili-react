@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/Logo-Horizintal-Blanco.png';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import UserShoppingCar from '../views/users/pages/user-shopping-car';
 
 const Search = styled('div')(({ theme }) => ({
     display: 'flex', // Centra horizontalmente los elementos dentro de 'Search'
@@ -23,18 +25,18 @@ const Search = styled('div')(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
+        backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
+        marginLeft: theme.spacing(3),
+        width: 'auto',
     },
-  }));
+}));
 
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled('div')(({ theme }) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -42,22 +44,26 @@ const Search = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }));
+}));
 
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+            width: '20ch',
+        },
     },
-  }));
+}));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
+
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    };
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -98,8 +104,12 @@ export default function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Mi perfil</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Mi cuenta</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Link to="/perfil" style={{textDecoration: 'none', color:'black'}}>Mi perfil</Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+                <Link to="#" style={{textDecoration: 'none', color:'black'}}>Cerrar sesión </Link>
+            </MenuItem>
         </Menu>
     );
 
@@ -125,6 +135,7 @@ export default function PrimarySearchAppBar() {
                     <Badge badgeContent={4} color="error">
                         <ShoppingCartIcon />
                     </Badge>
+                    <Link to="../carrito"></Link>
                 </IconButton>
                 <p>Carrito</p>
             </MenuItem>
@@ -137,8 +148,20 @@ export default function PrimarySearchAppBar() {
                     <Badge badgeContent={17} color="error">
                         <FavoriteIcon />
                     </Badge>
+                    <Link to="../favoritos"></Link>
                 </IconButton>
                 <p>Favoritos</p>
+            </MenuItem>
+            <MenuItem>
+                <IconButton
+                    size="large"
+                    onClick={toggleDarkMode}
+                    color="inherit"
+                >
+                    <Badge color="error">
+                        <InvertColorsIcon />
+                    </Badge>
+                </IconButton>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -169,9 +192,9 @@ export default function PrimarySearchAppBar() {
                         <MenuIcon />
                     </IconButton> */}
                     <Link to="/">
-                        <img src={logoImage} alt="Logo" style={{ height: '50px', marginTop: '3%'}} />
+                        <img src={logoImage} alt="Logo" style={{ height: '50px', marginTop: '3%' }} />
                     </Link>
-                    <Search style={{marginLeft: '5%'}}>
+                    <Search style={{ marginLeft: '5%' }}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
@@ -182,18 +205,31 @@ export default function PrimarySearchAppBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <FavoriteIcon />
-                            </Badge>
-                        </IconButton>
+                        <Link to="../favoritos" style={{textDecoration: 'none', color:'white'}}>
+                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                                <Badge badgeContent={4} color="error">
+                                    <FavoriteIcon />
+                                </Badge>
+                            </IconButton>
+                        </Link>
+                        <Link to="../carrito" style={{textDecoration: 'none', color:'white'}}>
+                            <IconButton
+                                size="large"
+                                aria-label="show 17 new notifications"
+                                color="inherit"
+                            >
+                                <Badge badgeContent={17} color="error">
+                                    <ShoppingCartIcon />
+                                </Badge>
+                            </IconButton>
+                        </Link>
                         <IconButton
                             size="large"
-                            aria-label="show 17 new notifications"
+                            onClick={toggleDarkMode}
                             color="inherit"
                         >
-                            <Badge badgeContent={17} color="error">
-                                <ShoppingCartIcon />
+                            <Badge color="error">
+                                <InvertColorsIcon />
                             </Badge>
                         </IconButton>
                         <IconButton

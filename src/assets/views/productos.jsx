@@ -1,4 +1,4 @@
-import PrimarySearchAppBar from "../components/navbar2";
+import PrimarySearchAppBar from "../components/navbar";
 import CarouselCategories from "../components/carousel-categories";
 import FilterTags from "../components/filter-tags";
 import ResponsiveGridWithPagination from "../components/products";
