@@ -13,7 +13,8 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import logoImage from '../../images/Logo-Horizintal-Blanco.png';
-import { Link  } from 'react-router-dom';
+import { Link, Navigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StyledTypography = styled(Typography)({
   flex: 1, 
@@ -21,6 +22,8 @@ const StyledTypography = styled(Typography)({
   alignItems: 'center',
   marginLeft: 'auto',
 });
+
+
 
 const StyledLink = styled(Link)({
   textDecoration: 'none', 
@@ -31,6 +34,7 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
       };
+      const navigate = useNavigate();
    
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -43,6 +47,9 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
   };
 
   const handleMobileMenuClose = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
+    navigate('/login');
     setMobileMoreAnchorEl(null);
   };
 

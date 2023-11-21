@@ -5,8 +5,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const UserEditModal = ({ user, handleCloseModal }) => {
-  // Puedes utilizar el objeto 'user' para mostrar la información en el modal
-
   return (
     <Modal
       open={true}
@@ -19,6 +17,7 @@ const UserEditModal = ({ user, handleCloseModal }) => {
           Editar Usuario
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          {/* Muestra la información del usuario dentro del modal */}
           Email: {user.email}
           <br />
           Estado: {user.status ? "Activo" : "Inactivo"}

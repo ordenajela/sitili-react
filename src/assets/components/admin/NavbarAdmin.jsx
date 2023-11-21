@@ -30,9 +30,10 @@ const StyledLink = styled(Link)({
 
 export default function NavbarAdmin({ darkMode, setDarkMode }) {
   const navigate = useNavigate();
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-      };
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
    
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -131,8 +132,6 @@ export default function NavbarAdmin({ darkMode, setDarkMode }) {
 
   return (
     <Box sx={{ flexGrow: 1,
-      
-      
     }}>
       <AppBar position="static">
         <Toolbar>

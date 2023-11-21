@@ -1,9 +1,0 @@
-{
-  "user": {
-    "email": "admin@admin",
-    "password": "$2a$10$iW0hENPkp4IRgoKnE8COpOa0Ad6HVHPP2qlZydv3JRFdqIaBkDoi6",
-    "status": true,
-    "role": [{ "roleName": "Admin", "roleDescription": "Admin role" }]
-  },
-  "jwtToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBhZG1pbiIsImV4cCI6MTcwMDAxNDg1OCwiaWF0IjoxNjk5OTk2ODU4fQ.HN7la9_9VGh-t-9oayftWigdmcIAN4vrE8WEOTU0qSYZHYUFeio2vIs-il8Flt781ebmVbBsKhItL2YApgNI4w"
-}

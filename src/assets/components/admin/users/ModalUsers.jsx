@@ -1,29 +1,81 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { styled, Box, TextField, Select, MenuItem } from '@mui/material';
+import { styled, Box, TextField, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material';
 import { Modal as BaseModal } from '@mui/base/Modal';
-import { Button } from '@mui/material';
+import axios from 'axios';
 
 export default function ModalUsers() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userType, setUserType] = useState('');
+  const [alert, setAlert] = useState({ open: false, type: 'success', message: '' });
 
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [userType, setUserType] = React.useState('');
+  const userTypeMap = {
+    cliente: 4,
+    vendedor: 3,
+    administrador: 2,
+  };
 
-  const handleAddUser = () => {
-    console.log('Email:', email);
-    console.log('Contraseña:', password);
-    console.log('Tipo de usuario:', userType);
-    handleClose();
+  const handleUserTypeChange = (event) => {
+    setUserType(event.target.value);
+  };
+
+  const handleAddUser = async () => {
+    const userTypeValue = userTypeMap[userType];
+
+    try {
+      const response = await axios.post('http://localhost:8090/registerNewUser', {
+        email: email,
+        password: password,
+        first_name: name,
+        last_name: lastName,
+        role: userTypeValue,
+      });
+
+      if (response.status === 200) {
+        
+        console.log('Usuario registrado exitosamente:', response.data);
+        setAlert({ open: true, type: 'success', message: 'Usuario registrado exitosamente.' });
+        handleClose();
+      } else {
+        console.error('Error al registrar usuario:', response.statusText);
+        setAlert({ open: true, type: 'error', message: 'Error al registrar usuario.' });
+      }
+    } catch (error) {
+      console.error('Error durante el registro de usuario:', error);
+      setAlert({ open: true, type: 'error', message: 'Error durante el registro de usuario.' });
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    // Restablece los campos del formulario después de cerrar el modal
+    setEmail('');
+    setPassword('');
+    setName('');
+    setLastName('');
+    setUserType('');
   };
 
   return (
     <div>
-      <TriggerButton type="button" onClick={handleOpen}>
+      {alert.open && (
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={3000}
+          onClose={() => setAlert({ ...alert, open: false })}
+        >
+          <Alert severity={alert.type} onClose={() => setAlert({ ...alert, open: false })}>
+            {alert.message}
+          </Alert>
+        </Snackbar>
+      )}
+
+      <TriggerButton type="button" onClick={() => setOpen(true)}>
         Agregar Usuario
       </TriggerButton>
       <Modal
@@ -45,6 +97,7 @@ export default function ModalUsers() {
             <TextField
               label="Correo"
               variant="outlined"
+              type='email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               sx={{ marginBottom: '16px' }}
@@ -59,11 +112,27 @@ export default function ModalUsers() {
               sx={{ marginBottom: '16px' }}
               fullWidth
             />
+            <TextField
+              label="Nombre"
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              sx={{ marginBottom: '16px' }}
+              fullWidth
+            />
+            <TextField
+              label="Apellido"
+              variant="outlined"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              sx={{ marginBottom: '16px' }}
+              fullWidth
+            />
             <Select
               label="Tipo de Usuario"
               variant="outlined"
               value={userType}
-              onChange={(e) => setUserType(e.target.value)}
+              onChange={handleUserTypeChange}
               sx={{ marginBottom: '16px' }}
               fullWidth
             >
