@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -6,6 +6,30 @@ import Slider from '@mui/material/Slider';
 
 
 export default function FilterTags() {
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('http://localhost:8090/categories/listAll');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok.');
+                }
+                const data = await response.json();
+                const fetchedCategories = data.map(category => ({
+                    id: category.id,
+                    title: category.name
+                }));
+                setCategories(fetchedCategories);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+    
+        fetchCategories();
+    }, []);
+    
+
     return (
         <div style={{ display: 'flex' }}>
             <Autocomplete
@@ -46,14 +70,6 @@ export default function FilterTags() {
     );
 }
 
-const categories = [
-    { id: 1, title: 'Tecnología' },
-    { id: 2, title: 'Deportes' },
-    { id: 3, title: 'Hogar' },
-    { id: 4, title: 'Oficina' },
-    { id: 5, title: 'Ropa' },
-];
-
 const stores = [
     { id: 1, company: 'Apple' },
     { id: 2, company: 'AOC' },
@@ -61,23 +77,3 @@ const stores = [
     { id: 4, company: 'Vans' },
     { id: 5, company: 'Adidas' },
 ];
-
-// function valuetext(value) {
-//     return `${value}°C`;
-// }
-
-// const minDistance = 10;
-
-// const [value1, setValue1] = React.useState([20, 37]);
-
-// const handleChange1 = (event, newValue, activeThumb) => {
-//     if (!Array.isArray(newValue)) {
-//         return;
-//     }
-
-//     if (activeThumb === 0) {
-//         setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-//     } else {
-//         setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-//     }
-// };

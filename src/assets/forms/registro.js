@@ -161,6 +161,7 @@ function Registro() {
     setPasswordError(false);
     const postApiUrl = 'http://localhost:8090/registerNewUser';
 
+
     const userData = {
       email: email,
       password: password,
@@ -168,6 +169,7 @@ function Registro() {
       last_name: last_name,
       role: userTypeMap[userType],
     };
+
 
     try {
       const postResponse = await axios.post(postApiUrl, userData, {
@@ -182,7 +184,7 @@ function Registro() {
         localStorage.setItem('token', authToken);
 
         if (userType === 'cliente') {
-          navigate('/cliente');
+          navigate('/user/home');
         } else if (userType === 'vendedor') {
           setShowAlert(true);
           setShowModal(true);
