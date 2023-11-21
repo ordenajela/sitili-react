@@ -46,7 +46,8 @@ function Registro() {
 
     setPasswordError(false);
 
-    const postApiUrl = 'http://54.237.80.64:8090/registerNewUser';
+    // const postApiUrl = 'http://54.237.80.64:8090/registerNewUser';
+    const postApiUrl = 'http://localhost:8090/registerNewUser';
 
     try {
       const postResponse = await axios.post(postApiUrl, {
@@ -63,7 +64,7 @@ function Registro() {
         localStorage.setItem('token', authToken);
 
         if (userType === 'cliente') {
-          navigate('/cliente');
+          navigate('/user/home');
         } else if (userType === 'vendedor') {
           navigate('/seller/home');
         }
