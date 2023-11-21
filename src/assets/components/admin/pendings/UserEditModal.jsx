@@ -5,8 +5,6 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 const UserEditModal = ({ user, handleCloseModal }) => {
-  // Puedes utilizar el objeto 'user' para mostrar la información en el modal
-
   return (
     <Modal
       open={true}

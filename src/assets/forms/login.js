@@ -12,10 +12,14 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
+
 
 const defaultTheme = createTheme();
 
 function Login() {
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
 
@@ -39,6 +43,7 @@ function Login() {
 
         localStorage.setItem("token", response.data.jwtToken);
         localStorage.setItem("rol", response.data.user.role[0].roleName)
+        localStorage.setItem("correo", response.data.user.email);
         
         setLoginError(false);
         console.log(response);
@@ -49,10 +54,18 @@ function Login() {
         } else if (response.data.user.role[0].roleName === "User") {
           console.log("Eres User");
           navigate('/productos');
-        } else if (response.data.user.role[0].roleName === "Vendedor") {
-          console.log("Eres admin");
+        } else if (response.data.user.role[0].roleName === "Seller") {
+          if (response.data.user.status === true) {
+            console.log("Eres Vendedor");
+            console.log("Vista de Vendedor");
+            navigate('/seller/home');
+          }else if (response.data.user.status === false) {
+            console.log("Eres Vendedor");
+            console.log("Vista de Vendedor");
+            setShowAlert(true);
+          }
         } else if (response.data.user.role[0].roleName === "Root") {
-          console.log("Eres admin");
+          console.log("Eres Root");
         }
       } else {
         console.log(response.data);
@@ -65,6 +78,17 @@ function Login() {
   };
 
   return (
+    <>
+    <Snackbar
+  open={showAlert}
+  autoHideDuration={6000}
+  onClose={() => setShowAlert(false)}
+>
+  <Alert severity="error" onClose={() => setShowAlert(false)}>
+    Tu estado de vendedor está inactivo. Contacta al administrador.
+  </Alert>
+</Snackbar>
+
     <Box
       sx={{
         backgroundColor: '#512D6D',
@@ -155,6 +179,7 @@ function Login() {
         </CardContent>
       </Card>
     </Box>
+    </>
   );
 }
 

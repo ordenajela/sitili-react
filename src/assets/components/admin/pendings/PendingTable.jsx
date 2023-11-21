@@ -11,33 +11,41 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
 import UserEditModal from "./UserEditModal";
 import Grid from "@mui/material/Grid";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import { Typography } from "@mui/material";
 
-const PendingTable = ({ darkMode, setDarkMode }) => {
+const PendingTable = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [alert, setAlert] = useState({ open: false, type: 'success', message: '' });
+  const [alert, setAlert] = useState({
+    open: false,
+    type: "success",
+    message: "",
+  });
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch("http://localhost:8090/users/list", {
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost:8090/aceptSeller/listSellersNa",
+        {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-        });
-        const data = await res.json();
-        setUsers(data);
-      } catch (error) {
-        console.log("Error:", error);
-      }
-    };
+        }
+      );
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
   }, []);
 
@@ -53,8 +61,8 @@ const PendingTable = ({ darkMode, setDarkMode }) => {
 
   const toggleUserStatus = async (user) => {
     try {
-      const response = await fetch("http://localhost:8090/users/delete", {
-        method: "DELETE",
+      const response = await fetch("http://localhost:8090/aceptSeller/acept", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -63,22 +71,38 @@ const PendingTable = ({ darkMode, setDarkMode }) => {
       });
 
       if (response.ok) {
-        const updatedUsers = users.map((u) =>
-          u.email === user.email ? { ...u, status: !u.status } : u
-        );
-        setUsers(updatedUsers);
-        setAlert({ open: true, type: 'success', message: 'Estado cambiado exitosamente.' });
+        fetchUsers();
+        setAlert((prevAlert) => ({
+          ...prevAlert,
+          open: true,
+          type: "success",
+          message: "Estado cambiado exitosamente.",
+        }));
         setTimeout(() => {
-          setAlert({ ...alert, open: false });
+          setAlert((prevAlert) => ({ ...prevAlert, open: false }));
         }, 3000);
       } else {
         console.error("Error al cambiar el estado del usuario");
-        setAlert({ open: true, type: 'error', message: 'Error al cambiar el estado del usuario.' });
+        setAlert((prevAlert) => ({
+          ...prevAlert,
+          open: true,
+          type: "error",
+          message: "Error al cambiar el estado del usuario.",
+        }));
       }
     } catch (error) {
       console.error("Error en la petición:", error);
-      setAlert({ open: true, type: 'error', message: 'Error en la petición.' });
+      setAlert((prevAlert) => ({
+        ...prevAlert,
+        open: true,
+        type: "error",
+        message: "Error en la petición.",
+      }));
     }
+  };
+
+  const handleAlertClose = () => {
+    setAlert({ ...alert, open: false });
   };
 
   return (
@@ -86,116 +110,139 @@ const PendingTable = ({ darkMode, setDarkMode }) => {
       {alert.open && (
         <Alert
           severity={alert.type}
-          onClose={() => setAlert({ ...alert, open: false })}
-          style={{ margin: '10px 0', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}
+          onClose={handleAlertClose}
+          style={{
+            margin: "10px 0",
+            borderRadius: "8px",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+          }}
         >
-          <AlertTitle>{alert.type === 'success' ? 'Éxito' : 'Error'}</AlertTitle>
+          <AlertTitle>
+            {alert.type === "success" ? "Éxito" : "Error"}
+          </AlertTitle>
           {alert.message}
         </Alert>
       )}
 
-      <TableContainer component={Paper}>
-        <Table sx={{ width: "100%" }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Email
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Rol
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Estado
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Contraseña
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Acciones
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow
-                key={user.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      borderRadius: "12px",
-                      color: "white",
-                      backgroundColor:
-                        user.role[0].roleName === "Admin"
-                          ? "purple" 
-                          : user.role[0].roleName === "User"
-                          ? "gray" 
-                          : user.role[0].roleName === "Seller"
-                          ? "#ADD8E6" 
-                          : "gray", 
-                    }}
-                  >
-                    {user.role[0].roleName === "Admin"
-                      ? "Administrador"
-                      : user.role[0].roleName === "User"
-                      ? "Usuario"
-                      : user.role[0].roleName === "Seller"
-                      ? "Vendedor"
-                      : user.role[0].roleName}
-                  </div>
+      {users.length > 0 ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ width: "100%" }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Email
                 </TableCell>
-
-                <TableCell>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      borderRadius: "12px",
-                      backgroundColor: user.status ? "green" : "red",
-                      color: "white",
-                    }}
-                  >
-                    {user.status ? "Activo" : "Inactivo"}
-                  </div>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Rol
                 </TableCell>
-                <TableCell style={{ fontWeight: "bold", fontSize: "20px" }}>
-                  ******
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Estado
                 </TableCell>
-                <TableCell>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Button
-                        variant="outlined"
-                        startIcon={
-                         user.status ? <RemoveCircleOutlineIcon/> : <CheckCircleOutlineIcon/> }
-                        sx={{ width: "130px" }} 
-                        onClick={() => toggleUserStatus(user)}
-                      >
-                        {user.status ? "Desactivar" : "Activar"}
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        endIcon={<EditIcon />}
-                        sx={{ marginLeft: 2, width: "130px" }} 
-                        
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Editar
-                      </Button>
-                    </Grid>
-                  </Grid>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Contraseña
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Acciones
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow
+                  key={user.email}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "12px",
+                        color: "white",
+                        backgroundColor:
+                          user.role_id === "Admin"
+                            ? "purple"
+                            : user.role_id === "User"
+                            ? "gray"
+                            : user.role_id === "Seller"
+                            ? "#ADD8E6"
+                            : "gray",
+                      }}
+                    >
+                      {user.role_id === "Admin"
+                        ? "Administrador"
+                        : user.role_id === "User"
+                        ? "Usuario"
+                        : user.role_id === "Seller"
+                        ? "Vendedor"
+                        : user.role_id}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "12px",
+                        backgroundColor: user.status ? "green" : "red",
+                        color: "white",
+                      }}
+                    >
+                      {user.status ? "Activo" : "Inactivo"}
+                    </div>
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bold", fontSize: "20px" }}>
+                    ******
+                  </TableCell>
+                  <TableCell>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
+                        <Button
+                          variant="outlined"
+                          startIcon={
+                            user.status ? (
+                              <RemoveCircleOutlineIcon />
+                            ) : (
+                              <CheckCircleOutlineIcon />
+                            )
+                          }
+                          sx={{ width: "130px" }}
+                          onClick={() => toggleUserStatus(user)}
+                        >
+                          {user.status ? "Desactivar" : "Activar"}
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          endIcon={<EditIcon />}
+                          sx={{ marginLeft: 2, width: "130px" }}
+                          onClick={() => handleEditClick(user)}
+                        >
+                          Editar
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <div>
+          <Grid container alignItems="center">
+            <Grid item xs={12} sm={6} md={6}></Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <Typography variant="h3">
+                No hay usuarios pendientes por el momento. Vuelve más tarde :)
+              </Typography>
+            </Grid>
+          </Grid>
+        </div>
+      )}
 
       {isModalOpen && (
         <UserEditModal

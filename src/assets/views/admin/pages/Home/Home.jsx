@@ -12,9 +12,6 @@ const Home = ({ darkMode, setDarkMode, userData }) => {
     },
   });
 
-  //const prueba = localStorage.getItem("credencial");
-  //console.log("Prueba:", prueba);
-
   const tokenAdmin = localStorage.getItem("tokenAdmin");
   console.log(tokenAdmin);
 
@@ -27,7 +24,7 @@ const Home = ({ darkMode, setDarkMode, userData }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <h1>Hola Adminsitrador!</h1>
+            <h1>Hola Administrador!</h1>
             <CardsHome/>
           </Box>
         </Box>

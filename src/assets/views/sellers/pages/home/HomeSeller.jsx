@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CardsHomeS from "./CardsHomeS";
+import CardsHomeS from "../../../../components/seller/Home/CardsHomeS";
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
 

@@ -10,14 +10,16 @@ import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 
-export default function CardsHome() {
-  const [totalUsers, setTotalUsers] = useState(null);
+export default function CardsHomeS() {
+  const [totalProducts, setTotalProducts] = useState(null);
   const iconSize = 48;
 
+  const email = localStorage.getItem("email");
+
   useEffect(() => {
-    const fetchTotalUsers = async () => {
+    const fetchTotalProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8090/users/totalUsers", {
+        const response = await fetch("http://localhost:8090/product/listSeller", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -27,17 +29,18 @@ export default function CardsHome() {
 
         if (response.ok) {
           const data = await response.json();
-          setTotalUsers(data);
-          console.log(data);
+          setTotalProducts(data.length);
+          console.log("Cantidad de Productos", data.length);
         } else {
           // Handle unsuccessful response
         }
       } catch (error) {
         // Handle errors
+        console.log("Error:", error);
       }
     };
 
-    fetchTotalUsers();
+    fetchTotalProducts();
   }, []);
 
   const cardStyles = {
@@ -81,7 +84,7 @@ export default function CardsHome() {
                   color: "white",
                 }}
               >
-                12501
+                {totalProducts}
               </Typography>
             </Box>
             <Typography
@@ -119,7 +122,7 @@ export default function CardsHome() {
               </IconButton>
             </Box>
             <Typography
-              color="text.primary"
+              color="text-.primary"
               sx={{
                 marginTop: 2,
                 color: "white",
@@ -154,7 +157,7 @@ export default function CardsHome() {
                   color: "white",
                 }}
               >
-                {totalUsers}
+                50
               </Typography>
             </Box>
             <Typography
@@ -164,7 +167,7 @@ export default function CardsHome() {
                 color: "white",
               }}
             >
-              Integrantes de SITILI
+              Productos con 4★ o mas
             </Typography>
           </CardContent>
         </Card>

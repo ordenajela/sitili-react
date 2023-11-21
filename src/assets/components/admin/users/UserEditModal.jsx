@@ -19,7 +19,6 @@ const UserEditModal = ({ user, handleCloseModal }) => {
           Editar Usuario
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          {/* Muestra la información del usuario dentro del modal */}
           Email: {user.email}
           <br />
           Estado: {user.status ? "Activo" : "Inactivo"}

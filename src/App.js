@@ -4,7 +4,7 @@ import Registro from './assets/forms/registro';
 import Productos from './assets/views/productos';
 import Login from './assets/forms/login';
 import DashboardAdmin from './assets/routes/dashboard_admin'; // Asumiendo que este es para el administrador
-import DashboardSeller from './assets/views/sellers/dashboard_seller'; // Asumiendo que este es para el vendedor
+import DashboardSeller from './assets/routes/dashboard_seller'; // Asumiendo que este es para el vendedor
 import React, { useState } from 'react';
 import RoutesError from './assets/routes/RoutesError';
 

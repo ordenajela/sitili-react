@@ -8,7 +8,6 @@ import { styled } from "@mui/material/styles";
 import CardAdminProfile from "./CardAdminProfile";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
-import Images from "./ImagesAdmin";
 import ImagesAdmin from "./ImagesAdmin";
 
 const Item = styled(Paper)(({ theme }) => ({
