@@ -24,28 +24,9 @@ import { Modal as BaseModal } from '@mui/base/Modal';
 
 const defaultTheme = createTheme();
 
-const Backdrop = styled('div')(
-  ({ theme }) => `
-    z-index: -1;
-    position: fixed;
-    inset: 0;
-    background-color: ${theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
-    -webkit-tap-highlight-color: transparent;
-  `
-);
-
-const StyledBackdrop = styled(Backdrop)`
-  z-index: -1;
-  position: fixed;
-  inset: 0;
-  background-color: rgb(0 0 0 / 0.5);
-  -webkit-tap-highlight-color: transparent;
-`;
-
 const style = {
   width: 400,
 };
-
 const Modal = styled(BaseModal)`
   position: fixed;
   z-index: 1300;
@@ -54,7 +35,6 @@ const Modal = styled(BaseModal)`
   align-items: center;
   justify-content: center;
 `;
-
 const ModalContent = styled(Box)(
   ({ theme }) => `
   display: flex;
@@ -89,38 +69,6 @@ const ModalContent = styled(Box)(
   `
 );
 
-const TriggerButton = styled(Button)(
-  ({ theme }) => `
-  font-family: IBM Plex Sans, sans-serif;
-  font-weight: 600;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: white;
-  transition: all 150ms ease;
-  cursor: pointer;
-  background: ${theme.palette.mode === 'dark' ? '#303740' : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? '#434D5B' : '#DAE2ED'};
-  color: ${theme.palette.mode === 'dark' ? '#F3F6F9' : '#434D5B'};
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-
-  &:hover {
-    background: ${theme.palette.mode === 'dark' ? '#1C2025' : '#F3F6F9'};
-    border-color: ${theme.palette.mode === 'dark' ? '#303740' : '#DAE2ED'};
-  }
-
-  &:active {
-    background: ${theme.palette.mode === 'dark' ? '#434D5B' : '#E5EAF2'};
-  }
-
-  &:focus-visible {
-    box-shadow: 0 0 0 4px ${theme.palette.mode === 'dark' ? '#66B2FF' : '#3399FF'};
-    outline: none;
-  }
-`
-);
-
 function Registro() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
@@ -150,7 +98,6 @@ function Registro() {
     event.preventDefault();
     setIsLoading(true);
 
-    const userTypeValue = userTypeMap[userType];
 
     if (password !== confirmPassword) {
       setPasswordError(true);
@@ -161,7 +108,6 @@ function Registro() {
     setPasswordError(false);
     const postApiUrl = 'http://localhost:8090/registerNewUser';
 
-
     const userData = {
       email: email,
       password: password,
@@ -169,7 +115,6 @@ function Registro() {
       last_name: last_name,
       role: userTypeMap[userType],
     };
-
 
     try {
       const postResponse = await axios.post(postApiUrl, userData, {
@@ -190,10 +135,10 @@ function Registro() {
           setShowModal(true);
         }
       } else {
-        console.error('Error en la solicitud POST');
+        console.log('Error en la solicitud POST');
       }
     } catch (error) {
-      console.error('Error en la solicitud:', error);
+      console.log('Error en la solicitud:', error);
     } finally {
       setIsLoading(false);
     }

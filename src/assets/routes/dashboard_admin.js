@@ -10,7 +10,6 @@ import ProfileAdmin from '../views/admin/pages/adm/ProfileAdmin';
 function DashboardAdmin({darkMode, setDarkMode, userData}) {
   
   const rol = localStorage.getItem("rol");
-  console.log("Rol de Admin:", rol);
   const isAdmin = () => {
     return rol === "Admin";
   };

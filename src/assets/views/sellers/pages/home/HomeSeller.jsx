@@ -23,7 +23,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Hola Vendedor!</h1>
             <CardsHomeS/>
-            {/* Agrega el contenido de la página aquí */}
+            
           </Box>
         </Box>
       </Box>

@@ -9,8 +9,6 @@ import ProfileSeller from '../views/sellers/pages/seller/ProfileSeller';
 function dashboard_seller ({ darkMode, setDarkMode })  {
   
   const rol = localStorage.getItem("rol");
-  console.log("Rol de Vendedor:", rol);
-
   const isSeller = () => {
     return rol === "Seller";
   }
