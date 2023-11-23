@@ -12,7 +12,7 @@ const Home = ({ darkMode, setDarkMode, userData }) => {
     },
   });
 
-  const tokenAdmin = localStorage.getItem("tokenAdmin");
+  const tokenAdmin = localStorage.getItem("token");
   console.log(tokenAdmin);
 
   return (

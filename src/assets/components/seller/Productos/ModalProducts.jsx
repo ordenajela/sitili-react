@@ -1,132 +1,215 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { styled, Box, TextField, Select, MenuItem, Button } from '@mui/material';
+import {styled,Box,TextField,Select,MenuItem,Button,} from '@mui/material';
 import { Modal as BaseModal } from '@mui/base/Modal';
+import InputLabel from '@mui/material/InputLabel';
 
 export default function ModalProducts() {
   const [open, setOpen] = useState(false);
-  const [userType, setUserType] = useState('');
+  const [userType] = useState('');
   const [name, setName] = useState('');
   const [stock, setStock] = useState('');
   const [price, setPrice] = useState('');
   const [features, setFeatures] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [productTypeN, setProductTypeN] = useState('');
+
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleAddUser = () => {
-    console.log('Tipo de usuario:', userType);
+  
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+    const newSelectedFiles = [];
+  
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size <= 5 * 1024 * 1024) {
+        newSelectedFiles.push(file);
+      } else {
+        console.log(`El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`);
+      }
+    }
+  
+    setSelectedFiles(newSelectedFiles);
+  };
+
+  const handleAddProduct = async () => {
+
+    const priceDoubleValue = parseFloat(price).toFixed(2);
+    console.log('Nombre:', name);
+    console.log('Stock:', stock);
+    console.log('Detalles:', features);
+    console.log("ProductTypeN",productTypeN);
+    console.log('Imagenes:', selectedFiles);
+    console.log('Precio:', priceDoubleValue);
+    
+
+    if (name === '' || stock === '' || price === '' || features === '' || productTypeN === '') {
+      console.log('Todos los campos son obligatorios');
+      return;
+    }
+    console.log("UserType",userType);
+    console.log("ProductTypeN",productTypeN);
+
+    try {
+      const formData = new FormData();
+      const productData = {
+        name: name,
+        stock: parseInt(stock),
+        price: (priceDoubleValue).toString(), //Revisar
+        features: features,
+        category_id: parseInt(productTypeN),
+      };
+      formData.append('productData', new Blob([JSON.stringify(productData)], 
+      { type: 'application/json' }));
+
+      for (let i = 0; i < selectedFiles.length; i++) {
+        formData.append('files', selectedFiles[i]);
+      }
+      
+      const response = await fetch('http://localhost:8090/product/save', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: formData,
+      }
+      );
+    
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        console.log('Producto guardado exitosamente');
+      } else {
+        console.log('Error al guardar el producto');
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
     handleClose();
   };
 
   const getCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8090/categcries/listAll');
+      const response = await fetch('http://localhost:8090/categories/listAll');
 
       if (!response.ok) {
         throw new Error('Error al obtener las categorías');
       }
-      
-
       const categoriesData = await response.json();
       console.log('Categorías:', categoriesData);
+      console.log("Numero de Id de categorias", categoriesData[0].id);
       setCategories(categoriesData);
     } catch (error) {
       console.error(error);
-      // Manejar el error según tus necesidades
     }
   };
 
   useEffect(() => {
-    // Llamar a la función getCategories al cargar el componente
     getCategories();
   }, []);
 
   return (
-    <div>
-      <TriggerButton type="button" onClick={handleOpen}>
-        Agregar Producto
-      </TriggerButton>
-      <Modal
-        aria-labelledby="unstyled-modal-title"
-        aria-describedby="unstyled-modal-description"
-        open={open}
-        onClose={handleClose}
-        slots={{ backdrop: StyledBackdrop }}
-      >
-        <ModalContent sx={style}>
-          <h3 id="unstyled-modal-title" className="modal-title">
-            Crear Producto
-          </h3>
-          <p id="unstyled-modal-description" className="modal-description">
-            Complete los datos del producto a crear:
-          </p>
+    <>
+      <div>
+        <TriggerButton type="button" onClick={handleOpen}>
+          Agregar Producto
+        </TriggerButton>
+        
+        <Modal
+          aria-labelledby="unstyled-modal-title"
+          aria-describedby="unstyled-modal-description"
+          open={open}
+          onClose={handleClose}
+          slots={{ backdrop: StyledBackdrop }}
+        >
+          <ModalContent sx={style}>
+            <h3 id="unstyled-modal-title" className="modal-title">
+              Crear Producto
+            </h3>
+            <p id="unstyled-modal-description" className="modal-description">
+              Complete los datos del producto a crear:
+            </p>
 
-          <form>
-            <TextField
-              label="Nombre"
-              variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              sx={{ marginBottom: '16px' }}
-              fullWidth
-            />
-            <TextField
-              label="Cantidad en Stock"
-              variant="outlined"
-              type="number"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
-              sx={{ marginBottom: '16px' }}
-              fullWidth
-            />
-            <TextField
-              label="Precio"
-              variant="outlined"
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              sx={{ marginBottom: '16px' }}
-              fullWidth
-            />
-            <TextField
-              label="Detalles"
-              variant="outlined"
-              type="text"
-              value={features}
-              onChange={(e) => setFeatures(e.target.value)}
-              sx={{ marginBottom: '16px' }}
-              fullWidth
-            />
-            <Select
-              label="Categoría"
-              variant="outlined"
-              value={userType}
-              onChange={(e) => setUserType(e.target.value)}
-              sx={{ marginBottom: '16px' }}
-              fullWidth
-            >
-              {categories.map((category) => (
-                <MenuItem key={category.id} value={category.name}>
-                  {category.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <form>
+              <TextField
+                label="Nombre"
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                sx={{ marginBottom: '16px' }}
+                fullWidth
+              />
+              <TextField
+                label="Cantidad en Stock"
+                variant="outlined"
+                type="number"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+                sx={{ marginBottom: '16px' }}
+                fullWidth
+              />
+              <TextField
+                label="Precio"
+                variant="outlined"
+                type="number"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                sx={{ marginBottom: '16px' }}
+                fullWidth
+              />
+              <TextField
+                label="Detalles"
+                variant="outlined"
+                type="text"
+                value={features}
+                onChange={(e) => setFeatures(e.target.value)}
+                sx={{ marginBottom: '16px' }}
+                fullWidth
+              />
+              <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                label="Categoría"
+                variant="outlined"
+                value={productTypeN}
+                onChange={(e) => setProductTypeN(e.target.value)}
+                sx={{ marginBottom: '16px' }}
+                fullWidth
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddUser}
-              fullWidth
-            >
-              Agregar Producto
-            </Button>
-          </form>
-        </ModalContent>
-      </Modal>
-    </div>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                sx={{ marginBottom: '16px' }}
+              />
+
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddProduct}
+                fullWidth
+              >
+                Agregar Producto
+              </Button>
+            </form>
+          </ModalContent>
+        </Modal>
+      </div>
+    </>
   );
 }
 

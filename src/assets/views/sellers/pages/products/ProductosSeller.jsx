@@ -5,6 +5,10 @@ import ModalProducts from "../../../../components/seller/Productos/ModalProducts
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
 import axios from "axios";
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import CloseIcon from '@mui/icons-material/Close';
+import Alert from '@mui/material/Alert';
 
 const ProductosSeller = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -12,21 +16,23 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
       mode: darkMode ? "dark" : "light",
     },
   });
-  //http:localhost:8090/product/listAll
 
   const [products, setProducts] = useState(null);
+  const [openA, setOpenA] = useState(false);
+  const [missingData, setMissingData] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const respuesta = await axios.get('http://localhost:8090/product/listAll');
-
+        setProducts(respuesta.data);
         console.log(respuesta.data);
       } catch (error) {
         console.log(error);
       }
     }
-  });
+    fetchData();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -47,6 +53,25 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
             <Grid container>
               <Grid item xs={6}>
                 <h1> Productos</h1>
+                <Collapse>
+                  <Alert severity='warning'
+                    action={
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={() => {
+                          setOpenA(false);
+                        }}
+                      >
+                        <CloseIcon fontSize="inherit" />
+                      </IconButton>
+                    }
+                    sx={{ mb: 2 }}
+                  >
+                    Todos los Campos Son Obligatorios
+                  </Alert>
+                </Collapse>
               </Grid>
               <Grid item xs={6} sx={{display: "flex",justifyContent: "flex-end",alignItems: "center",}}>
                 <ModalProducts/>

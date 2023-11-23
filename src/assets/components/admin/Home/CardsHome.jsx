@@ -12,7 +12,65 @@ import Inventory2Icon from "@mui/icons-material/Inventory2";
 
 export default function CardsHome() {
   const [totalUsers, setTotalUsers] = useState(null);
+  const [totalProducts, setTotalProducts] = useState(null);
+  const [totalVentas, setTotalVentas] = useState(null);
+  const [totalEnvios, setTotalEnvios] = useState(null);
   const iconSize = 48;
+
+  // http://localhost:8090/order/saleAll
+  useEffect(() => {
+    const fetchTotalVentas = async () => {
+      try {
+        const response = await fetch("http://localhost:8090/order/saleAll", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Datos de la ventas:",data);
+          console.log(data.total);
+          setTotalEnvios(data.total);
+          console.log(data.vendidos);
+          setTotalVentas(data.vendidos);
+        } else {
+          
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchTotalVentas();
+  });
+
+  useEffect(() => {
+    const fetchTotalProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:8090/product/listAll", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTotalProducts(data.length);
+          
+        } else {
+          // Handle unsuccessful response
+        }
+      } catch (error) {
+        // Handle errors
+      }
+    };
+
+    fetchTotalProducts();
+  }, []);
 
   useEffect(() => {
     const fetchTotalUsers = async () => {
@@ -30,10 +88,10 @@ export default function CardsHome() {
           setTotalUsers(data);
           console.log(data);
         } else {
-          // Handle unsuccessful response
+          
         }
       } catch (error) {
-        // Handle errors
+       
       }
     };
 
@@ -42,7 +100,6 @@ export default function CardsHome() {
 
   const cardStyles = {
     borderRadius: 16,
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     overflow: "hidden",
   };
 
@@ -56,10 +113,12 @@ export default function CardsHome() {
     borderRadius: "50%",
   };
 
+
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple }}>
           <CardContent>
             <Box
               sx={{
@@ -81,7 +140,7 @@ export default function CardsHome() {
                   color: "white",
                 }}
               >
-                12501
+                {totalProducts}
               </Typography>
             </Box>
             <Typography
@@ -112,7 +171,7 @@ export default function CardsHome() {
                 component="div"
                 sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
               >
-                $150187
+                ${totalEnvios}
               </Typography>
               <IconButton color="primary" style={iconButtonStyles}>
                 <LocalAtmIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
@@ -132,7 +191,7 @@ export default function CardsHome() {
       </Grid>
 
       <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple }}>
           <CardContent>
             <Box
               sx={{
@@ -185,7 +244,7 @@ export default function CardsHome() {
                 component="div"
                 sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
               >
-                147
+                {totalVentas}
               </Typography>
               <IconButton color="primary" style={iconButtonStyles}>
                 <LocalShippingIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
