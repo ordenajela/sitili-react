@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CardsHome from "../../../../components/admin/Home/CardsHome";
+import BarAnimationHome from "../../../../components/admin/Home/BarAnimationhome";
 
 const Home = ({ darkMode, setDarkMode, userData }) => {
   const theme = createTheme({
@@ -26,6 +27,7 @@ const Home = ({ darkMode, setDarkMode, userData }) => {
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Hola Administrador!</h1>
             <CardsHome/>
+            <BarAnimationHome/>
           </Box>
         </Box>
       </Box>

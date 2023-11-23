@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { styled, Box, TextField, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material';
 import { Modal as BaseModal } from '@mui/base/Modal';
 import axios from 'axios';
+import { CircularProgress } from '@mui/material';
 
 export default function ModalUsers() {
   const [open, setOpen] = useState(false);
@@ -13,6 +14,7 @@ export default function ModalUsers() {
   const [lastName, setLastName] = useState('');
   const [userType, setUserType] = useState('');
   const [alert, setAlert] = useState({ open: false, type: 'success', message: '' });
+  const [loading, setLoading] = useState(false);
 
   const userTypeMap = {
     cliente: 4,
@@ -26,6 +28,7 @@ export default function ModalUsers() {
 
   const handleAddUser = async () => {
     const userTypeValue = userTypeMap[userType];
+    setLoading(true);
 
     try {
       const response = await axios.post('http://localhost:8090/registerNewUser', {
@@ -48,10 +51,15 @@ export default function ModalUsers() {
     } catch (error) {
       console.error('Error durante el registro de usuario:', error);
       setAlert({ open: true, type: 'error', message: 'Error durante el registro de usuario.' });
+    }finally{
+      setLoading(false);
     }
   };
 
   const handleClose = () => {
+    if (!loading){
+
+    
     setOpen(false);
     // Restablece los campos del formulario después de cerrar el modal
     setEmail('');
@@ -59,6 +67,7 @@ export default function ModalUsers() {
     setName('');
     setLastName('');
     setUserType('');
+    }
   };
 
   return (
@@ -75,8 +84,8 @@ export default function ModalUsers() {
         </Snackbar>
       )}
 
-      <TriggerButton type="button" onClick={() => setOpen(true)}>
-        Agregar Usuario
+      <TriggerButton type="button" onClick={() => setOpen(true)} disabled={loading}>
+        {loading ? <CircularProgress size={36} color="inherit" /> : 'Agregar Usuario'}
       </TriggerButton>
       <Modal
         aria-labelledby="unstyled-modal-title"
@@ -146,8 +155,9 @@ export default function ModalUsers() {
               color="primary"
               onClick={handleAddUser}
               fullWidth
+              disabled={loading}
             >
-              Agregar Usuario
+              {loading ? <CircularProgress size={28} color="inherit" /> : 'Agregar Usuario'}
             </Button>
           </form>
         </ModalContent>
