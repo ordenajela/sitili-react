@@ -26,28 +26,29 @@ const PendingTable = () => {
     message: "",
   });
 
-  const fetchUsers = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:8090/aceptSeller/listSellersNa",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await res.json();
-      setUsers(data);
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  
 
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch(
+          "http://localhost:8090/aceptSeller/listSellersNa",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await res.json();
+        setUsers(data);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
     fetchUsers();
-  }, []);
+  }, [users]);
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -71,7 +72,7 @@ const PendingTable = () => {
       });
 
       if (response.ok) {
-        fetchUsers();
+       
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -110,16 +111,14 @@ const PendingTable = () => {
       {alert.open && (
         <Alert
           severity={alert.type}
-          onClose={handleAlertClose}
+          onClose={() => setAlert({ ...alert, open: false })}
           style={{
             margin: "10px 0",
             borderRadius: "8px",
             boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <AlertTitle>
-            {alert.type === "success" ? "Éxito" : "Error"}
-          </AlertTitle>
+          <AlertTitle>{alert.type === "success" ? "Éxito" : "Error"}</AlertTitle>
           {alert.message}
         </Alert>
       )}
