@@ -4,6 +4,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import PrimarySearchAppBar from '../../../components/navbar2';
 import ProductImage from '../../../images/template-product.png';
 import StickyFooter from '../../../components/footer';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+
 
 const CartItem = ({ item }) => {
     const [quantity, setQuantity] = React.useState(1);
@@ -50,7 +52,24 @@ const CartItem = ({ item }) => {
     );
 };
 
-const ShopingCar = () => {
+const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
+    const theme = createTheme({
+        palette: {
+            mode: darkMode ? "dark" : "light",
+        },
+    });
+
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    }));
+
     const cartItems = [
         {
             id: 1,
@@ -68,34 +87,41 @@ const ShopingCar = () => {
     ];
 
     return (
-        <div>
-            <PrimarySearchAppBar />
-            <Box sx={{ padding: 4 }}>
-                <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                        <Typography variant="h4" gutterBottom>
-                            Carrito de Compras
-                        </Typography>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableBody>
-                                    {cartItems.map((item) => (
-                                        <CartItem key={item.id} item={item} />
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <Divider />
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                            <Button variant="contained" color="primary" size="large">
-                                Comprar ahora
-                            </Button>
-                        </Box>
+        <ThemeProvider theme={theme}>
+
+            <div>
+                <PrimarySearchAppBar darkMode={darkMode} setDarkMode={setDarkMode} />
+                <Box sx={{
+                    flexGrow: 1,
+                    padding: 4,
+                    backgroundColor: darkMode ? '#1A2027' : '#fff',
+                }}>
+                    <Grid container spacing={4}>
+                        <Grid item xs={12}>
+                            <Typography variant="h4" gutterBottom>
+                                Carrito de Compras
+                            </Typography>
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableBody>
+                                        {cartItems.map((item) => (
+                                            <CartItem key={item.id} item={item} />
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <Divider />
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
+                                <Button variant="contained" color="primary" size="large">
+                                    Comprar ahora
+                                </Button>
+                            </Box>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
-            <StickyFooter />
-        </div>
+                </Box>
+                <StickyFooter />
+            </div>
+        </ThemeProvider>
     );
 };
 
