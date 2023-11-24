@@ -16,6 +16,7 @@ import logoImage from '../../assets/images/Logo-Horizintal-Blanco.png';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
+import { useNavigate } from 'react-router-dom';
 import UserShoppingCar from '../views/users/pages/user-shopping-car';
 
 const Search = styled('div')(({ theme }) => ({
@@ -60,7 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
-
+    const navigate = useNavigate();
+    
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
     };
@@ -80,6 +82,9 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+        localStorage.removeItem("token");
+        localStorage.removeItem("rol");
+        navigate('/login');
         handleMobileMenuClose();
     };
 
@@ -105,10 +110,10 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Link to="/perfil" style={{textDecoration: 'none', color:'black'}}>Mi perfil</Link>
+                <Link to="/#" style={{ textDecoration: 'none', color: 'black' }}>Mi perfil</Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Link to="#" style={{textDecoration: 'none', color:'black'}}>Cerrar sesión </Link>
+                <Link to="/login" style={{ textDecoration: 'none', color: 'black' }}>Cerrar sesión </Link>
             </MenuItem>
         </Menu>
     );
@@ -135,7 +140,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     <Badge badgeContent={4} color="error">
                         <ShoppingCartIcon />
                     </Badge>
-                    <Link to="../carrito"></Link>
+                    <Link to="user/carrito"></Link>
                 </IconButton>
                 <p>Carrito</p>
             </MenuItem>
@@ -148,7 +153,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     <Badge badgeContent={17} color="error">
                         <FavoriteIcon />
                     </Badge>
-                    <Link to="../favoritos"></Link>
+                    <Link to="user/favoritos"></Link>
                 </IconButton>
                 <p>Favoritos</p>
             </MenuItem>
@@ -191,7 +196,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     >
                         <MenuIcon />
                     </IconButton> */}
-                    <Link to="/">
+                    <Link to="/user/home">
                         <img src={logoImage} alt="Logo" style={{ height: '50px', marginTop: '3%' }} />
                     </Link>
                     <Search style={{ marginLeft: '5%' }}>
@@ -205,14 +210,14 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <Link to="../favoritos" style={{textDecoration: 'none', color:'white'}}>
+                        <Link to="../favoritos" style={{ textDecoration: 'none', color: 'white' }}>
                             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                                 <Badge badgeContent={4} color="error">
                                     <FavoriteIcon />
                                 </Badge>
                             </IconButton>
                         </Link>
-                        <Link to="../carrito" style={{textDecoration: 'none', color:'white'}}>
+                        <Link to="../carrito" style={{ textDecoration: 'none', color: 'white' }}>
                             <IconButton
                                 size="large"
                                 aria-label="show 17 new notifications"

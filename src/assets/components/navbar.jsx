@@ -20,8 +20,8 @@ import login from '../forms/login';
 import registro from '../forms/registro';
 
 const Search = styled('div')(({ theme }) => ({
-    display: 'flex', // Centra horizontalmente los elementos dentro de 'Search'
-    alignItems: 'center', // Centra verticalmente los elementos dentro de 'Search'
+    display: 'flex', 
+    alignItems: 'center', 
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),

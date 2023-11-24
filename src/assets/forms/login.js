@@ -53,7 +53,7 @@ function Login() {
           navigate('/dashboard/home');
         } else if (response.data.user.role[0].roleName === "User") {
           console.log("Eres User");
-          navigate('/productos');
+          navigate('/user/home');
         } else if (response.data.user.role[0].roleName === "Seller") {
           if (response.data.user.status === true) {
             console.log("Eres Vendedor");
