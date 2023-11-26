@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box, Grid } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
@@ -12,7 +12,6 @@ const UserAd = ({ darkMode, setDarkMode }) => {
       mode: darkMode ? "dark" : "light",
     },
   });
-
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -34,10 +33,10 @@ const UserAd = ({ darkMode, setDarkMode }) => {
                 <h1> Lista de Usuarios</h1>
               </Grid>
               <Grid item xs={6} sx={{display: "flex",justifyContent: "flex-end",alignItems: "center",}}>
-                <ModalUsers />
+                <ModalUsers  />
               </Grid>
             </Grid>
-            <Grid xs={{}}>
+            <Grid xs={12}>
               <UsersTable />
             </Grid>
           </Box>

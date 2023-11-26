@@ -44,20 +44,19 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
         </Box>
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavSeller />
-          <Box sx={{ display: "flex", flex: 1, flexDirection: "column", marginLeft: 1 }}>
+          <Box sx={{ display: "flex", flex: 1, flexDirection: "column"}}>
             <h1>Perfil Seller</h1>
 
             
             <Box sx={{ width: "100%" }}>
               <Grid
                 container
-                rowSpacing={0}
                 columnSpacing={{ xs: 1, sm: 1, md: 1 }}
               >
-                <Grid item xs={4}>
+                <Grid xs={12} md={4}>
                   <CardSellerProfile/>
                 </Grid>
-                <Grid item xs={8}>
+                <Grid xs={12} md={8}>
                   <Item>
                     <Grid
                       container

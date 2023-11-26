@@ -26,29 +26,26 @@ const PendingTable = () => {
     message: "",
   });
 
-  
+  const fetchUsers = async () => {
+    try {const res = await fetch(
+        "http://localhost:8090/aceptSeller/listSellersNa",{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await fetch(
-          "http://localhost:8090/aceptSeller/listSellersNa",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        const data = await res.json();
-        setUsers(data);
-      } catch (error) {
-        console.log("Error:", error);
-      }
-    };
     fetchUsers();
-  }, [users]);
+  }, []);
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -62,8 +59,8 @@ const PendingTable = () => {
 
   const toggleUserStatus = async (user) => {
     try {
-      const response = await fetch("http://localhost:8090/aceptSeller/acept", {
-        method: "PUT",
+      const response = await fetch("http://localhost:8090/users/delete", {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -72,7 +69,8 @@ const PendingTable = () => {
       });
 
       if (response.ok) {
-       
+        fetchUsers();
+        console.log("Estado cambiado exitosamente.");
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -138,9 +136,6 @@ const PendingTable = () => {
                   Estado
                 </TableCell>
                 <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                  Contraseña
-                </TableCell>
-                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
                   Acciones
                 </TableCell>
               </TableRow>
@@ -192,9 +187,6 @@ const PendingTable = () => {
                       {user.status ? "Activo" : "Inactivo"}
                     </div>
                   </TableCell>
-                  <TableCell style={{ fontWeight: "bold", fontSize: "20px" }}>
-                    ******
-                  </TableCell>
                   <TableCell>
                     <Grid container spacing={2} alignItems="center">
                       <Grid item>
@@ -216,7 +208,7 @@ const PendingTable = () => {
                       <Grid item>
                         <Button
                           variant="contained"
-                          endIcon={<EditIcon />}
+                          startIcon={<EditIcon />}
                           sx={{ marginLeft: 2, width: "130px" }}
                           onClick={() => handleEditClick(user)}
                         >
@@ -236,7 +228,7 @@ const PendingTable = () => {
             <Grid item xs={12} sm={6} md={6}></Grid>
             <Grid item xs={12} sm={6} md={6}>
               <Typography variant="h3">
-                No hay usuarios pendientes por el momento. Vuelve más tarde :)
+                No hay usuarios pendientes por el momento. Vuelve más tarde :D
               </Typography>
             </Grid>
           </Grid>

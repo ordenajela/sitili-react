@@ -13,7 +13,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useNavigate } from 'react-router-dom';
-import CategoryIcon from '@mui/icons-material/Category';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
@@ -85,7 +84,6 @@ export function SidenavSeller() {
         <List>
           {[
             { text: 'Principal', icon: <DashboardIcon />, route: '/seller/home' },
-            { text: 'Categorias', icon: <CategoryIcon />, route: '/seller/category' },
             { text: 'Productos', icon: <Inventory2Icon />, route: '/seller/productos' },
             { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/seller/ingresos' },
             { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/seller/pedidos' },

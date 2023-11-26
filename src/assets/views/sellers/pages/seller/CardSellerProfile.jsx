@@ -27,8 +27,8 @@ export default function CardSellerProfile() {
       <CardMedia
         component="img"
         alt="vendedor sitili"
-        height="500"
-        width="50"
+        height="auto"
+        width="100%"
         image={sellerImage}
       />
       <CardContent>

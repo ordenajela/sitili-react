@@ -7,8 +7,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -89,6 +88,9 @@ function Registro() {
   const [showAlert, setShowAlert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [datosError, setDatosError] = useState(false);
+  const [correoError, setCorreoError] = useState(false);
+  const [errorType, setErrorType] = useState('');
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -97,17 +99,34 @@ function Registro() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-
-
+  
     if (password !== confirmPassword) {
+      setErrorType('passwordMismatch');
       setPasswordError(true);
       setIsLoading(false);
       return;
     }
-
+  
     setPasswordError(false);
     const postApiUrl = 'http://localhost:8090/registerNewUser';
-
+  
+    if (email === '' || password === '' || first_name === '' || last_name === '') {
+      setErrorType('emptyFields');
+      setDatosError(true);
+      setIsLoading(false);
+      return;
+    }
+  
+    if (email.indexOf('@') === -1) {
+      setErrorType('invalidEmail');
+      setCorreoError(true);
+      setIsLoading(false);
+      return;
+    }
+  
+    setDatosError(false);
+    setCorreoError(false);
+  
     const userData = {
       email: email,
       password: password,
@@ -115,19 +134,19 @@ function Registro() {
       last_name: last_name,
       role: userTypeMap[userType],
     };
-
+  
     try {
       const postResponse = await axios.post(postApiUrl, userData, {
         headers: { 'Content-Type': 'application/json' },
       });
-
+  
       if (postResponse.status === 200) {
         console.log('Usuario creado exitosamente');
         console.log(postResponse);
-
+  
         const authToken = postResponse.data.token;
         localStorage.setItem('token', authToken);
-
+  
         if (userType === 'cliente') {
           navigate('/user/home');
         } else if (userType === 'vendedor') {
@@ -135,17 +154,20 @@ function Registro() {
           setShowModal(true);
         }
       } else {
-        console.log('Error en la solicitud POST');
+        setErrorType('requestError');
       }
     } catch (error) {
+      setErrorType('requestError');
       console.log('Error en la solicitud:', error);
     } finally {
       setIsLoading(false);
     }
   };
-
+  
   return (
     <>
+      
+
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}
@@ -154,7 +176,7 @@ function Registro() {
       >
         <ModalContent sx={style}>
           <Typography id="modal-title" variant="h6" component="h2">
-            Estas a un paso de ser vendedor SITILI..
+            Estás a un paso de ser vendedor de SITILI...
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
             Un administrador deberá aprobar tu solicitud para que puedas comenzar a vender.
@@ -165,7 +187,7 @@ function Registro() {
 
       <Snackbar
         open={showAlert}
-        autoHideDuration={4000}
+        autoHideDuration={3000}
         onClose={() => setShowAlert(false)}
       >
         <Alert severity="error" onClose={() => setShowAlert(false)}>
@@ -185,8 +207,9 @@ function Registro() {
       >
         <Card
           sx={{
-            bgcolor: '#E3DDE8',
-            width: '40%',
+            bgcolor: '#FFFFFF',
+            width: { xs: '90%', sm: '60%', md: '40%' },
+            borderRadius: '10%',
           }}
         >
           <CardContent>
@@ -201,11 +224,9 @@ function Registro() {
                     alignItems: 'center',
                   }}
                 >
-                  <Link to="/">
-                    <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
-                  </Link>
+                  <img src={logoImage} alt="Logo" style={{ borderRadius: '20%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
 
-                  <Typography component="h1" variant="h5" style={{ padding: '5%' }}>
+                  <Typography component="h1" variant="h5" style={{ padding: '5%', color: '#512D6D' }}>
                     Crear Cuenta
                   </Typography>
 
@@ -237,6 +258,8 @@ function Registro() {
                           autoFocus
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
+                          error={correoError}
+                          helperText={correoError ? 'Por favor, ingresa un correo electrónico válido.' : ''}
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -284,28 +307,43 @@ function Registro() {
                         />
                       </Grid>
                     </Grid>
+                    {datosError && (
+                      <Alert severity="error" onClose={() => setDatosError(false)}>
+                        Por favor, completa todos los campos.
+                      </Alert>
+                    )}
+                    {correoError && (
+                      <Alert severity="error" onClose={() => setCorreoError(false)}>
+                        Por favor, ingresa un correo electrónico válido.
+                      </Alert>
+                    )}
+                    {passwordError && (
+                      <Alert severity="error" onClose={() => setPasswordError(false)}>
+                        Las contraseñas no coinciden. Por favor, verifica.
+                      </Alert>
+                    )}
                     <Button
                       type="submit"
                       fullWidth
                       variant="contained"
                       color="primary"
-                      sx={{ mt: 3, mb: 2 }}
+                      sx={{ mt: 3, mb: 2, backgroundColor: '#512D6D' }}
                       disabled={isLoading}
                     >
                       {isLoading ? 'Cargando...' : 'Crear Cuenta'}
                     </Button>
                     <Grid container sx={{ mb: 2 }}>
-                      <Grid item xs>
-                        <Link href="#" variant="body2">
-                          Olvidaste tu contraseña?
-                        </Link>
-                      </Grid>
-                      <Grid item xs>
-                        <Link to="/login" variant="body2">
-                          {"Ya tienes cuenta? Inicia aquí"}
-                        </Link>
-                      </Grid>
+                    <Grid item xs>
+                      <Link href="#" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
+                        Olvidaste tu contraseña?
+                      </Link>
                     </Grid>
+                    <Grid item xs>
+                      <Link to="/login" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
+                        {"Iniciar Sesión"}
+                      </Link>
+                    </Grid>
+                  </Grid>
                   </form>
                 </Box>
               </Container>
