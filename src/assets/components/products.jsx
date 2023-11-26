@@ -49,7 +49,7 @@ const Products = () => {
 
 
 
-    const itemsPerPage = 6;
+    const itemsPerPage = 8;
     const [page, setPage] = React.useState(1);
 
     const handleChangePage = (event, newPage) => {
