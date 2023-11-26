@@ -18,6 +18,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import { useNavigate } from 'react-router-dom';
 import UserShoppingCar from '../views/users/pages/user-shopping-car';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
 const Search = styled('div')(({ theme }) => ({
     display: 'flex', // Centra horizontalmente los elementos dentro de 'Search'
@@ -62,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
     const navigate = useNavigate();
-    
+
     const toggleDarkMode = () => {
         setDarkMode(!darkMode);
     };
@@ -79,6 +82,15 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
     };
+
+    const navigateProfile = () => {
+        navigate('/user/perfil');
+    }
+    const cerrarSesion = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("rol");
+        navigate('/login');
+    }
 
     const handleMenuClose = () => {
         setAnchorEl(null);
@@ -110,7 +122,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Link to="/#" style={{ textDecoration: 'none', color: 'black' }}>Mi perfil</Link>
+                <Link to="/user/perfil" style={{ textDecoration: 'none', color: 'black' }}>Mi perfil</Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
                 <Link to="/login" style={{ textDecoration: 'none', color: 'black' }}>Cerrar sesión </Link>
@@ -233,20 +245,23 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                             onClick={toggleDarkMode}
                             color="inherit"
                         >
-                            <Badge color="error">
-                                <InvertColorsIcon />
-                            </Badge>
+                            {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
                         </IconButton>
+
                         <IconButton
                             size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
+                            onClick={navigateProfile}
                             color="inherit"
                         >
                             <AccountCircle />
+                        </IconButton>
+
+                        <IconButton
+                            size="large"
+                            onClick={cerrarSesion}
+                            color="inherit"
+                        >
+                            <LogoutIcon />
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

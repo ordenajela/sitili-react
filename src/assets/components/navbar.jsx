@@ -18,6 +18,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import login from '../forms/login';
 import registro from '../forms/registro';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
 const Search = styled('div')(({ theme }) => ({
     display: 'flex', 
@@ -185,9 +188,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                             onClick={toggleDarkMode}
                             color="inherit"
                         >
-                            <Badge color="error">
-                                <InvertColorsIcon />
-                            </Badge>
+                            {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
                         </IconButton>
                         <IconButton
                             size="large"
