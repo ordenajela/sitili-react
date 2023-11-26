@@ -6,7 +6,7 @@ import { Modal as BaseModal } from '@mui/base/Modal';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 
-export default function ModalUsers() {
+export default function ModalUsers({handleUserAdded}) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,6 +43,7 @@ export default function ModalUsers() {
         
         console.log('Usuario registrado exitosamente:', response.data);
         setAlert({ open: true, type: 'success', message: 'Usuario registrado exitosamente.' });
+        handleUserAdded(response.data);
         handleClose();
       } else {
         console.error('Error al registrar usuario:', response.statusText);
@@ -61,7 +62,6 @@ export default function ModalUsers() {
 
     
     setOpen(false);
-    // Restablece los campos del formulario después de cerrar el modal
     setEmail('');
     setPassword('');
     setName('');

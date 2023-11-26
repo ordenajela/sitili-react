@@ -1,91 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {styled,Box,TextField,Select,MenuItem,Button,} from '@mui/material';
-import { Modal as BaseModal } from '@mui/base/Modal';
-import InputLabel from '@mui/material/InputLabel';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import clsx from "clsx";
+import {styled,Box,TextField,Select, MenuItem,Button,} from "@mui/material";
+import { Modal as BaseModal } from "@mui/base/Modal";
+import InputLabel from "@mui/material/InputLabel";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+
 
 export default function ModalProducts() {
   const [open, setOpen] = useState(false);
-  const [userType] = useState('');
-  const [name, setName] = useState('');
-  const [stock, setStock] = useState('');
-  const [price, setPrice] = useState('');
-  const [features, setFeatures] = useState('');
+  const [userType] = useState("");
+  const [name, setName] = useState("");
+  const [stock, setStock] = useState("");
+  const [price, setPrice] = useState("");
+  const [features, setFeatures] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [productTypeN, setProductTypeN] = useState('');
+  const [productTypeN, setProductTypeN] = useState("");
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  
   const handleFileChange = (event) => {
     const files = event.target.files;
     const newSelectedFiles = [];
-  
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (file.size <= 5 * 1024 * 1024) {
         newSelectedFiles.push(file);
       } else {
-        console.log(`El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`);
+        console.log(
+          `El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`
+        );
       }
     }
-  
+
     setSelectedFiles(newSelectedFiles);
   };
 
   const handleAddProduct = async () => {
-
     const priceDoubleValue = parseFloat(price).toFixed(2);
-    console.log('Nombre:', name);
-    console.log('Stock:', stock);
-    console.log('Detalles:', features);
-    console.log("ProductTypeN",productTypeN);
-    console.log('Imagenes:', selectedFiles);
-    console.log('Precio:', priceDoubleValue);
-    
+    console.log("Nombre:", name);
+    console.log("Stock:", stock);
+    console.log("Detalles:", features);
+    console.log("ProductTypeN", productTypeN);
+    console.log("Imagenes:", selectedFiles);
+    console.log("Precio:", priceDoubleValue);
 
-    if (name === '' || stock === '' || price === '' || features === '' || productTypeN === '') {
-      console.log('Todos los campos son obligatorios');
+    if (
+      name === "" ||
+      stock === "" ||
+      price === "" ||
+      features === "" ||
+      productTypeN === ""
+    ) {
+      console.log("Todos los campos son obligatorios");
       return;
     }
-    console.log("UserType",userType);
-    console.log("ProductTypeN",productTypeN);
+    console.log("UserType", userType);
+    console.log("ProductTypeN", productTypeN);
 
     try {
       const formData = new FormData();
       const productData = {
         name: name,
         stock: parseInt(stock),
-        price: (priceDoubleValue).toString(), //Revisar
+        price: priceDoubleValue.toString(), //Revisar
         features: features,
         category_id: parseInt(productTypeN),
       };
-      formData.append('productData', new Blob([JSON.stringify(productData)], 
-      { type: 'application/json' }));
+      formData.append(
+        "productData",
+        new Blob([JSON.stringify(productData)], { type: "application/json" })
+      );
 
       for (let i = 0; i < selectedFiles.length; i++) {
-        formData.append('files', selectedFiles[i]);
+        formData.append("files", selectedFiles[i]);
       }
-      
-      const response = await fetch('http://localhost:8090/product/save', {
-        method: 'POST',
+
+      const response = await fetch("http://localhost:8090/product/save", {
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: formData,
-      }
-      );
-    
+      });
+
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        console.log('Producto guardado exitosamente');
+        console.log("Producto guardado exitosamente");
       } else {
-        console.log('Error al guardar el producto');
+        console.log("Error al guardar el producto");
       }
     } catch (error) {
       console.error(error);
@@ -96,13 +115,13 @@ export default function ModalProducts() {
 
   const getCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8090/categories/listAll');
+      const response = await fetch("http://localhost:8090/categories/listAll");
 
       if (!response.ok) {
-        throw new Error('Error al obtener las categorías');
+        throw new Error("Error al obtener las categorías");
       }
       const categoriesData = await response.json();
-      console.log('Categorías:', categoriesData);
+      console.log("Categorías:", categoriesData);
       console.log("Numero de Id de categorias", categoriesData[0].id);
       setCategories(categoriesData);
     } catch (error) {
@@ -120,7 +139,7 @@ export default function ModalProducts() {
         <TriggerButton type="button" onClick={handleOpen}>
           Agregar Producto
         </TriggerButton>
-        
+
         <Modal
           aria-labelledby="unstyled-modal-title"
           aria-describedby="unstyled-modal-description"
@@ -142,7 +161,7 @@ export default function ModalProducts() {
                 variant="outlined"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                sx={{ marginBottom: '16px' }}
+                sx={{ marginBottom: "16px" }}
                 fullWidth
               />
               <TextField
@@ -151,7 +170,7 @@ export default function ModalProducts() {
                 type="number"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
-                sx={{ marginBottom: '16px' }}
+                sx={{ marginBottom: "16px" }}
                 fullWidth
               />
               <TextField
@@ -160,7 +179,7 @@ export default function ModalProducts() {
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                sx={{ marginBottom: '16px' }}
+                sx={{ marginBottom: "16px" }}
                 fullWidth
               />
               <TextField
@@ -169,7 +188,7 @@ export default function ModalProducts() {
                 type="text"
                 value={features}
                 onChange={(e) => setFeatures(e.target.value)}
-                sx={{ marginBottom: '16px' }}
+                sx={{ marginBottom: "16px" }}
                 fullWidth
               />
               <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
@@ -179,7 +198,7 @@ export default function ModalProducts() {
                 variant="outlined"
                 value={productTypeN}
                 onChange={(e) => setProductTypeN(e.target.value)}
-                sx={{ marginBottom: '16px' }}
+                sx={{ marginBottom: "16px" }}
                 fullWidth
               >
                 {categories.map((category) => (
@@ -189,19 +208,27 @@ export default function ModalProducts() {
                 ))}
               </Select>
 
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleFileChange}
-                sx={{ marginBottom: '16px' }}
-              />
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                sx={{ textTransform: "none", marginBottom: "16px" }}
+              >
+                Agregar Foto *Requerido
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                />
+              </Button>
 
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddProduct}
                 fullWidth
+                marginBottom="16px"
               >
                 Agregar Producto
               </Button>

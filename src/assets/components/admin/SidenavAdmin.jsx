@@ -48,7 +48,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -89,9 +88,6 @@ export function SidenavAdmin() {
             { text: 'Principal', icon: <DashboardIcon />, route: '/dashboard/home' },
             { text: 'Administradores', icon: <AdminPanelSettingsIcon />, route: '/dashboard/usersad' },
             { text: 'Usuarios', icon: <GroupIcon />, route: '/dashboard/users' },
-            { text: 'Productos', icon: <Inventory2Icon />, route: '/dashboard/productos' },
-            { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/dashboard/ingresos' },
-            { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/dashboard/pedidos' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton

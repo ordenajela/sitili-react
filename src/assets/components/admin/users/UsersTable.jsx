@@ -16,7 +16,7 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import TablePagination from "@mui/material/TablePagination";
 
-const UsersTable = ({ darkMode, setDarkMode }) => {
+const UsersTable = () => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,8 +26,7 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const res = await fetch("http://localhost:8090/users/list", {
+      try {const res = await fetch("http://localhost:8090/users/list", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -36,13 +35,14 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
         });
         const data = await res.json();
         setUsers(data);
+        console.log("Usuarios:", data);
       } catch (error) {
         console.log("Error:", error);
       }
     };
 
     fetchUsers();
-  }, [users]); 
+  }, []); 
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
@@ -131,9 +131,7 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
               <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
                 Estado
               </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Contraseña
-              </TableCell>
+
               <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
                 Acciones
               </TableCell>
@@ -189,9 +187,6 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
                     {user.status ? "Activo" : "Inactivo"}
                   </div>
                 </TableCell>
-                <TableCell style={{ fontWeight: "bold", fontSize: "20px" }}>
-                  ******
-                </TableCell>
                 <TableCell>
                   <Grid container spacing={2} alignItems="center">
                     <Grid item>
@@ -213,7 +208,7 @@ const UsersTable = ({ darkMode, setDarkMode }) => {
                     <Grid item>
                       <Button
                         variant="contained"
-                        endIcon={<EditIcon />}
+                        startIcon={<EditIcon />}
                         sx={{ marginLeft: 2, width: "130px" }}
                         onClick={() => handleEditClick(user)}
                       >

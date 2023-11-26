@@ -23,7 +23,6 @@ const UserAdmin = ({ darkMode, setDarkMode }) => {
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Usuarios Pendientes</h1>
             <PendingTable/>
-            {/* Agrega el contenido de la página aquí */}
           </Box>
         </Box>
       </Box>

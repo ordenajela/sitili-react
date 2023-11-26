@@ -15,21 +15,34 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
-
 const defaultTheme = createTheme();
 
 function Login() {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
+  const [datosError, setDatosError] = useState(false);
+  const [correoError, setCorreoError] = useState(false);
+  const [errorType, setErrorType] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     localStorage.removeItem("token");
     localStorage.removeItem("rol");
-
+    
     try {
+      if (data.get('email') === '' || data.get('password') === '') {
+        setErrorType('emptyFields');
+        setDatosError(true);
+        return;
+      }
+
+      if (data.get('email').indexOf('@') === -1) {
+        setErrorType('invalidEmail');
+        setCorreoError(true);
+        return;
+      }
       const response = await axios.post('http://localhost:8090/authenticate', {
         email: data.get('email'),
         password: data.get('password'),
@@ -59,7 +72,7 @@ function Login() {
             console.log("Eres Vendedor");
             console.log("Vista de Vendedor");
             navigate('/seller/home');
-          }else if (response.data.user.status === false) {
+          } else if (response.data.user.status === false) {
             console.log("Eres Vendedor");
             console.log("Vista de Vendedor");
             setShowAlert(true);
@@ -68,11 +81,9 @@ function Login() {
           console.log("Eres Root");
         }
       } else {
-        console.log(response.data);
         setLoginError(true);
       }
     } catch (error) {
-      console.error('Error en la solicitud de inicio de sesión:', error);
       setLoginError(true);
     }
   };
@@ -80,14 +91,16 @@ function Login() {
   return (
     <>
     <Snackbar
-  open={showAlert}
-  autoHideDuration={6000}
-  onClose={() => setShowAlert(false)}
->
-  <Alert severity="error" onClose={() => setShowAlert(false)}>
-    Tu estado de vendedor está inactivo. Contacta al administrador.
-  </Alert>
-</Snackbar>
+      open={showAlert}
+      autoHideDuration={3000}
+      onClose={() => setShowAlert(false)}
+    >
+    <Alert severity="error" onClose={() => setShowAlert(false)} sx={{ borderRadius: '8px', border: '1px solid #DAE2ED', boxShadow: '0px 4px 12px rgba(0,0,0, 0.20)', padding: '1rem', color: '#434D5B', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, textAlign: 'start', position: 'relative' }}>
+          {errorType === 'emptyFields' && 'Por favor, completa todos los campos.'}
+          {errorType === 'invalidEmail' && 'Por favor, ingresa un correo electrónico válido.'}
+          {errorType === 'requestError' && 'Error en la solicitud. Inténtalo de nuevo más tarde.'}
+        </Alert>
+    </Snackbar>
 
     <Box
       sx={{
@@ -101,8 +114,9 @@ function Login() {
     >
       <Card
         sx={{
-          bgcolor: '#E3DDE8',
-          width: '40%',
+          bgcolor: '#FFFFFF',
+          width: { xs: '90%', sm: '60%', md: '40%' },
+          borderRadius: '10%',
         }}
       >
         <CardContent>
@@ -118,11 +132,11 @@ function Login() {
                   alignItems: 'center',
                 }}
               >
-                <Link to="/">
-                  <img src={logoImage} alt="Logo" style={{ borderRadius: '50%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
-                </Link>
-
-                <Typography component="h1" variant="h5" style={{paddingTop: '5%'}}>
+                <img src={logoImage} alt="Logo" style={{ borderRadius: '20%', maxWidth: '40%', margin: '0 auto', display: 'block' }} />
+                
+                <Typography component="h1" variant="h5" style={{
+                  color: '#512D6D',
+                  paddingTop: '5%'}}>
                   Iniciar Sesión
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -135,6 +149,7 @@ function Login() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   />
                   <TextField
                     margin="normal"
@@ -151,24 +166,34 @@ function Login() {
                       Correo o contraseña incorrectos, intenta de nuevo.
                     </Typography>
                   )}
+                  {datosError && (
+                    <Typography variant="body2" color="error">
+                      Por favor, completa todos los campos.
+                    </Typography>
+                  )}
+                  {correoError && (
+                    <Typography variant="body2" color="error">
+                      Por favor, ingresa un correo electrónico válido.
+                    </Typography>
+                  )}
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="success"
-                    sx={{ mt: 3, mb: 2 }}
+                    color="primary"
+                    sx={{ mt: 3, mb: 3, color: '#FFFFF', backgroundColor: '#512D6D' }}
                   >
                     Ingresar
                   </Button>
-                  <Grid container>
-                    <Grid item xs>
-                      <Link href="#" variant="body2">
+                  <Grid container justifyContent="center" alignItems="center">
+                    <Grid item xs={12} md={6} >
+                      <Link href="#" variant="body2" style={{ textAlign: 'center' }} >
                         {"Olvidaste tu contraseña?"}
                       </Link>
                     </Grid>
-                    <Grid item>
-                      <Link to="/registro" variant="body2">
-                        {"No tienes cuenta? Regístrate aquí"}
+                    <Grid item xs={12} md={6}>
+                      <Link to="/registro" variant="body2" style={{ textAlign: 'center' }} >
+                        {"Regístrate aquí"}
                       </Link>
                     </Grid>
                   </Grid>
