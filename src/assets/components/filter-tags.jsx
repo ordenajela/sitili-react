@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Slider from '@mui/material/Slider';
+
 
 
 export default function FilterTags() {

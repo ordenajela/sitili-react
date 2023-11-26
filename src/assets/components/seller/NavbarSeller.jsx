@@ -13,8 +13,12 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import InvertColorsIcon from '@mui/icons-material/InvertColors';
 import logoImage from '../../images/Logo-Horizintal-Blanco.png';
-import { Link, Navigate  } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+
 
 const StyledTypography = styled(Typography)({
   flex: 1, 
@@ -23,18 +27,17 @@ const StyledTypography = styled(Typography)({
   marginLeft: 'auto',
 });
 
-
-
 const StyledLink = styled(Link)({
   textDecoration: 'none', 
   color: 'inherit', 
 });
 
 export default function NavbarSeller({ darkMode, setDarkMode }) {
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-      };
-      const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
    
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -47,14 +50,20 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
   };
 
   const handleMobileMenuClose = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("rol");
-    navigate('/login');
     setMobileMoreAnchorEl(null);
   };
 
+  const navigateProfile = () => {
+    navigate('/seller/perfil');
+  }
+  const cerrarSesion = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
+    navigate('/login');
+  }
+
   const handleMenuClose = () => {
-    setAnchorEl(null);
+    
     handleMobileMenuClose();
   };
 
@@ -89,6 +98,7 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
+    
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
@@ -105,37 +115,39 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
       onClose={handleMobileMenuClose}
     >
       
-      <MenuItem>
+      <MenuItem onClick={toggleDarkMode} >
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+             {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
+        </IconButton>
+        <p>Modo de App</p>
+      </MenuItem>
+      <MenuItem onClick={navigateProfile}>
+        <IconButton
+          size="large"
+          color="inherit"
+        >
             <InvertColorsIcon />
-          </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Mi Perfil</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem onClick={cerrarSesion}>
         <IconButton
           size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+            <InvertColorsIcon />
         </IconButton>
-        <p>Profile</p>
+        <p>Cerrar Sesión</p>
       </MenuItem>
+      
     </Menu>
   );
 
   return (
     <Box sx={{ flexGrow: 1,
-      
-      
     }}>
       <AppBar position="static">
         <Toolbar>
@@ -152,7 +164,7 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block',  } }}
+            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             SITILI
           </StyledTypography>
@@ -166,21 +178,25 @@ export default function NavbarSeller({ darkMode, setDarkMode }) {
               onClick={toggleDarkMode}
               color="inherit"
             >
-              <Badge  color="error">
-                <InvertColorsIcon />
-              </Badge>
+                 {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
             </IconButton>
+
             <IconButton
               size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={navigateProfile}
               color="inherit"
-            >
-              <AccountCircle />
+            >  
+                <AccountCircle />
             </IconButton>
+
+            <IconButton
+              size="large"
+              onClick={cerrarSesion}
+              color="inherit"
+            >  
+                <LogoutIcon />
+            </IconButton>
+            
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton

@@ -3,6 +3,7 @@ import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import { Box, Grid } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import GraficaPastelAdmin from "../../../../components/admin/products/GraficaPastelAdmin";
 
 const Products = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -36,7 +37,7 @@ const Products = ({ darkMode, setDarkMode }) => {
               </Grid>
             </Grid>
             <Grid xs={{}}>
-              
+              <GraficaPastelAdmin/>
             </Grid>
           </Box>
         </Box>

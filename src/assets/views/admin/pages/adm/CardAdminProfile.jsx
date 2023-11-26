@@ -24,9 +24,9 @@ export default function CardAdminProfile() {
     <Card sx={{ maxWidth: 450 }}>
       <CardMedia
         component="img"
-        alt="green iguana"
-        height="500"
-        width="50"
+        alt="Sitili"
+        height="auto"
+        width="100%"
         image={adminImage}
       />
       <CardContent>

@@ -185,9 +185,8 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                             onClick={toggleDarkMode}
                             color="inherit"
                         >
-                            <Badge color="error">
+
                                 <InvertColorsIcon />
-                            </Badge>
                         </IconButton>
                         <IconButton
                             size="large"
