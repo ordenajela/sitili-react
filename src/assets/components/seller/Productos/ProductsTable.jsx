@@ -10,7 +10,6 @@ import TablePagination from "@mui/material/TablePagination";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Rating from "@mui/material/Rating";
-import ModalPictures from "./ModalPictures";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,6 +17,36 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+
+const StyledDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialog-paper": {
+    width: "30%",
+  },
+  "& .MuiDialogTitle-root": {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
+
+const CloseButton = styled(IconButton)(({ theme }) => ({
+  position: "absolute",
+  right: theme.spacing(1),
+  top: theme.spacing(1),
+  color: theme.palette.grey[500],
+}));
 
 const ProductsTable = () => {
   const [products, setProducts] = useState([]);
@@ -146,9 +175,6 @@ const ProductsTable = () => {
                   Comentarios
                 </TableCell>
                 <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                  Fotos
-                </TableCell>
-                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
                   Estado
                 </TableCell>
                 <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
@@ -180,13 +206,6 @@ const ProductsTable = () => {
                     />
                   </TableCell>
                   <TableCell>{product.comentarios}</TableCell>
-                  <TableCell>
-                    <ModalPictures
-                      product={product}
-                      open={handleModalOpen}
-                      onClose={handleModalClose}
-                    />
-                  </TableCell>
                   <TableCell>
                     <div
                       style={{
@@ -246,16 +265,19 @@ const ProductsTable = () => {
         />
       </Paper>
 
-      <Dialog open={isEditModalOpen} onClose={handleEditModalClose}>
-        <DialogTitle>Editar Producto</DialogTitle>
+      <StyledDialog open={isEditModalOpen} onClose={handleEditModalClose}>
+        <DialogTitle sx={{ m: 0, p: 2 }}>Editar Producto</DialogTitle>
+        <CloseButton aria-label="close" onClick={handleEditModalClose}>
+          <CloseIcon />
+        </CloseButton>
         <DialogContent>
           <form>
             <div>
-              <label htmlFor="producto">Nombre:</label>
-              <input
-                type="text"
+              <TextField
+                sx={{ width: "100%", marginBottom: "10px" }}
                 id="producto"
-                name="producto"
+                label="Nombre"
+                variant="outlined"
                 value={editedProduct ? editedProduct.producto : ""}
                 onChange={(e) =>
                   setEditedProduct({
@@ -266,42 +288,76 @@ const ProductsTable = () => {
               />
             </div>
             <div>
-              <label htmlFor="precio">Precio:</label>
-              <input
-                type="number"
+              <TextField
+                sx={{ width: "100%", marginBottom: "10px" }}
                 id="precio"
-                name="precio"
+                label="Precio"
+                type="number"
+                variant="outlined"
                 value={editedProduct ? editedProduct.precio : ""}
                 onChange={(e) =>
                   setEditedProduct({ ...editedProduct, precio: e.target.value })
                 }
               />
             </div>
+            <div>
+              <TextField
+                sx={{ width: "100%", marginBottom: "10px" }}
+                id="cantidad"
+                label="Cantidad"
+                type="number"
+                variant="outlined"
+                value={editedProduct ? editedProduct.cantidad : ""}
+                onChange={(e) =>
+                  setEditedProduct({
+                    ...editedProduct,
+                    cantidad: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div>
+              <TextField
+                sx={{ width: "100%", marginBottom: "10px" }}
+                id="comentarios"
+                label="Comentarios"
+                multiline
+                rows={4}
+                variant="outlined"
+                value={editedProduct ? editedProduct.comentarios : ""}
+                onChange={(e) =>
+                  setEditedProduct({
+                    ...editedProduct,
+                    comentarios: e.target.value,
+                  })
+                }
+              />
+            </div>
 
             <div>
-              <label>Fotos:</label>
-              {editedProduct &&
-                editedProduct.imagenes &&
-                editedProduct.imagenes.map((foto, index) => (
-                  <img
-                    key={index}
-                    src={foto}
-                    alt={`Foto ${index + 1}`}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      marginRight: "10px",
-                    }}
-                  />
-                ))}
-            </div>
+        <label>Fotos:</label>
+        <ImageList sx={{ width: "100%", height: 200 }} cols={3} rowHeight={164}>
+          {editedProduct &&
+            editedProduct.imagenes &&
+            editedProduct.imagenes.map((foto, index) => (
+              <ImageListItem key={index}>
+                <img
+                  srcSet={`${foto}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${foto}?w=164&h=164&fit=crop&auto=format`}
+                  alt={`Foto ${index + 1}`}
+                  loading="lazy"
+                />
+              </ImageListItem>
+            ))}
+        </ImageList>
+      </div>
           </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleEditModalClose}>Cancelar</Button>
           <Button onClick={handleSaveChanges}>Guardar Cambios</Button>
         </DialogActions>
-      </Dialog>
+      </StyledDialog>
     </>
   );
 };

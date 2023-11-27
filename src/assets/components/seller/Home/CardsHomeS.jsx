@@ -62,7 +62,7 @@ export default function CardsHomeS() {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple }}>
           <CardContent>
             <Box
               sx={{
@@ -135,7 +135,7 @@ export default function CardsHomeS() {
       </Grid>
 
       <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple, marginLeft: 10 }}>
+        <Card style={{ ...cardStyles, background: gradientColors.purple}}>
           <CardContent>
             <Box
               sx={{

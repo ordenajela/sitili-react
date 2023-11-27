@@ -17,7 +17,6 @@ export default function CardsHome() {
   const [totalEnvios, setTotalEnvios] = useState(null);
   const iconSize = 48;
 
-  // http://localhost:8090/order/saleAll
   useEffect(() => {
     const fetchTotalVentas = async () => {
       try {
@@ -31,10 +30,7 @@ export default function CardsHome() {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Datos de la ventas:",data);
-          console.log(data.total);
           setTotalEnvios(data.total);
-          console.log(data.vendidos);
           setTotalVentas(data.vendidos);
         } else {
           
