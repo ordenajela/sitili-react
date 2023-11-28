@@ -8,18 +8,14 @@ import Pedidos from '../views/admin/pages/pedidos/Pedidos';
 import ProfileAdmin from '../views/admin/pages/adm/ProfileAdmin';
 
 function DashboardAdmin({darkMode, setDarkMode, userData}) {
-  const datosAdm = localStorage.getItem("credencial");
-  console.log("Datos de Admin:", datosAdm);
+  
   const rol = localStorage.getItem("rol");
-  console.log("Rol de Admin:", rol);
-
   const isAdmin = () => {
     return rol === "Admin";
   };
 
-  // Función que verifica si hay un token de autenticación
   const isAuthenticated = () => {
-    return !!localStorage.getItem("tokenAdmin");
+    return !!localStorage.getItem("token");
   };
 
   return (
@@ -36,12 +32,10 @@ function DashboardAdmin({darkMode, setDarkMode, userData}) {
         </>
       )}
 
-      {/* Ruta para usuarios autenticados que no son administradores */}
-      {isAuthenticated() && !isAdmin() && (
+      {isAuthenticated() && !isAdmin()  && (
         <Route path="/*" element={<Navigate to="/error/403" />} />
       )}
 
-      {/* Ruta para usuarios no autenticados */}
       {!isAuthenticated() && (
         <Route path="/*" element={<Navigate to="/login" />} />
       )}

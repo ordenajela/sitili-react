@@ -8,7 +8,6 @@ import { styled } from "@mui/material/styles";
 import CardAdminProfile from "./CardAdminProfile";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
-import Images from "./ImagesAdmin";
 import ImagesAdmin from "./ImagesAdmin";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -20,8 +19,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Name = "Leo Messi";
-const Correo = "leo.messi@gmail.com"
-const Pass = "****"
+const Correo = "leo.messi@gmail.com";
+const Pass = "****";
 
 const ProfileAdmin = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -45,20 +44,25 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
         </Box>
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
-          <Box sx={{ display: "flex", flex: 1, flexDirection: "column", marginLeft: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flex: 1,
+              flexDirection: "column",
+              marginLeft: 1,
+            }}
+          >
             <h1>Perfil Admin</h1>
 
-            
             <Box sx={{ width: "100%" }}>
               <Grid
                 container
-                rowSpacing={0}
                 columnSpacing={{ xs: 1, sm: 1, md: 1 }}
               >
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                   <CardAdminProfile />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={12} md={8}>
                   <Item>
                     <Grid
                       container
@@ -81,9 +85,7 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                       </Grid>
                     </Grid>
                   </Item>
-                  <Item
-                    sx={{ marginTop: 1 }}
-                  >
+                  <Item sx={{ marginTop: 1 }}>
                     <Grid
                       container
                       justifyContent="space-between"
@@ -105,9 +107,7 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                       </Grid>
                     </Grid>
                   </Item>
-                  <Item
-                    sx={{ marginTop: 1 }}
-                  >
+                  <Item sx={{ marginTop: 1 }}>
                     <Grid
                       container
                       justifyContent="space-between"
@@ -129,19 +129,11 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                       </Grid>
                     </Grid>
                   </Item>
-                  <Divider
-                    sx={{marginTop:5}}
-                  />
-                  <ImagesAdmin
-                    sx={{marginBottom:5}}
-                  />
+                  <Divider sx={{ marginTop: 5 }} />
+                  <ImagesAdmin sx={{ marginBottom: 5 }} />
                 </Grid>
               </Grid>
             </Box>
-
-            
-
-
           </Box>
         </Box>
       </Box>

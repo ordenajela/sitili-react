@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CardsHomeS from "./CardsHomeS";
+import CardsHomeS from "../../../../components/seller/Home/CardsHomeS";
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
 
@@ -23,7 +23,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Hola Vendedor!</h1>
             <CardsHomeS/>
-            {/* Agrega el contenido de la página aquí */}
+            
           </Box>
         </Box>
       </Box>
