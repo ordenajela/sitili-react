@@ -166,8 +166,6 @@ function Registro() {
   
   return (
     <>
-      
-
       <Modal
         open={showModal}
         onClose={() => setShowModal(false)}

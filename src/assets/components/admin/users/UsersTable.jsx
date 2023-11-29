@@ -15,6 +15,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import TablePagination from "@mui/material/TablePagination";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
@@ -208,11 +209,11 @@ const UsersTable = () => {
                     <Grid item>
                       <Button
                         variant="contained"
-                        startIcon={<EditIcon />}
+                        startIcon={<ViewStreamIcon />}
                         sx={{ marginLeft: 2, width: "130px" }}
                         onClick={() => handleEditClick(user)}
                       >
-                        Editar
+                        Detalles
                       </Button>
                     </Grid>
                   </Grid>

@@ -58,10 +58,10 @@ export default function CardsHome() {
           setTotalProducts(data.length);
           
         } else {
-          // Handle unsuccessful response
+          
         }
       } catch (error) {
-        // Handle errors
+        
       }
     };
 
