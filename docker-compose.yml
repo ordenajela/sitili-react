@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     networks:
       - mi-red
-
+restart: always
 networks:
   mi-red:
     driver: bridge
