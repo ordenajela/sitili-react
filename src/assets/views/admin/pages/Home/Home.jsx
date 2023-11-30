@@ -11,7 +11,7 @@ import PieCategory from "../../../../components/admin/Home/PieCenterLabel";
 import PieTotalCategory from "../../../../components/admin/Home/PieTotalCategory";
 import NewUsersChart from "../../../../components/admin/Home/NewUsersChart";
 
-const Home = ({ darkMode, setDarkMode, userData }) => {
+const Home = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
