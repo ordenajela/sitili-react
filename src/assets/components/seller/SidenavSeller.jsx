@@ -85,7 +85,6 @@ export function SidenavSeller() {
           {[
             { text: 'Principal', icon: <DashboardIcon />, route: '/seller/home' },
             { text: 'Productos', icon: <Inventory2Icon />, route: '/seller/productos' },
-            { text: 'Ingresos', icon: <AttachMoneyIcon />, route: '/seller/ingresos' },
             { text: 'Pedidos', icon: <LocalShippingIcon />, route: '/seller/pedidos' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>

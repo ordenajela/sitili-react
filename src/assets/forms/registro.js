@@ -20,6 +20,10 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 const defaultTheme = createTheme();
 
@@ -69,6 +73,7 @@ const ModalContent = styled(Box)(
 );
 
 function Registro() {
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,6 +96,7 @@ function Registro() {
   const [datosError, setDatosError] = useState(false);
   const [correoError, setCorreoError] = useState(false);
   const [errorType, setErrorType] = useState('');
+
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);

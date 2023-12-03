@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import EditIcon from "@mui/icons-material/Edit";
 import UserEditModal from "./UserEditModal";
 import Grid from "@mui/material/Grid";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -119,110 +118,118 @@ const UsersTable = () => {
         </Alert>
       )}
 
-      <TableContainer component={Paper}>
-        <Table stickyHeader sx={{ width: "100%" }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Email
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Rol
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Estado
-              </TableCell>
-
-              <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
-                Acciones
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : users
-            ).map((user) => (
-              <TableRow
-                key={user.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{user.email}</TableCell>
-                <TableCell>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      borderRadius: "12px",
-                      color: "white",
-                      backgroundColor:
-                        user.role[0].roleName === "Admin"
-                          ? "purple"
-                          : user.role[0].roleName === "User"
-                          ? "gray"
-                          : user.role[0].roleName === "Seller"
-                          ? "#ADD8E6"
-                          : "gray",
-                    }}
-                  >
-                    {user.role[0].roleName === "Admin"
-                      ? "Administrador"
-                      : user.role[0].roleName === "User"
-                      ? "Usuario"
-                      : user.role[0].roleName === "Seller"
-                      ? "Vendedor"
-                      : user.role[0].roleName}
-                  </div>
+        <Paper sx={{ width: '100%', overflow: 'hidden' }} >
+          <TableContainer
+            component={Paper}
+            sx={{
+              overflowX: "auto",
+              maxHeight: "100%",
+            }}
+          >
+          <Table stickyHeader sx={{ minWidth: "100%" }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Email
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Rol
+                </TableCell>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Estado
                 </TableCell>
 
-                <TableCell>
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "4px 8px",
-                      borderRadius: "12px",
-                      backgroundColor: user.status ? "green" : "red",
-                      color: "white",
-                    }}
-                  >
-                    {user.status ? "Activo" : "Inactivo"}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                      <Button
-                        variant="outlined"
-                        startIcon={
-                          user.status ? (
-                            <RemoveCircleOutlineIcon />
-                          ) : (
-                            <CheckCircleOutlineIcon />
-                          )
-                        }
-                        sx={{ width: "130px" }}
-                        onClick={() => toggleUserStatus(user)}
-                      >
-                        {user.status ? "Desactivar" : "Activar"}
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="contained"
-                        startIcon={<ViewStreamIcon />}
-                        sx={{ marginLeft: 2, width: "130px" }}
-                        onClick={() => handleEditClick(user)}
-                      >
-                        Detalles
-                      </Button>
-                    </Grid>
-                  </Grid>
+                <TableCell style={{ fontWeight: "bold", fontSize: "18px" }}>
+                  Acciones
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {(rowsPerPage > 0
+                ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                : users
+              ).map((user) => (
+                <TableRow
+                  key={user.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "12px",
+                        color: "white",
+                        backgroundColor:
+                          user.role[0].roleName === "Admin"
+                            ? "purple"
+                            : user.role[0].roleName === "User"
+                            ? "gray"
+                            : user.role[0].roleName === "Seller"
+                            ? "#ADD8E6"
+                            : "gray",
+                      }}
+                    >
+                      {user.role[0].roleName === "Admin"
+                        ? "Administrador"
+                        : user.role[0].roleName === "User"
+                        ? "Usuario"
+                        : user.role[0].roleName === "Seller"
+                        ? "Vendedor"
+                        : user.role[0].roleName}
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div
+                      style={{
+                        display: "inline-block",
+                        padding: "4px 8px",
+                        borderRadius: "12px",
+                        backgroundColor: user.status ? "green" : "red",
+                        color: "white",
+                      }}
+                    >
+                      {user.status ? "Activo" : "Inactivo"}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Grid container spacing={2} alignItems="center">
+                      <Grid item>
+                        <Button
+                          variant="outlined"
+                          startIcon={
+                            user.status ? (
+                              <RemoveCircleOutlineIcon />
+                            ) : (
+                              <CheckCircleOutlineIcon />
+                            )
+                          }
+                          sx={{ width: "130px" }}
+                          onClick={() => toggleUserStatus(user)}
+                        >
+                          {user.status ? "Desactivar" : "Activar"}
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button
+                          variant="contained"
+                          startIcon={<ViewStreamIcon />}
+                          sx={{ marginLeft: 2, width: "130px" }}
+                          onClick={() => handleEditClick(user)}
+                        >
+                          Detalles
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          </TableContainer>
+        </Paper>
 
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}

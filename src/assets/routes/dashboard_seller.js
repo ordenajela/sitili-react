@@ -23,9 +23,7 @@ function dashboard_seller ({ darkMode, setDarkMode })  {
         {isSeller() && isAuthenticated() && (
           <>
           <Route path='home' element={<HomeSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
-          <Route path='category' element={<CategorySeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path='productos' element={<ProductsSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
-          <Route path='ingresos' element={<IngresosSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path='pedidos' element={<PedidosSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
           <Route path='perfil' element={<ProfileSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
           </>
@@ -37,7 +35,6 @@ function dashboard_seller ({ darkMode, setDarkMode })  {
           <Route path="/*" element={<Navigate to="/login" />} />
         )}     
         </Routes>
-    
   )
 }
 
