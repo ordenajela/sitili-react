@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Modal,
-  Button,
-  TextField,
-  FormControl,
-  InputLabel,
-  Input,
-} from "@mui/material";
+import {Box, Typography,Modal,Button,TextField,FormControl,InputLabel,Input,} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CardsHomeS from "../../../../components/seller/Home/CardsHomeS";
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
@@ -16,7 +7,12 @@ import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
 
 const HomeSeller = ({ darkMode, setDarkMode }) => {
 
-  var emailP = localStorage.getItem("email");
+  const [errorMessages, setErrorMessages] = useState({
+    company: "",
+    phone: "",
+  });
+  
+  const [isRequesting, setIsRequesting] = useState(false);
   const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [companyName, setCompanyName] = useState("");
   const [companyFormData, setCompanyFormData] = useState({
@@ -48,10 +44,10 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
             setShowCompanyModal(true);
           }
         } else {
-          // Handle other cases of unsuccessful response if needed
+          console.log("Checale algo anda mal");
         }
       } catch (error) {
-        console.log("Error:", error);
+        console.log("Error En el get:", error);
       }
     };
 
@@ -66,6 +62,23 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
   };
 
   const handleUpdateCompany = async () => {
+
+    const errors = {};
+    const phoneRegex = /^[0-9]+$/;
+    if (companyFormData.company.trim() === "") {
+      errors.company = "El campo no puede estar vacío.";
+    }
+    if (companyFormData.phone.trim() === "") {
+      errors.phone = "El campo no puede estar vacío.";
+    }else if (!phoneRegex.test(companyFormData.phone)) {
+      errors.phone = "El campo solo puede contener números.";
+    }
+   
+    setErrorMessages(errors);
+  
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
     try {
       const response = await fetch("http://localhost:8090/dataUser/updateCompany", {
         method: "PUT",
@@ -78,6 +91,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
 
       if (response.ok) {
         console.log("Company updated successfully");
+        setErrorMessages({});
         setShowCompanyModal(false);
       } else {
         console.log("Checale algo anda mal");
@@ -85,6 +99,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
     } catch (error) {
       console.log("Error:", error);
     }
+    setIsRequesting(false);
   };
 
   const theme = createTheme({
@@ -114,8 +129,14 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
 
             {/* Modal */}
             <Modal
-              open={showCompanyModal}
-              onClose={() => setShowCompanyModal(false)}
+               open={showCompanyModal}
+               onClose={() => !isRequesting && setShowCompanyModal(false)}
+               disableEscapeKeyDown={isRequesting}
+               BackdropProps={{
+                 invisible: isRequesting,
+                 onClick: isRequesting ? null : () => setShowCompanyModal(false),
+               }}
+               BackdropClick={false}
             >
               <Box
                 sx={{
@@ -134,32 +155,38 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
                   Ya casi estás listo!
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                  Completa tu perfil para poder comenzar a vender.
+                  Completa tu perfil para poder comenzar a ser Vendedor SITILI.
                 </Typography>
+                <br></br>
                 <FormControl sx={{ m: 1, width: "100%" }}>
-                  <InputLabel htmlFor="company">Compañía</InputLabel>
-                  <Input
+                  
+                  <TextField  label="Compañia" variant="outlined"
                     id="company"
                     name="company"
                     value={companyFormData.company}
                     onChange={handleCompanyFormChange}
+                    error={Boolean(errorMessages.company)}
+                    helperText={errorMessages.company}
                   />
+
                 </FormControl>
                 <FormControl sx={{ m: 1, width: "100%" }}>
-                  <InputLabel htmlFor="phone">Teléfono</InputLabel>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    value={companyFormData.phone}
-                    onChange={handleCompanyFormChange}
-                  />
+                  <TextField  label="Telefono" variant="outlined"
+                      id="phone"
+                      name="phone"
+                      type="number"
+                      value={companyFormData.phone}
+                      onChange={handleCompanyFormChange}
+                      error={Boolean(errorMessages.phone)}
+                      helperText={errorMessages.phone}
+                    />
                 </FormControl>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={handleUpdateCompany}
                 >
-                  Actualizar
+                  Añadir
                 </Button>
               </Box>
             </Modal>

@@ -40,9 +40,16 @@ const Home = ({ darkMode, setDarkMode }) => {
                 <PieTotalCategory/>
               </Grid>
             </Grid>
-            <SalesChart/>
-            <PedidosChart/>
-            <NewUsersChart/>
+            <Grid item xs={12} >
+              <SalesChart/>
+            </Grid>
+            <Grid item xs={12} >
+              <PedidosChart/>
+            </Grid>
+            <Grid item xs={12} >
+              <NewUsersChart/>
+            </Grid>
+           
           </Box>
         </Box>
       </Box>

@@ -14,8 +14,6 @@ export default function CardsHomeS() {
   const [totalProducts, setTotalProducts] = useState(null);
   const iconSize = 48;
 
-  const email = localStorage.getItem("email");
-
   useEffect(() => {
     const fetchTotalProducts = async () => {
       try {

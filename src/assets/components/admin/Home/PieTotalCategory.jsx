@@ -30,12 +30,20 @@ export default function PieTotalCategory() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8090/categories/listAll');
+        const response = await fetch("http://localhost:8090/categories/catTot", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('Total de Esto:', data);
         setCategories(data);
       } catch (error) {
         console.error('Error al obtener las categorías:', error.message);
@@ -46,8 +54,8 @@ export default function PieTotalCategory() {
   }, []);
 
   const data = categories.map((category) => ({
-    value: 1, // Cada categoría tiene un valor de 1
-    label: category.name, // Supongo que el nombre de la categoría está en la propiedad "name"
+    value: category.cantidad, 
+    label: category.categoria, 
   }));
 
   return (
@@ -58,7 +66,7 @@ export default function PieTotalCategory() {
           fontWeight: 'bold',
           mb: 1,
         }}
-      >Productos</PieCenterLabel>
+      >Cantidad</PieCenterLabel>
     </PieChart>
   );
 }

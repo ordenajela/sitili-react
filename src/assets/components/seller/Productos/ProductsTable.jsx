@@ -20,7 +20,6 @@ import DialogActions from "@mui/material/DialogActions";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
@@ -50,8 +49,6 @@ const CloseButton = styled(IconButton)(({ theme }) => ({
 
 const ProductsTable = () => {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedProduct, setEditedProduct] = useState(null);
   const [page, setPage] = useState(0);
@@ -69,12 +66,6 @@ const ProductsTable = () => {
 
   const handleSaveChanges = async () => {
     try {
-      // Realiza una solicitud al servidor para actualizar el producto
-      // Puedes usar el método PUT o cualquier otro método adecuado
-      // Asegúrate de manejar la actualización del producto en el servidor
-      // y luego actualiza el estado `products` con la versión actualizada del producto
-      // y cierra el modal de edición
-      // Ejemplo ficticio (debes adaptarlo a tu backend):
       const res = await fetch(
         `http://localhost:8090/product/${editedProduct.product_id}`,
         {
@@ -120,17 +111,6 @@ const ProductsTable = () => {
     fetchProducts();
   }, []);
 
-  const handleModalOpen = (product) => {
-    console.log("Id del producto:", product.product_id);
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setSelectedProduct(null);
-    setIsModalOpen(false);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -138,6 +118,18 @@ const ProductsTable = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setEditedProduct((prevProduct) => {
+      const updatedImages = prevProduct.imagenes.filter(
+        (_, index) => index !== indexToRemove
+      );
+      return {
+        ...prevProduct,
+        imagenes: updatedImages,
+      };
+    });
   };
 
   return (
@@ -335,27 +327,44 @@ const ProductsTable = () => {
             </div>
 
             <div>
-        <label>Fotos:</label>
-        <ImageList sx={{ width: "100%", height: 200 }} cols={3} rowHeight={164}>
-          {editedProduct &&
-            editedProduct.imagenes &&
-            editedProduct.imagenes.map((foto, index) => (
-              <ImageListItem key={index}>
-                <img
-                  srcSet={`${foto}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${foto}?w=164&h=164&fit=crop&auto=format`}
-                  alt={`Foto ${index + 1}`}
-                  loading="lazy"
-                />
-              </ImageListItem>
-            ))}
-        </ImageList>
-      </div>
+              <label>Fotos:</label>
+              <ImageList
+                sx={{ width: "100%", height: 200 }}
+                cols={3}
+                rowHeight={164}
+              >
+                {editedProduct &&
+                  editedProduct.imagenes &&
+                  editedProduct.imagenes.map((foto, index) => (
+                    <ImageListItem key={index}>
+                      <IconButton
+                        style={{
+                          position: "absolute",
+                          top: 1,
+                          right: 1,
+                          zIndex: 1,
+                          color: "red",
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                        }}
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                      <img
+                        srcSet={`${foto}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${foto}?w=164&h=164&fit=crop&auto=format`}
+                        alt={`Foto ${index + 1}`}
+                        loading="lazy"
+                      />
+                    </ImageListItem>
+                  ))}
+              </ImageList>
+            </div>
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleEditModalClose}>Cancelar</Button>
-          <Button onClick={handleSaveChanges}>Guardar Cambios</Button>
+          <Button variant="contained">Guardar</Button>
         </DialogActions>
       </StyledDialog>
     </>
