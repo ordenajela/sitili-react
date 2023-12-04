@@ -4,6 +4,12 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CardsHomeS from "../../../../components/seller/Home/CardsHomeS";
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
+import { Pie } from "recharts";
+import PieCategorias from "../../../../components/seller/Home/PieCategorias";
+import Grid from "@mui/material/Grid";
+import PieTotalC from "../../../../components/seller/Home/PieTotalC";
+import VentasSellerChart from "../../../../components/seller/Home/VentasSellerChart";
+import PedidosSellerChart from "../../../../components/seller/Home/PedidosSellerChart";
 
 const HomeSeller = ({ darkMode, setDarkMode }) => {
 
@@ -113,20 +119,27 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          height: "100%",
+          flexDirection: "column",  
         }}
       >
         <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <NavbarSeller darkMode={darkMode} setDarkMode={setDarkMode} />
         </Box>
-        <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
+        <Box sx={{ display: "flex", flex: 1, marginX: 1 }}>
           <SidenavSeller />
-          <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
+          <Box sx={{ display: "flex", flex: 1, flexDirection: "column", marginX: 1 }}>
             <h1>Hola Vendedor!</h1>
             <CardsHomeS />
-
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} md={6} >
+                <PieCategorias />
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} >
+                <PieTotalC/>
+              </Grid>
+            </Grid>
+            <VentasSellerChart/>
+            <PedidosSellerChart/>
             {/* Modal */}
             <Modal
                open={showCompanyModal}
@@ -191,6 +204,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
               </Box>
             </Modal>
           </Box>
+
         </Box>
       </Box>
     </ThemeProvider>

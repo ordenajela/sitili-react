@@ -5,8 +5,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import sellerImage from "../../../images/VendedorSitili.jpg"
 
-
-
 export default function CardSellerProfile() {
 
   return (

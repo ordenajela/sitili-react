@@ -54,6 +54,32 @@ const ProductsTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const handleUpdateProduct = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("productData", JSON.stringify(editedProduct));
+
+      const res = await fetch("http://localhost:8090/product/update", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+
+      if (res.status === 200) {
+        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje
+        console.log("Producto actualizado exitosamente");
+        handleEditModalClose();
+      } else {
+        // Manejar la respuesta de error, por ejemplo, mostrar un mensaje de error
+        console.error("Error al actualizar el producto");
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+    }
+  };
+
   const handleEditModalOpen = (product) => {
     setEditedProduct({ ...product });
     setIsEditModalOpen(true);
@@ -62,32 +88,6 @@ const ProductsTable = () => {
   const handleEditModalClose = () => {
     setEditedProduct(null);
     setIsEditModalOpen(false);
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      const res = await fetch(
-        `http://localhost:8090/product/${editedProduct.product_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(editedProduct),
-        }
-      );
-      const updatedProduct = await res.json();
-
-      setProducts((prevProducts) =>
-        prevProducts.map((p) =>
-          p.product_id === updatedProduct.product_id ? updatedProduct : p
-        )
-      );
-      setIsEditModalOpen(false);
-    } catch (error) {
-      console.error("Error al guardar cambios:", error);
-    }
   };
 
   useEffect(() => {
@@ -120,16 +120,40 @@ const ProductsTable = () => {
     setPage(0);
   };
 
-  const handleRemoveImage = (indexToRemove) => {
-    setEditedProduct((prevProduct) => {
-      const updatedImages = prevProduct.imagenes.filter(
-        (_, index) => index !== indexToRemove
-      );
-      return {
-        ...prevProduct,
-        imagenes: updatedImages,
-      };
-    });
+  const handleRemoveImage = async (indexToRemove) => {
+    try {
+      console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
+      console.log("ID del producto:", editedProduct.product_id);
+
+      const res = await fetch("http://localhost:8090/product/deleteImages", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: editedProduct.product_id,
+          imageUrl: editedProduct.imagenes[indexToRemove],
+        }),
+      });
+
+      if (res.status === 200) {
+        setEditedProduct((prevProduct) => {
+          const updatedImages = prevProduct.imagenes.filter(
+            (_, index) => index !== indexToRemove
+          );
+          return {
+            ...prevProduct,
+            imagenes: updatedImages,
+          };
+        });
+        console.log("Se ha eliminado la imagen");
+      } else {
+        console.error("Error al eliminar la imagen");
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+    }
   };
 
   return (
@@ -191,6 +215,8 @@ const ProductsTable = () => {
                   <TableCell>{product.cantidad}</TableCell>
                   <TableCell>{product.categoria}</TableCell>
                   <TableCell>
+                    {" "}
+                    {/* Estrellas */}
                     <Rating
                       name="read-only"
                       value={product.calificacion}
@@ -363,7 +389,7 @@ const ProductsTable = () => {
             </div>
           </form>
         </DialogContent>
-        <DialogActions>
+        <DialogActions onClick={handleUpdateProduct}>
           <Button variant="contained">Guardar</Button>
         </DialogActions>
       </StyledDialog>
