@@ -21,10 +21,11 @@ import registro from '../forms/registro';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import { Typography } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
-    display: 'flex', 
-    alignItems: 'center', 
+    display: 'flex',
+    alignItems: 'center',
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -108,8 +109,8 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}><Link to="login" style={{textDecoration: 'none', color:'black'}}>Iniciar sesión</Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}><Link to="registro" style={{textDecoration: 'none', color:'black'}}>Registrarse</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to="login" style={{ textDecoration: 'none', color: 'inherit' }}>Iniciar sesión</Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}><Link to="registro" style={{ textDecoration: 'none', color: 'inherit' }}>Registrarse</Link></MenuItem>
         </Menu>
     );
 
@@ -132,13 +133,12 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
         >
             <MenuItem>
                 <IconButton
-                    size="large"
                     onClick={toggleDarkMode}
                     color="inherit"
+                    style={{ display: 'flex', alignItems: 'center' }}
                 >
-                    <Badge color="error">
-                        <InvertColorsIcon />
-                    </Badge>
+                    {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
+                    <Typography style={{ marginLeft: '5px' }}>Cambiar tema</Typography>
                 </IconButton>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
