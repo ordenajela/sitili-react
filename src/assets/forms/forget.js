@@ -17,7 +17,7 @@ import Snackbar from '@mui/material/Snackbar';
 
 const defaultTheme = createTheme();
 
-function Login() {
+function Forget() {
   const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
@@ -137,7 +137,7 @@ function Login() {
                 <Typography component="h1" variant="h5" style={{
                   color: '#512D6D',
                   paddingTop: '5%'}}>
-                  Iniciar Sesión
+                  Recuperar Contraseña
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                   <TextField
@@ -150,16 +150,6 @@ function Login() {
                     autoComplete="email"
                     autoFocus
                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                  />
-                  <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Contraseña"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
                   />
                   {loginError && (
                     <Typography variant="body2" color="error">
@@ -187,8 +177,8 @@ function Login() {
                   </Button>
                   <Grid container justifyContent="center" alignItems="center">
                     <Grid item xs={12} md={6} >
-                      <Link to="/forgetPasswordSitili" variant="body2" style={{ textAlign: 'center' }} >
-                        {"Olvidaste tu contraseña?"}
+                      <Link to="/login" variant="body2" style={{ textAlign: 'center' }} >
+                        {"Iniciar Sesión"}
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -208,4 +198,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Forget;

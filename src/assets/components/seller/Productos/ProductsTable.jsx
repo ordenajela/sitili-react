@@ -23,6 +23,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -53,32 +55,118 @@ const ProductsTable = () => {
   const [editedProduct, setEditedProduct] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const handleUpdateProduct = async () => {
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  
+  const toggleProductStatus = async (product) => {
+    console.log("Producto a cambiar de estado:", product);
+  
+    const { product_id } = product;
+    const productoParseado = product_id;
+    console.log("ID del producto:", product_id);
+  
     try {
-      const formData = new FormData();
-      formData.append("productData", JSON.stringify(editedProduct));
-
-      const res = await fetch("http://localhost:8090/product/update", {
-        method: "POST",
+      const response = await fetch("http://localhost:8090/product/delete", {
+        method: "DELETE",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: formData,
+        body: JSON.stringify({ id: productoParseado }),
       });
-
-      if (res.status === 200) {
-        // Manejar la respuesta exitosa, por ejemplo, mostrar un mensaje
-        console.log("Producto actualizado exitosamente");
-        handleEditModalClose();
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+  
+        const updatedProduct = responseData;
+  
+        setProducts((prevProducts) =>
+          prevProducts.map((prevProduct) =>
+            prevProduct.product_id === updatedProduct.product_id
+              ? updatedProduct
+              : prevProduct
+          )
+        );
+  
+        handleSnackbar("Estado del producto actualizado", "success");
       } else {
-        // Manejar la respuesta de error, por ejemplo, mostrar un mensaje de error
-        console.error("Error al actualizar el producto");
+        console.log("Error al cambiar el estado del producto");
       }
     } catch (error) {
       console.error("Error en la petición:", error);
     }
+    //fetchProducts();
   };
+  
+  
+
+  const handleSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
+  const handleUpdateProduct = async () => {
+  try {
+    if (
+      !editedProduct.producto ||
+      !editedProduct.precio ||
+      !editedProduct.cantidad ||
+      !editedProduct.comentarios
+    ) {
+      handleSnackbar("Todos los campos son obligatorios", "error");
+      console.log("Todos los campos son obligatorios");
+      return;
+    }
+
+    const formData = new FormData();
+    console.log("Producto a editar:", editedProduct);
+    const productData = {
+      product_id: editedProduct.product_id,
+      name: editedProduct.producto,
+      stock: editedProduct.cantidad,
+      price: editedProduct.precio,
+      features: editedProduct.comentarios,
+      category_id: editedProduct.categoria_id, 
+    };
+    formData.append("productData", new Blob([JSON.stringify(productData)], { type: "application/json" }));
+
+    if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
+      for (let i = 0; i < editedProduct.imagenes.length; i++) {
+        formData.append("files", editedProduct.imagenes[i]);
+      }
+    }
+
+    const response = await fetch("http://localhost:8090/product/update", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: formData,
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log(responseData);
+      console.log("Producto actualizado exitosamente");
+      handleEditModalClose();
+    } else {
+      console.log("Error al actualizar el producto");
+    }
+  } catch (error) {
+    console.error("Error en la petición:", error);
+  }
+};
+
 
   const handleEditModalOpen = (product) => {
     setEditedProduct({ ...product });
@@ -122,6 +210,10 @@ const ProductsTable = () => {
 
   const handleRemoveImage = async (indexToRemove) => {
     try {
+      if (editedProduct.imagenes.length === 1) {
+        handleSnackbar("No se puede eliminar la última imagen", "error");
+        return;
+      }
       console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
       console.log("ID del producto:", editedProduct.product_id);
 
@@ -147,12 +239,12 @@ const ProductsTable = () => {
             imagenes: updatedImages,
           };
         });
-        console.log("Se ha eliminado la imagen");
+        handleSnackbar("Se ha eliminado la imagen", "success");
       } else {
-        console.error("Error al eliminar la imagen");
+        handleSnackbar("Error al eliminar la imagen", "error");
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
+      handleSnackbar("Error en la petición", "error");
     }
   };
 
@@ -215,8 +307,6 @@ const ProductsTable = () => {
                   <TableCell>{product.cantidad}</TableCell>
                   <TableCell>{product.categoria}</TableCell>
                   <TableCell>
-                    {" "}
-                    {/* Estrellas */}
                     <Rating
                       name="read-only"
                       value={product.calificacion}
@@ -250,7 +340,7 @@ const ProductsTable = () => {
                             )
                           }
                           sx={{ width: "130px" }}
-                          onClick={() => {}}
+                          onClick={() => toggleProductStatus(product)}
                         >
                           {product.estado ? "Desactivar" : "Activar"}
                         </Button>
@@ -389,8 +479,22 @@ const ProductsTable = () => {
             </div>
           </form>
         </DialogContent>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+          >
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
         <DialogActions onClick={handleUpdateProduct}>
-          <Button variant="contained">Guardar</Button>
+          <Button variant="contained">Editar</Button>
         </DialogActions>
       </StyledDialog>
     </>

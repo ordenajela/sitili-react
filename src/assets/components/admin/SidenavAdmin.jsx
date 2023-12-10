@@ -19,6 +19,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 const drawerWidth = 240;
 
@@ -88,6 +89,7 @@ export function SidenavAdmin() {
             { text: 'Principal', icon: <DashboardIcon />, route: '/dashboard/home' },
             { text: 'Administradores', icon: <AdminPanelSettingsIcon />, route: '/dashboard/usersad' },
             { text: 'Usuarios', icon: <GroupIcon />, route: '/dashboard/users' },
+            { text: 'Categoria', icon: <FormatListBulletedIcon />, route: '/dashboard/categoria' },
           ].map((item) => (
             <ListItem key={item.text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
