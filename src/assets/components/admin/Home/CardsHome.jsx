@@ -109,8 +109,6 @@ export default function CardsHome() {
     borderRadius: "50%",
   };
 
-
-
   return (
     <Box  > 
       <Grid container spacing={2}>

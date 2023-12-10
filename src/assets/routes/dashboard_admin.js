@@ -6,6 +6,7 @@ import Products from '../views/admin/pages/products/Products';
 import Ingresos from '../views/admin/pages/ingresos/Ingresos';
 import Pedidos from '../views/admin/pages/pedidos/Pedidos';
 import ProfileAdmin from '../views/admin/pages/adm/ProfileAdmin';
+import CategoryAdmin from '../views/admin/pages/category/CategoryAdmin';
 
 function DashboardAdmin({darkMode, setDarkMode, userData}) {
   
@@ -29,6 +30,7 @@ function DashboardAdmin({darkMode, setDarkMode, userData}) {
           <Route path="/ingresos" element={<Ingresos darkMode={darkMode} setDarkMode={setDarkMode} userData={userData} />} />
           <Route path="/pedidos" element={<Pedidos darkMode={darkMode} setDarkMode={setDarkMode} userData={userData} />} />
           <Route path="/perfil" element={<ProfileAdmin darkMode={darkMode} setDarkMode={setDarkMode} userData={userData} />} />
+          <Route path="/categoria" element={<CategoryAdmin darkMode={darkMode} setDarkMode={setDarkMode} userData={userData} />} />
         </>
       )}
 

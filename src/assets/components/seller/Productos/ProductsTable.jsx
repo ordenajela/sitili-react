@@ -23,6 +23,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -53,7 +55,22 @@ const ProductsTable = () => {
   const [editedProduct, setEditedProduct] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  
+  const handleSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
   const handleUpdateProduct = async () => {
     try {
       const formData = new FormData();
@@ -122,6 +139,11 @@ const ProductsTable = () => {
 
   const handleRemoveImage = async (indexToRemove) => {
     try {
+      //Validar que haya al menos una imagen
+      if (editedProduct.imagenes.length === 1) {
+        handleSnackbar("No se puede eliminar la última imagen", "error");
+        return;
+      }
       console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
       console.log("ID del producto:", editedProduct.product_id);
 
@@ -147,17 +169,31 @@ const ProductsTable = () => {
             imagenes: updatedImages,
           };
         });
-        console.log("Se ha eliminado la imagen");
+        handleSnackbar("Se ha eliminado la imagen", "success");
       } else {
-        console.error("Error al eliminar la imagen");
+        handleSnackbar("Error al eliminar la imagen", "error");
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
+      handleSnackbar("Error en la petición", "error");
     }
   };
 
   return (
     <>
+    <Snackbar
+      open={snackbarOpen}
+      autoHideDuration={6000}
+      onClose={handleSnackbarClose}
+    >
+      <MuiAlert
+        elevation={6}
+        variant="filled"
+        onClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+      >
+        {snackbarMessage}
+      </MuiAlert>
+    </Snackbar>
       <Paper sx={{ width: "100%" }}>
         <TableContainer
           sx={{

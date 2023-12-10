@@ -160,9 +160,6 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
                   <Divider
                     sx={{marginTop:5}}
                   />
-                  <ImagesSeller
-                    sx={{marginBottom:5}}
-                  />
                 </Grid>
               </Grid>
             </Box>
