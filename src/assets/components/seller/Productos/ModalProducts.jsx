@@ -10,7 +10,6 @@ import Alert from '@mui/material/Alert';
 
 export default function ModalProducts() {
   const [open, setOpen] = useState(false);
-  const [userType] = useState("");
   const [name, setName] = useState("");
   const [stock, setStock] = useState("");
   const [price, setPrice] = useState("");
@@ -19,7 +18,7 @@ export default function ModalProducts() {
   const [categories, setCategories] = useState([]);
   const [productTypeN, setProductTypeN] = useState("");
   const [alertMessage, setAlertMessage] = useState('');
-  const [alertSeverity, setAlertSeverity] = useState('error'); // Puedes cambiar a 'success', 'info', o 'warning' según sea necesario
+  const [alertSeverity, setAlertSeverity] = useState('error'); 
   const [selectedFilesNames, setSelectedFilesNames] = useState([]);
 
 const handleCloseAlert = () => {
@@ -112,14 +111,16 @@ const handleCloseAlert = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
-        console.log("Producto guardado exitosamente");
+        
       } else {
-        console.log("Error al guardar el producto");
+        
       }
     } catch (error) {
-      //Refrescar Pagina
-      window.location.reload();
+      setAlertSeverity('success');
+      setAlertMessage('Se ha creado el producto exitosamente');
+      //Realizar reload de la página despues de 2 segundos
+      setTimeout(() => {window.location.reload();}, 2000);
+      
     }
 
     handleClose();

@@ -20,10 +20,6 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { styled } from '@mui/system';
 import { Modal as BaseModal } from '@mui/base/Modal';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
 
 const defaultTheme = createTheme();
 
@@ -338,8 +334,8 @@ function Registro() {
                     </Button>
                     <Grid container sx={{ mb: 2 }}>
                     <Grid item xs>
-                      <Link href="#" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
-                        Olvidaste tu contraseña?
+                      <Link to="/forgetPasswordSitili" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
+                        {"Olvidaste tu contraseña?"}
                       </Link>
                     </Grid>
                     <Grid item xs>

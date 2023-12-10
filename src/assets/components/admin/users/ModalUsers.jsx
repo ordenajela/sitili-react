@@ -68,6 +68,7 @@ export default function ModalUsers({ handleUserAdded }) {
         console.log("Usuario registrado exitosamente:", response.data);
         handleUserAdded(response.data);
         handleClose();
+        window.location.reload();
       } else {
         console.error("Error al registrar usuario:", response.statusText);
 
