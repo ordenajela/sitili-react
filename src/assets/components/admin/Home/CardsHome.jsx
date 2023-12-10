@@ -82,7 +82,6 @@ export default function CardsHome() {
         if (response.ok) {
           const data = await response.json();
           setTotalUsers(data);
-          console.log(data);
         } else {
           
         }
@@ -90,7 +89,6 @@ export default function CardsHome() {
        
       }
     };
-
     fetchTotalUsers();
   }, []);
 
