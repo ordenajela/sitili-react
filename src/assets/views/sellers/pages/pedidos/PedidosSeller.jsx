@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import NavbarSeller from "../../../../components/seller/NavbarSeller";
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
+import PedidosTableS from "../../../../components/seller/Pedidos/PedidosTableS";
 
 const PedidosSeller = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -22,6 +23,7 @@ const PedidosSeller = ({ darkMode, setDarkMode }) => {
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
             <h1>Pedidos Seller</h1>
             {/* Agrega el contenido de la página aquí */}
+            <PedidosTableS/>
           </Box>
         </Box>
       </Box>

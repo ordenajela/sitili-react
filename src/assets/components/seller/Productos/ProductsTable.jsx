@@ -25,6 +25,8 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import VisuallyHiddenInput from "@mui/material/Input";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -58,6 +60,8 @@ const ProductsTable = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesNames, setSelectedImagesNames] = useState([]);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -65,30 +69,45 @@ const ProductsTable = () => {
     }
     setSnackbarOpen(false);
   };
-  
+
+  const handleFileChangeImages = (event) => {
+    const files = event.target.files;
+    const newSelectedImages = [];
+    const newSelectedImagesNames = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size <= 5 * 1024 * 1024) {
+        newSelectedImages.push(file);
+        newSelectedImagesNames.push(file.name);
+      } else {
+        alert(
+          `El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`
+        );
+      }
+    }
+
+    setSelectedImages(newSelectedImages);
+    setSelectedImagesNames(newSelectedImagesNames);
+  };
+
   const toggleProductStatus = async (product) => {
-    console.log("Producto a cambiar de estado:", product);
-  
-    const { product_id } = product;
-    const productoParseado = product_id;
-    console.log("ID del producto:", product_id);
-  
     try {
+      const { product_id } = product;
+
       const response = await fetch("http://localhost:8090/product/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ id: productoParseado }),
+        body: JSON.stringify({ id: product_id }),
       });
-  
+
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
-  
         const updatedProduct = responseData;
-  
+
         setProducts((prevProducts) =>
           prevProducts.map((prevProduct) =>
             prevProduct.product_id === updatedProduct.product_id
@@ -96,18 +115,17 @@ const ProductsTable = () => {
               : prevProduct
           )
         );
-  
+
         handleSnackbar("Estado del producto actualizado", "success");
       } else {
         console.log("Error al cambiar el estado del producto");
+        handleSnackbar("Error al cambiar el estado del producto", "error");
       }
     } catch (error) {
+      handleSnackbar("Se ha realizado el cambio con exito", "success");
       console.error("Error en la petición:", error);
     }
-    //fetchProducts();
   };
-  
-  
 
   const handleSnackbar = (message, severity) => {
     setSnackbarMessage(message);
@@ -116,57 +134,67 @@ const ProductsTable = () => {
   };
 
   const handleUpdateProduct = async () => {
-  try {
-    if (
-      !editedProduct.producto ||
-      !editedProduct.precio ||
-      !editedProduct.cantidad ||
-      !editedProduct.comentarios
-    ) {
-      handleSnackbar("Todos los campos son obligatorios", "error");
-      console.log("Todos los campos son obligatorios");
-      return;
-    }
-
-    const formData = new FormData();
-    console.log("Producto a editar:", editedProduct);
-    const productData = {
-      product_id: editedProduct.product_id,
-      name: editedProduct.producto,
-      stock: editedProduct.cantidad,
-      price: editedProduct.precio,
-      features: editedProduct.comentarios,
-      category_id: editedProduct.categoria_id, 
-    };
-    formData.append("productData", new Blob([JSON.stringify(productData)], { type: "application/json" }));
-
-    if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
-      for (let i = 0; i < editedProduct.imagenes.length; i++) {
-        formData.append("files", editedProduct.imagenes[i]);
+    try {
+      if (
+        !editedProduct.producto ||
+        !editedProduct.precio ||
+        !editedProduct.cantidad ||
+        !editedProduct.comentarios
+      ) {
+        handleSnackbar("Todos los campos son obligatorios", "error");
+        console.log("Todos los campos son obligatorios");
+        return;
       }
+  
+      const formData = new FormData();
+  
+      const productData = {
+        product_id: editedProduct.product_id,
+        name: editedProduct.producto,
+        stock: parseInt(editedProduct.cantidad),
+        price: editedProduct.precio,
+        features: editedProduct.comentarios,
+      };
+  
+      formData.append(
+        "productData",
+        new Blob([JSON.stringify(productData)], { type: "application/json" })
+      );
+  
+      // Append new images
+      if (selectedImages.length > 0) {
+        for (let i = 0; i < selectedImages.length; i++) {
+          formData.append("files", selectedImages[i]);
+        }
+      } else {
+        // If no new images are selected, append existing images
+        if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
+          for (let i = 0; i < editedProduct.imagenes.length; i++) {
+            formData.append("files", editedProduct.imagenes[i]);
+          }
+        }
+      }
+  
+      const response = await fetch("http://localhost:8090/product/update", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        console.log("Producto actualizado exitosamente");
+        handleEditModalClose();
+      } else {
+        console.log("Error al actualizar el producto");
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
     }
-
-    const response = await fetch("http://localhost:8090/product/update", {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: formData,
-    });
-
-    if (response.ok) {
-      const responseData = await response.json();
-      console.log(responseData);
-      console.log("Producto actualizado exitosamente");
-      handleEditModalClose();
-    } else {
-      console.log("Error al actualizar el producto");
-    }
-  } catch (error) {
-    console.error("Error en la petición:", error);
-  }
-};
-
+  };
 
   const handleEditModalOpen = (product) => {
     setEditedProduct({ ...product });
@@ -197,7 +225,7 @@ const ProductsTable = () => {
     };
 
     fetchProducts();
-  }, []);
+  }, [snackbarOpen]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -251,6 +279,20 @@ const ProductsTable = () => {
   return (
     <>
       <Paper sx={{ width: "100%" }}>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+          >
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
         <TableContainer
           sx={{
             maxHeight: "100%",
@@ -476,23 +518,26 @@ const ProductsTable = () => {
                     </ImageListItem>
                   ))}
               </ImageList>
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                sx={{ textTransform: "none", marginTop: "16px" }}
+              >
+                {selectedImagesNames.length > 0
+                  ? `Imagenes Seleccionadas: ${selectedImagesNames.join(", ")}`
+                  : "Agregar Imágenes"}
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChangeImages}
+                />
+              </Button>
             </div>
           </form>
         </DialogContent>
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-        >
-          <MuiAlert
-            elevation={6}
-            variant="filled"
-            onClose={handleSnackbarClose}
-            severity={snackbarSeverity}
-          >
-            {snackbarMessage}
-          </MuiAlert>
-        </Snackbar>
+
         <DialogActions onClick={handleUpdateProduct}>
           <Button variant="contained">Editar</Button>
         </DialogActions>
