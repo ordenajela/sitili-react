@@ -275,7 +275,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                         idsproducts.push(itemids.id);
                     }*/
                     handleLlenarIds(responsedeletefav.data);
-                    
+
                 }
             } else {
                 console.log('Usuario no autenticado');
@@ -295,7 +295,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         setShowCompraModal(false);
     };
 
-    const handleFinalizarCompra = async() => {
+    const handleFinalizarCompra = async () => {
         console.log(idsproducts);
         try {
             if (tokenn) {
@@ -323,11 +323,11 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         } catch (error) {
             console.error('Error al Confirmar Compra:', error);
         }
-       
-        
+
+
     };
 
-    const handleCancelarCompra = async() => {
+    const handleCancelarCompra = async () => {
         console.log(idsproducts);
         try {
             if (tokenn) {
@@ -366,53 +366,79 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <div style={{ position: 'absolute', top: '10%', right: '10%', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
-                        <Typography variant="h6" gutterBottom>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 300,
+                            bgcolor: 'background.paper',
+                            boxShadow: 24,
+                            p: 4,
+                            textAlign: 'center',
+                        }}
+                    >
+                        <Typography variant="h6" gutterBottom sx={{ color: darkMode ? '#fff' : '#000' }}>
                             Compra en proceso
                         </Typography>
-                        <Button variant="contained" color="primary" onClick={handleFinalizarCompra}>
-                            Finalizar compra
-                        </Button>
-                        <Button variant="contained" color="secondary" onClick={handleCancelarCompra}>
-                            Cancelar compra
-                        </Button>
-                    </div>
-                </Modal>
-            )}
-            <div>
-                <PrimarySearchAppBar darkMode={darkMode} setDarkMode={setDarkMode} />
-                <Box sx={{
-                    flexGrow: 1,
-                    padding: 4,
-                    backgroundColor: darkMode ? '#1A2027' : '#fff',
-                }}>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Typography variant="h4" gutterBottom>
-                                Carrito de Compras
-                            </Typography>
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableBody>
-                                        {data.map((item) => (
-                                            <CartItem key={item.car_id} item={item} fetchData={fetchData} />
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <Divider />
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
-                                <Button variant="contained" color="primary" size="large" onClick={() => {
-                                    handleBuyNowClick();
-                                }}>
-                                    Comprar ahora
+                        <Box sx={{ display: 'flex', justifyContent: 'space-around', mt: 2 }}>
+                            <Button variant="contained" color="primary" onClick={handleFinalizarCompra}>
+                                Finalizar compra
+                            </Button>
+                            <Box sx={{ marginLeft: 1 }}>
+                                <Button variant="contained" color="error" onClick={handleCancelarCompra}>
+                                    Cancelar compra
                                 </Button>
                             </Box>
-                        </Grid>
-                    </Grid>
+                        </Box>
+                    </Box>
+                </Modal>
+            )}
+            <PrimarySearchAppBar darkMode={darkMode} setDarkMode={setDarkMode} />
+            {data.length === 0 ? ( // Verifica si no hay productos en el carrito
+                <Box sx={{ flexGrow: 1, padding: 4, backgroundColor: darkMode ? '#1A2027' : '#fff' }}>
+                    <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px' }}>
+                        Carrito de Compras
+                    </Typography>
+                    <Typography variant="h5" sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px' }}>
+                        No hay productos aún
+                    </Typography>
                 </Box>
-                <StickyFooter />
-            </div>
+            ) : (
+                <div>
+                    <Box sx={{
+                        flexGrow: 1,
+                        padding: 4,
+                        backgroundColor: darkMode ? '#1A2027' : '#fff',
+                    }}>
+                        <Grid container spacing={4}>
+                            <Grid item xs={12}>
+                                <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px', }}>
+                                    Carrito de Compras
+                                </Typography>
+                                <TableContainer component={Paper}>
+                                    <Table>
+                                        <TableBody>
+                                            {data.map((item) => (
+                                                <CartItem key={item.car_id} item={item} fetchData={fetchData} />
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <Divider />
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: 2 }}>
+                                    <Button variant="contained" color="primary" size="large" onClick={() => {
+                                        handleBuyNowClick();
+                                    }}>
+                                        Comprar ahora
+                                    </Button>
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </div>
+            )}
         </ThemeProvider>
     );
 };
