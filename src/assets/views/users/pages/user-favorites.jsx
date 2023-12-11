@@ -281,78 +281,93 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
                         )}
                     </div>
                 </Modal>
-                <Box sx={{ flexGrow: 1, margin: '3%' }}>
-                    <Grid container spacing={2} justifyContent="center">
-                        {data.slice(startIndex, endIndex).map((product, index) => (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
-                                <Card sx={{
-                                    '&:hover': {
-                                        transform: 'scale(1.05)',
-                                        transition: 'transform 0.3s ease',
-                                    },
-                                }}>
-                                    <Link to="/">
-                                        <img src={isValidImageUrl(product.imagenes[0]) ? product.imagenes[0] : ProductImage}
-                                            alt="Product Image"
-                                            style={{
-                                                display: 'block',
-                                                margin: '2% auto',
-                                                maxHeight: '150px',
-                                                maxWidth: '150px',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                padding: '3%',
-                                            }} />
-                                    </Link>
-                                    <CardContent>
-                                        <Typography variant="h6" component="div">
-                                            {product.producto}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {product.vendedor}
-                                        </Typography>
-                                        <Typography variant="body1" color="text.secondary">
-                                            {product.comentarios}
-                                        </Typography>
-                                        <Typography gutterBottom variant="h6" color='primary'>
-                                            {product.precio}
-                                        </Typography>
-                                        <div >
-                                            <label htmlFor={`quantity-${product.fav_id}`}>Cantidad:</label>
-                                            <TextField
-                                                id={`quantity-${product.fav_id}`}
-                                                type="number"
-                                                value={quantities[product.fav_id] || 1}
-                                                onChange={(e) => handleChange(product.fav_id, Math.max(1, Math.min(10, e.target.value)))}
-                                                inputProps={{
-                                                    min: 1,
-                                                    max: 10,
-                                                }}
-                                            />
-                                        </div>
-                                        <CardActions style={{ justifyContent: 'center' }}>
-                                            <Button size="small" color="error" variant="outlined" startIcon={<DeleteIcon />} onClick={() => carDeletefavClick(product.fav_id)}>
-                                                Eliminar
-                                            </Button>
-                                            <Button size="small" variant="contained" startIcon={<ShoppingCartIcon />} onClick={() => carSaveClick(product.fav_id, quantities[product.fav_id] || 1)}>
-                                                Comprar
-                                            </Button>
-                                        </CardActions>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-                        <Pagination
-                            count={Math.ceil(totalItems / itemsPerPage)}
-                            page={page}
-                            onChange={handleChangePage}
-                            color="primary" />
-                    </Box>
+
+                {data.length === 0 ? ( // Verifica si no hay productos en la lista
+                    <Box sx={{ flexGrow: 1, padding: 4, backgroundColor: darkMode ? '#1A2027' : '#fff' }}>
+                    <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px' }}>
+                        Lista de favoritos
+                    </Typography>
+                    <Typography variant="h5" sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px' }}>
+                        No hay productos aún
+                    </Typography>
                 </Box>
-                <StickyFooter />
+                ) : (
+                    <Box sx={{ flexGrow: 1, margin: '3%' }}>
+                        <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px', }}>
+                            Lista de favoritos
+                        </Typography>
+                        <Grid container spacing={2} justifyContent="center">
+                            {data.slice(startIndex, endIndex).map((product, index) => (
+                                <Grid item xs={12} sm={6} md={3} key={index}>
+                                    <Card sx={{
+                                        '&:hover': {
+                                            transform: 'scale(1.05)',
+                                            transition: 'transform 0.3s ease',
+                                        },
+                                    }}>
+                                        <Link to="/">
+                                            <img src={isValidImageUrl(product.imagenes[0]) ? product.imagenes[0] : ProductImage}
+                                                alt="Product Image"
+                                                style={{
+                                                    display: 'block',
+                                                    margin: '2% auto',
+                                                    maxHeight: '150px',
+                                                    maxWidth: '150px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    padding: '3%',
+                                                }} />
+                                        </Link>
+                                        <CardContent>
+                                            <Typography variant="h6" component="div">
+                                                {product.producto}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {product.vendedor}
+                                            </Typography>
+                                            <Typography variant="body1" color="text.secondary">
+                                                {product.comentarios}
+                                            </Typography>
+                                            <Typography gutterBottom variant="h6" color='primary'>
+                                                {product.precio}
+                                            </Typography>
+                                            <div >
+                                                <label htmlFor={`quantity-${product.fav_id}`}>Cantidad:</label>
+                                                <TextField
+                                                    id={`quantity-${product.fav_id}`}
+                                                    type="number"
+                                                    value={quantities[product.fav_id] || 1}
+                                                    onChange={(e) => handleChange(product.fav_id, Math.max(1, Math.min(10, e.target.value)))}
+                                                    inputProps={{
+                                                        min: 1,
+                                                        max: 10,
+                                                    }}
+                                                    sx={{ width: '80px' }}
+                                                />
+                                            </div>
+                                            <CardActions style={{ justifyContent: 'center' }}>
+                                                <Button size="small" color="error" variant="outlined" startIcon={<DeleteIcon />} onClick={() => carDeletefavClick(product.fav_id)}>
+                                                    Eliminar
+                                                </Button>
+                                                <Button size="small" variant="contained" startIcon={<ShoppingCartIcon />} onClick={() => carSaveClick(product.fav_id, quantities[product.fav_id] || 1)}>
+                                                    Comprar
+                                                </Button>
+                                            </CardActions>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+                            <Pagination
+                                count={Math.ceil(totalItems / itemsPerPage)}
+                                page={page}
+                                onChange={handleChangePage}
+                                color="primary" />
+                        </Box>
+                    </Box>
+                )}
             </Box>
         </ThemeProvider >
     );
