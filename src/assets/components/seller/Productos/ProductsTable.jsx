@@ -20,10 +20,13 @@ import DialogActions from "@mui/material/DialogActions";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import VisuallyHiddenInput from "@mui/material/Input";
 
 const StyledDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
@@ -50,12 +53,148 @@ const CloseButton = styled(IconButton)(({ theme }) => ({
 
 const ProductsTable = () => {
   const [products, setProducts] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedProduct, setEditedProduct] = useState(null);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesNames, setSelectedImagesNames] = useState([]);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const handleFileChangeImages = (event) => {
+    const files = event.target.files;
+    const newSelectedImages = [];
+    const newSelectedImagesNames = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.size <= 5 * 1024 * 1024) {
+        newSelectedImages.push(file);
+        newSelectedImagesNames.push(file.name);
+      } else {
+        alert(
+          `El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`
+        );
+      }
+    }
+
+    setSelectedImages(newSelectedImages);
+    setSelectedImagesNames(newSelectedImagesNames);
+  };
+
+  const toggleProductStatus = async (product) => {
+    try {
+      const { product_id } = product;
+
+      const response = await fetch("http://localhost:8090/product/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ id: product_id }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        const updatedProduct = responseData;
+
+        setProducts((prevProducts) =>
+          prevProducts.map((prevProduct) =>
+            prevProduct.product_id === updatedProduct.product_id
+              ? updatedProduct
+              : prevProduct
+          )
+        );
+
+        handleSnackbar("Estado del producto actualizado", "success");
+      } else {
+        console.log("Error al cambiar el estado del producto");
+        handleSnackbar("Error al cambiar el estado del producto", "error");
+      }
+    } catch (error) {
+      handleSnackbar("Se ha realizado el cambio con exito", "success");
+      console.error("Error en la petición:", error);
+    }
+  };
+
+  const handleSnackbar = (message, severity) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
+    setSnackbarOpen(true);
+  };
+
+  const handleUpdateProduct = async () => {
+    try {
+      if (
+        !editedProduct.producto ||
+        !editedProduct.precio ||
+        !editedProduct.cantidad ||
+        !editedProduct.comentarios
+      ) {
+        handleSnackbar("Todos los campos son obligatorios", "error");
+        console.log("Todos los campos son obligatorios");
+        return;
+      }
+  
+      const formData = new FormData();
+  
+      const productData = {
+        product_id: editedProduct.product_id,
+        name: editedProduct.producto,
+        stock: parseInt(editedProduct.cantidad),
+        price: editedProduct.precio,
+        features: editedProduct.comentarios,
+      };
+  
+      formData.append(
+        "productData",
+        new Blob([JSON.stringify(productData)], { type: "application/json" })
+      );
+  
+      // Append new images
+      if (selectedImages.length > 0) {
+        for (let i = 0; i < selectedImages.length; i++) {
+          formData.append("files", selectedImages[i]);
+        }
+      } else {
+        // If no new images are selected, append existing images
+        if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
+          for (let i = 0; i < editedProduct.imagenes.length; i++) {
+            formData.append("files", editedProduct.imagenes[i]);
+          }
+        }
+      }
+  
+      const response = await fetch("http://localhost:8090/product/update", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+        console.log("Producto actualizado exitosamente");
+        handleEditModalClose();
+      } else {
+        console.log("Error al actualizar el producto");
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+    }
+  };
 
   const handleEditModalOpen = (product) => {
     setEditedProduct({ ...product });
@@ -65,38 +204,6 @@ const ProductsTable = () => {
   const handleEditModalClose = () => {
     setEditedProduct(null);
     setIsEditModalOpen(false);
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      // Realiza una solicitud al servidor para actualizar el producto
-      // Puedes usar el método PUT o cualquier otro método adecuado
-      // Asegúrate de manejar la actualización del producto en el servidor
-      // y luego actualiza el estado `products` con la versión actualizada del producto
-      // y cierra el modal de edición
-      // Ejemplo ficticio (debes adaptarlo a tu backend):
-      const res = await fetch(
-        `http://localhost:8090/product/${editedProduct.product_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(editedProduct),
-        }
-      );
-      const updatedProduct = await res.json();
-
-      setProducts((prevProducts) =>
-        prevProducts.map((p) =>
-          p.product_id === updatedProduct.product_id ? updatedProduct : p
-        )
-      );
-      setIsEditModalOpen(false);
-    } catch (error) {
-      console.error("Error al guardar cambios:", error);
-    }
   };
 
   useEffect(() => {
@@ -118,18 +225,7 @@ const ProductsTable = () => {
     };
 
     fetchProducts();
-  }, []);
-
-  const handleModalOpen = (product) => {
-    console.log("Id del producto:", product.product_id);
-    setSelectedProduct(product);
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setSelectedProduct(null);
-    setIsModalOpen(false);
-  };
+  }, [snackbarOpen]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -140,9 +236,63 @@ const ProductsTable = () => {
     setPage(0);
   };
 
+  const handleRemoveImage = async (indexToRemove) => {
+    try {
+      if (editedProduct.imagenes.length === 1) {
+        handleSnackbar("No se puede eliminar la última imagen", "error");
+        return;
+      }
+      console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
+      console.log("ID del producto:", editedProduct.product_id);
+
+      const res = await fetch("http://localhost:8090/product/deleteImages", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: editedProduct.product_id,
+          imageUrl: editedProduct.imagenes[indexToRemove],
+        }),
+      });
+
+      if (res.status === 200) {
+        setEditedProduct((prevProduct) => {
+          const updatedImages = prevProduct.imagenes.filter(
+            (_, index) => index !== indexToRemove
+          );
+          return {
+            ...prevProduct,
+            imagenes: updatedImages,
+          };
+        });
+        handleSnackbar("Se ha eliminado la imagen", "success");
+      } else {
+        handleSnackbar("Error al eliminar la imagen", "error");
+      }
+    } catch (error) {
+      handleSnackbar("Error en la petición", "error");
+    }
+  };
+
   return (
     <>
       <Paper sx={{ width: "100%" }}>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+        >
+          <MuiAlert
+            elevation={6}
+            variant="filled"
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+          >
+            {snackbarMessage}
+          </MuiAlert>
+        </Snackbar>
         <TableContainer
           sx={{
             maxHeight: "100%",
@@ -232,7 +382,7 @@ const ProductsTable = () => {
                             )
                           }
                           sx={{ width: "130px" }}
-                          onClick={() => {}}
+                          onClick={() => toggleProductStatus(product)}
                         >
                           {product.estado ? "Desactivar" : "Activar"}
                         </Button>
@@ -335,27 +485,61 @@ const ProductsTable = () => {
             </div>
 
             <div>
-        <label>Fotos:</label>
-        <ImageList sx={{ width: "100%", height: 200 }} cols={3} rowHeight={164}>
-          {editedProduct &&
-            editedProduct.imagenes &&
-            editedProduct.imagenes.map((foto, index) => (
-              <ImageListItem key={index}>
-                <img
-                  srcSet={`${foto}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                  src={`${foto}?w=164&h=164&fit=crop&auto=format`}
-                  alt={`Foto ${index + 1}`}
-                  loading="lazy"
+              <label>Fotos:</label>
+              <ImageList
+                sx={{ width: "100%", height: 200 }}
+                cols={3}
+                rowHeight={164}
+              >
+                {editedProduct &&
+                  editedProduct.imagenes &&
+                  editedProduct.imagenes.map((foto, index) => (
+                    <ImageListItem key={index}>
+                      <IconButton
+                        style={{
+                          position: "absolute",
+                          top: 1,
+                          right: 1,
+                          zIndex: 1,
+                          color: "red",
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                        }}
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                      <img
+                        srcSet={`${foto}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${foto}?w=164&h=164&fit=crop&auto=format`}
+                        alt={`Foto ${index + 1}`}
+                        loading="lazy"
+                      />
+                    </ImageListItem>
+                  ))}
+              </ImageList>
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+                sx={{ textTransform: "none", marginTop: "16px" }}
+              >
+                {selectedImagesNames.length > 0
+                  ? `Imagenes Seleccionadas: ${selectedImagesNames.join(", ")}`
+                  : "Agregar Imágenes"}
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChangeImages}
                 />
-              </ImageListItem>
-            ))}
-        </ImageList>
-      </div>
+              </Button>
+            </div>
           </form>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleEditModalClose}>Cancelar</Button>
-          <Button onClick={handleSaveChanges}>Guardar Cambios</Button>
+
+        <DialogActions onClick={handleUpdateProduct}>
+          <Button variant="contained">Editar</Button>
         </DialogActions>
       </StyledDialog>
     </>

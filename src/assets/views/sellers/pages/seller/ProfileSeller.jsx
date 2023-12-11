@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Box, Divider, Grid, IconButton } from "@mui/material";
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import { SidenavSeller } from "../../../../components/seller/SidenavSeller";
 import ImagesSeller from "./ImagesSeller";
-import CardSellerProfile from "./CardSellerProfile";
+import CardSellerProfile from "../../../../components/seller/Profile/CardSellerProfile";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -18,11 +18,37 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Name = "Abel Tesfaye";
-const Correo = "the.weeknd@gmail.com"
-const Pass = "****"
 
 const ProfileSeller = ({ darkMode, setDarkMode }) => {
+
+  const [nombre, setNombre] = React.useState("");
+  const [apellido, setApellido] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [celular, setCelular] = React.useState("");
+  const [compañia, setCompañia] = React.useState("");
+
+  useEffect(() =>{
+    const fetchUsers = async () => {
+      try {
+        const res = await fetch("http://localhost:8090/dataUser/listu", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        const data = await res.json()
+        setCompañia(data.company);
+        setEmail(data.user_id);
+        setNombre(data.first_name + ' ' + data.last_name);
+        setCelular(data.phone);
+
+      } catch (error) {
+        console.log("Error:", error)
+      }
+    }
+    fetchUsers()
+  })
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
@@ -45,7 +71,7 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavSeller />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column"}}>
-            <h1>Perfil Seller</h1>
+            <h1>Perfil Vendedor</h1>
 
             
             <Box sx={{ width: "100%" }}>
@@ -69,13 +95,8 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
                           color="text.secondary"
                           sx={{ fontSize: "18px" }}
                         >
-                          <strong>Nombre:</strong> {Name}
+                          <strong>Nombre:</strong> {nombre}
                         </Typography>
-                      </Grid>
-                      <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
                       </Grid>
                     </Grid>
                   </Item>
@@ -93,13 +114,8 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
                           color="text.secondary"
                           sx={{ fontSize: "18px" }}
                         >
-                          <strong>Correo:</strong> {Correo}
+                          <strong>Correo:</strong> {email}
                         </Typography>
-                      </Grid>
-                      <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
                       </Grid>
                     </Grid>
                   </Item>
@@ -117,21 +133,32 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
                           color="text.secondary"
                           sx={{ fontSize: "18px" }}
                         >
-                          <strong>Contraseña:</strong> {Pass}
+                          <strong>Telefono:</strong> {celular}
                         </Typography>
                       </Grid>
+                    </Grid>
+                  </Item>
+                  <Item
+                    sx={{ marginTop: 1 }}
+                  >
+                    <Grid
+                      container
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
                       <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ fontSize: "18px" }}
+                        >
+                          <strong>Compañia:</strong> {compañia}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </Item>
                   <Divider
                     sx={{marginTop:5}}
-                  />
-                  <ImagesSeller
-                    sx={{marginBottom:5}}
                   />
                 </Grid>
               </Grid>

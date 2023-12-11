@@ -82,7 +82,6 @@ export default function CardsHome() {
         if (response.ok) {
           const data = await response.json();
           setTotalUsers(data);
-          console.log(data);
         } else {
           
         }
@@ -90,7 +89,6 @@ export default function CardsHome() {
        
       }
     };
-
     fetchTotalUsers();
   }, []);
 
@@ -109,156 +107,156 @@ export default function CardsHome() {
     borderRadius: "50%",
   };
 
-
-
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple }}>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IconButton color="primary" style={iconButtonStyles}>
-                <Inventory2Icon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
-              </IconButton>
-              <Typography
-                variant="h6"
-                component="div"
+    <Box  > 
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ ...cardStyles, background: gradientColors.purple }}>
+            <CardContent>
+              <Box
                 sx={{
-                  marginLeft: "auto",
-                  fontSize: "40px",
-                  fontWeight: "bold",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <IconButton color="primary" style={iconButtonStyles}>
+                  <Inventory2Icon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    marginLeft: "auto",
+                    fontSize: "40px",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  {totalProducts}
+                </Typography>
+              </Box>
+              <Typography
+                color="text.primary"
+                sx={{
+                  marginTop: 2,
                   color: "white",
                 }}
               >
-                {totalProducts}
+                Productos en SITILI
               </Typography>
-            </Box>
-            <Typography
-              color="text.primary"
-              sx={{
-                marginTop: 2,
-                color: "white",
-              }}
-            >
-              Productos en SITILI
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.blue }}>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
-              >
-                ${totalEnvios}
-              </Typography>
-              <IconButton color="primary" style={iconButtonStyles}>
-                <LocalAtmIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
-              </IconButton>
-            </Box>
-            <Typography
-              color="text.primary"
-              sx={{
-                marginTop: 2,
-                color: "white",
-              }}
-            >
-              De Ventas totales
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.purple }}>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <IconButton color="primary" style={iconButtonStyles}>
-                <SentimentSatisfiedAltIcon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
-              </IconButton>
-              <Typography
-                variant="h6"
-                component="div"
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ ...cardStyles, background: gradientColors.blue }}>
+            <CardContent>
+              <Box
                 sx={{
-                  marginLeft: "auto",
-                  fontSize: "40px",
-                  fontWeight: "bold",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
+                >
+                  ${totalEnvios}
+                </Typography>
+                <IconButton color="primary" style={iconButtonStyles}>
+                  <LocalAtmIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
+                </IconButton>
+              </Box>
+              <Typography
+                color="text.primary"
+                sx={{
+                  marginTop: 2,
                   color: "white",
                 }}
               >
-                {totalUsers}
+                De Ventas totales
               </Typography>
-            </Box>
-            <Typography
-              color="text.primary"
-              sx={{
-                marginTop: 2,
-                color: "white",
-              }}
-            >
-              Integrantes de SITILI
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid item xs={12} sm={6} md={3}>
-        <Card style={{ ...cardStyles, background: gradientColors.blue }}>
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ ...cardStyles, background: gradientColors.purple }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
               >
-                {totalVentas}
+                <IconButton color="primary" style={iconButtonStyles}>
+                  <SentimentSatisfiedAltIcon sx={{ fontSize: iconSize, color: gradientColors.purple }} />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    marginLeft: "auto",
+                    fontSize: "40px",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  {totalUsers}
+                </Typography>
+              </Box>
+              <Typography
+                color="text.primary"
+                sx={{
+                  marginTop: 2,
+                  color: "white",
+                }}
+              >
+                Integrantes de SITILI
               </Typography>
-              <IconButton color="primary" style={iconButtonStyles}>
-                <LocalShippingIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
-              </IconButton>
-            </Box>
-            <Typography
-              color="text-.primary"
-              sx={{
-                marginTop: 2,
-                color: "white",
-                alignItems: "center",
-              }}
-            >
-              Envios Realizados
-            </Typography>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3}>
+          <Card style={{ ...cardStyles, background: gradientColors.blue }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ fontSize: "40px", fontWeight: "bold", color: "white", marginRight: "auto" }}
+                >
+                  {totalVentas}
+                </Typography>
+                <IconButton color="primary" style={iconButtonStyles}>
+                  <LocalShippingIcon sx={{ fontSize: iconSize, color: gradientColors.blue }} />
+                </IconButton>
+              </Box>
+              <Typography
+                color="text-.primary"
+                sx={{
+                  marginTop: 2,
+                  color: "white",
+                  alignItems: "center",
+                }}
+              >
+                Envios Realizados
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 }

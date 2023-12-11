@@ -5,11 +5,11 @@ import {styled,Box,TextField,Select, MenuItem,Button,} from "@mui/material";
 import { Modal as BaseModal } from "@mui/base/Modal";
 import InputLabel from "@mui/material/InputLabel";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Alert from '@mui/material/Alert';
 
 
 export default function ModalProducts() {
   const [open, setOpen] = useState(false);
-  const [userType] = useState("");
   const [name, setName] = useState("");
   const [stock, setStock] = useState("");
   const [price, setPrice] = useState("");
@@ -17,6 +17,16 @@ export default function ModalProducts() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [categories, setCategories] = useState([]);
   const [productTypeN, setProductTypeN] = useState("");
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('error'); 
+  const [selectedFilesNames, setSelectedFilesNames] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+const [selectedImagesNames, setSelectedImagesNames] = useState([]);
+
+
+const handleCloseAlert = () => {
+  setAlertMessage('');
+};
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -36,29 +46,26 @@ export default function ModalProducts() {
   const handleFileChange = (event) => {
     const files = event.target.files;
     const newSelectedFiles = [];
+    const newSelectedFilesNames = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       if (file.size <= 5 * 1024 * 1024) {
         newSelectedFiles.push(file);
+        newSelectedFilesNames.push(file.name);
       } else {
-        console.log(
+        alert(
           `El archivo ${file.name} excede el límite de tamaño (5 MB) y no será agregado.`
         );
       }
     }
 
     setSelectedFiles(newSelectedFiles);
+    setSelectedFilesNames(newSelectedFilesNames);
   };
 
   const handleAddProduct = async () => {
     const priceDoubleValue = parseFloat(price).toFixed(2);
-    console.log("Nombre:", name);
-    console.log("Stock:", stock);
-    console.log("Detalles:", features);
-    console.log("ProductTypeN", productTypeN);
-    console.log("Imagenes:", selectedFiles);
-    console.log("Precio:", priceDoubleValue);
 
     if (
       name === "" ||
@@ -67,18 +74,24 @@ export default function ModalProducts() {
       features === "" ||
       productTypeN === ""
     ) {
+      setAlertSeverity('error');
+      setAlertMessage('Todos los campos son obligatorios');
       console.log("Todos los campos son obligatorios");
       return;
     }
-    console.log("UserType", userType);
-    console.log("ProductTypeN", productTypeN);
+
+    if (selectedFiles.length === 0) {
+      setAlertSeverity('error');
+      setAlertMessage('Todos los campos son obligatorios');
+      return;
+    }
 
     try {
       const formData = new FormData();
       const productData = {
         name: name,
         stock: parseInt(stock),
-        price: priceDoubleValue.toString(), //Revisar
+        price: priceDoubleValue.toString(), 
         features: features,
         category_id: parseInt(productTypeN),
       };
@@ -101,13 +114,16 @@ export default function ModalProducts() {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
-        console.log("Producto guardado exitosamente");
+        
       } else {
-        console.log("Error al guardar el producto");
+        
       }
     } catch (error) {
-      console.error(error);
+      setAlertSeverity('success');
+      setAlertMessage('Se ha creado el producto exitosamente');
+      //Realizar reload de la página despues de 2 segundos
+      setTimeout(() => {window.location.reload();}, 2000);
+      
     }
 
     handleClose();
@@ -121,8 +137,6 @@ export default function ModalProducts() {
         throw new Error("Error al obtener las categorías");
       }
       const categoriesData = await response.json();
-      console.log("Categorías:", categoriesData);
-      console.log("Numero de Id de categorias", categoriesData[0].id);
       setCategories(categoriesData);
     } catch (error) {
       console.error(error);
@@ -161,7 +175,7 @@ export default function ModalProducts() {
                 variant="outlined"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                sx={{ marginBottom: "16px" }}
+                sx={{ marginTop: "16px" }}
                 fullWidth
               />
               <TextField
@@ -170,7 +184,7 @@ export default function ModalProducts() {
                 type="number"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
-                sx={{ marginBottom: "16px" }}
+                sx={{ marginTop: "16px" }}
                 fullWidth
               />
               <TextField
@@ -179,7 +193,7 @@ export default function ModalProducts() {
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                sx={{ marginBottom: "16px" }}
+                sx={{ marginTop: "16px" }}
                 fullWidth
               />
               <TextField
@@ -188,7 +202,7 @@ export default function ModalProducts() {
                 type="text"
                 value={features}
                 onChange={(e) => setFeatures(e.target.value)}
-                sx={{ marginBottom: "16px" }}
+                sx={{ marginTop: "16px" }}
                 fullWidth
               />
               <InputLabel id="demo-simple-select-label">Categoria</InputLabel>
@@ -198,7 +212,7 @@ export default function ModalProducts() {
                 variant="outlined"
                 value={productTypeN}
                 onChange={(e) => setProductTypeN(e.target.value)}
-                sx={{ marginBottom: "16px" }}
+                sx={{ marginTop: "16px" }}
                 fullWidth
               >
                 {categories.map((category) => (
@@ -212,9 +226,11 @@ export default function ModalProducts() {
                 component="label"
                 variant="contained"
                 startIcon={<CloudUploadIcon />}
-                sx={{ textTransform: "none", marginBottom: "16px" }}
+                sx={{ textTransform: "none", marginTop: "16px" }}
               >
-                Agregar Foto *Requerido
+                {selectedFilesNames.length > 0
+                  ? `Archivos Seleccionados: ${selectedFilesNames.join(', ')}`
+                  : 'Agregar Foto *Requerido'}
                 <VisuallyHiddenInput
                   type="file"
                   accept="image/*"
@@ -222,13 +238,17 @@ export default function ModalProducts() {
                   onChange={handleFileChange}
                 />
               </Button>
-
+              {alertMessage && (
+                <Alert severity={alertSeverity} onClose={handleCloseAlert}>
+                  {alertMessage}
+                </Alert>
+              )}
               <Button
                 variant="contained"
                 color="primary"
                 onClick={handleAddProduct}
                 fullWidth
-                marginBottom="16px"
+                sx={{ marginTop: "16px" }}
               >
                 Agregar Producto
               </Button>

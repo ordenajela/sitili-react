@@ -8,6 +8,7 @@ import DashboardSeller from './assets/routes/dashboard_seller';
 import React, { useState } from 'react';
 import RoutesError from './assets/routes/RoutesError';
 import UserActions from './assets/views/users/user-view';
+import Forget from './assets/forms/forget';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -21,6 +22,7 @@ function App() {
         <Route path="/dashboard/*" element={<DashboardAdmin darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/seller/*" element={<DashboardSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgetPasswordSitili" element={<Forget />} />
         <Route path='/error/*' element={<RoutesError/>} />
         <Route path="/user/*" element={<UserActions darkMode={darkMode} setDarkMode={setDarkMode}/>} />
       </Routes>

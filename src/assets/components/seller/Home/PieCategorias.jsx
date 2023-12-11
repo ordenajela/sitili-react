@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 const size = {
   width: 400,
@@ -24,17 +24,17 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function PieTotalCategory() {
+export default function PieCategorias() {
+  const theme = useTheme();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/catTot", {
+        const response = await fetch("http://localhost:8090/categories/listAll", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
@@ -54,19 +54,28 @@ export default function PieTotalCategory() {
   }, []);
 
   const data = categories.map((category) => ({
-    value: category.cantidad, 
-    label: category.categoria, 
+    value: 1,
+    label: category.name,
   }));
 
   return (
-    <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
+    <PieChart
+      series={[{ data, innerRadius: 80 }]}
+      {...size}
+      sx={{
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          height: 300, // Puedes ajustar este valor según tus necesidades
+        },
+      }}
+    >
       <PieCenterLabel
         sx={{
           fontSize: 20,
           fontWeight: 'bold',
           mb: 1,
         }}
-      >Cantidad</PieCenterLabel>
+      >Categorias</PieCenterLabel>
     </PieChart>
   );
 }

@@ -21,6 +21,7 @@ import UserShoppingCar from '../views/users/pages/user-shopping-car';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import { Typography } from '@mui/material';
 
 const Search = styled('div')(({ theme }) => ({
     display: 'flex', // Centra horizontalmente los elementos dentro de 'Search'
@@ -94,9 +95,9 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
-        localStorage.removeItem("token");
-        localStorage.removeItem("rol");
-        navigate('/login');
+        // localStorage.removeItem("token");
+        // localStorage.removeItem("rol");
+        // navigate('/login');
         handleMobileMenuClose();
     };
 
@@ -122,10 +123,10 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>
-                <Link to="/user/perfil" style={{ textDecoration: 'none', color: 'black' }}>Mi perfil</Link>
+                <Link to="../perfil" style={{ textDecoration: 'none', color: 'inherit' }}>Mi perfil</Link>
             </MenuItem>
             <MenuItem onClick={handleMenuClose}>
-                <Link to="/login" style={{ textDecoration: 'none', color: 'black' }}>Cerrar sesión </Link>
+                <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Cerrar sesión </Link>
             </MenuItem>
         </Menu>
     );
@@ -148,49 +149,40 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="error">
+                <Link to="../carrito" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <IconButton color="inherit" >
                         <ShoppingCartIcon />
-                    </Badge>
-                    <Link to="user/carrito"></Link>
-                </IconButton>
-                <p>Carrito</p>
+                        <Typography style={{ marginLeft: '5px' }}>Carrito</Typography>
+                    </IconButton>
+                </Link>
             </MenuItem>
             <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                    <Badge badgeContent={17} color="error">
+                <Link to="../favoritos" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <IconButton color="inherit" >
                         <FavoriteIcon />
-                    </Badge>
-                    <Link to="user/favoritos"></Link>
-                </IconButton>
-                <p>Favoritos</p>
+                        <Typography style={{ marginLeft: '5px' }}>Favoritos</Typography>
+                    </IconButton>
+                </Link>
             </MenuItem>
             <MenuItem>
                 <IconButton
-                    size="large"
                     onClick={toggleDarkMode}
                     color="inherit"
+                    style={{ display: 'flex', alignItems: 'center' }}
                 >
-                    <Badge color="error">
-                        <InvertColorsIcon />
-                    </Badge>
+                    {darkMode ? <WbSunnyIcon /> : <DarkModeIcon />}
+                    <Typography style={{ marginLeft: '5px' }}>Cambiar tema</Typography>
                 </IconButton>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
-                    size="large"
-                    aria-label="account of current user"
                     aria-controls="primary-search-account-menu"
                     aria-haspopup="true"
                     color="inherit"
                 >
                     <AccountCircle />
+                    <Typography style={{ marginLeft: '5px' }}>Mi perfil</Typography>
                 </IconButton>
-                <p>Mi perfil</p>
             </MenuItem>
         </Menu>
     );
@@ -199,15 +191,6 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                    {/* <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton> */}
                     <Link to="/user/home">
                         <img src={logoImage} alt="Logo" style={{ height: '50px', marginTop: '3%' }} />
                     </Link>
@@ -223,21 +206,16 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Link to="../favoritos" style={{ textDecoration: 'none', color: 'white' }}>
-                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={4} color="error">
-                                    <FavoriteIcon />
-                                </Badge>
+                            <IconButton size="large" color="inherit">
+                                <FavoriteIcon />
                             </IconButton>
                         </Link>
                         <Link to="../carrito" style={{ textDecoration: 'none', color: 'white' }}>
                             <IconButton
                                 size="large"
-                                aria-label="show 17 new notifications"
                                 color="inherit"
                             >
-                                <Badge badgeContent={17} color="error">
-                                    <ShoppingCartIcon />
-                                </Badge>
+                                <ShoppingCartIcon />
                             </IconButton>
                         </Link>
                         <IconButton

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { useDrawingArea } from '@mui/x-charts/hooks';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 const size = {
   width: 400,
@@ -24,13 +24,14 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function PieTotalCategory() {
+export default function PieTotalC() {
+  const theme = useTheme();
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchTotalCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/catTot", {
+        const response = await fetch("http://localhost:8090/categories/catTotSeller", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,30 +44,39 @@ export default function PieTotalCategory() {
         }
 
         const data = await response.json();
-        console.log('Total de Esto:', data);
+        console.log('Total de Productos Por Categoria:', data);
         setCategories(data);
       } catch (error) {
         console.error('Error al obtener las categorías:', error.message);
       }
     };
 
-    fetchCategories();
+    fetchTotalCategories();
   }, []);
 
   const data = categories.map((category) => ({
-    value: category.cantidad, 
-    label: category.categoria, 
+    value: category.cantidad,
+    label: category.categoria,
   }));
 
   return (
-    <PieChart series={[{ data, innerRadius: 80 }]} {...size}>
+    <PieChart
+      series={[{ data, innerRadius: 80 }]}
+      {...size}
+      sx={{
+        [theme.breakpoints.down('sm')]: {
+          width: '100%',
+          height: 300, // Puedes ajustar este valor según tus necesidades
+        },
+      }}
+    >
       <PieCenterLabel
         sx={{
           fontSize: 20,
           fontWeight: 'bold',
           mb: 1,
         }}
-      >Cantidad</PieCenterLabel>
+      >cantidad</PieCenterLabel>
     </PieChart>
   );
 }

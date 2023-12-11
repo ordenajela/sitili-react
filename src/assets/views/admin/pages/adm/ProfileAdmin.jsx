@@ -130,7 +130,7 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                     </Grid>
                   </Item>
                   <Divider sx={{ marginTop: 5 }} />
-                  <ImagesAdmin sx={{ marginBottom: 5 }} />
+                 
                 </Grid>
               </Grid>
             </Box>

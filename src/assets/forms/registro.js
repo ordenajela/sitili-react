@@ -69,6 +69,7 @@ const ModalContent = styled(Box)(
 );
 
 function Registro() {
+
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,6 +92,7 @@ function Registro() {
   const [datosError, setDatosError] = useState(false);
   const [correoError, setCorreoError] = useState(false);
   const [errorType, setErrorType] = useState('');
+
 
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
@@ -332,8 +334,8 @@ function Registro() {
                     </Button>
                     <Grid container sx={{ mb: 2 }}>
                     <Grid item xs>
-                      <Link href="#" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
-                        Olvidaste tu contraseña?
+                      <Link to="/forgetPasswordSitili" variant="body2" style={{ color: '#512D6D', textAlign: 'center' }}>
+                        {"Olvidaste tu contraseña?"}
                       </Link>
                     </Grid>
                     <Grid item xs>
