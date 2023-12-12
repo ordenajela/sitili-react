@@ -64,7 +64,7 @@ export default function PieTotalC() {
       sx={{
         [theme.breakpoints.down('sm')]: {
           width: '100%',
-          height: 300, // Puedes ajustar este valor según tus necesidades
+          height: 300,
         },
       }}
     >
@@ -73,8 +73,9 @@ export default function PieTotalC() {
           fontSize: 20,
           fontWeight: 'bold',
           mb: 1,
+
         }}
-      >cantidad</PieCenterLabel>
+      >Cantidad</PieCenterLabel>
     </PieChart>
   );
 }

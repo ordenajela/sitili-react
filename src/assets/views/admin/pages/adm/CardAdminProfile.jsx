@@ -31,7 +31,7 @@ export default function CardAdminProfile() {
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Leo Messi
+          Administrador SITILI
         </Typography>
         <Typography variant="body2" color="text.secondary" marginTop={2} >
           Administrador de la pagina de SITILI, como administrador podras

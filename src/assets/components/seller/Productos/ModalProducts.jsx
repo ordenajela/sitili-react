@@ -118,7 +118,6 @@ const handleCloseAlert = () => {
     } catch (error) {
       setAlertSeverity('success');
       setAlertMessage('Se ha creado el producto exitosamente');
-      //Realizar reload de la página despues de 2 segundos
       setTimeout(() => {window.location.reload();}, 2000);
       
     }
@@ -225,7 +224,7 @@ const handleCloseAlert = () => {
                 sx={{ textTransform: "none", marginTop: "16px" }}
               >
                 {selectedFilesNames.length > 0
-                  ? `Archivos Seleccionados: ${selectedFilesNames.join(', ')}`
+                  ? `Imagenes Seleccionados: ${selectedFilesNames.join(', ')}`
                   : 'Agregar Foto *Requerido'}
                 <VisuallyHiddenInput
                   type="file"

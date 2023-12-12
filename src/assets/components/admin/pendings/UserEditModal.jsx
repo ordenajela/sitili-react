@@ -14,14 +14,13 @@ const UserEditModal = ({ user, handleCloseModal }) => {
     >
       <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, bgcolor: "background.paper", border: "2px solid #000", p: 2 }}>
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          Editar Usuario
+          Datos del Usuario
         </Typography>
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           Email: {user.email}
           <br />
           Estado: {user.status ? "Activo" : "Inactivo"}
           <br />
-          Contraseña: {user.password}
         </Typography>
         <Button onClick={handleCloseModal} sx={{ mt: 2 }}>
           Cerrar
