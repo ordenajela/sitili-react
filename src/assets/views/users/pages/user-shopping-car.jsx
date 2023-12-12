@@ -49,7 +49,7 @@ const CartItem = ({ item, fetchData }) => {
     const carDeleteClick = async (productiddel) => {
         try {
             if (tokenn) {
-                const responsedeletefav = await axios.delete('http://localhost:8090/shoppingCar/delete', {
+                const responsedeletefav = await axios.delete('http://3.219.197.64:8090/shoppingCar/delete', {
                     headers: {
                         Authorization: `Bearer ${tokenn}`,
                     },
@@ -178,7 +178,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
     const fetchData = async () => {
         try {
             const token = tokenn;
-            const response = await fetch('http://localhost:8090/shoppingCar/list', {
+            const response = await fetch('http://3.219.197.64:8090/shoppingCar/list', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Otros encabezados si es necesario
@@ -290,7 +290,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         try {
             if (tokenn) {
                 const responsedeletefav = await axios.get(
-                    'http://localhost:8090/stripe/saleCar',
+                    'http://3.219.197.64:8090/stripe/saleCar',
                     {
                         headers: {
                             Authorization: `Bearer ${tokenn}`
@@ -328,7 +328,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         try {
             if (tokenn) {
                 const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/cancel',
+                    'http://3.219.197.64:8090/stripe/cancel',
                     idsproducts,
                     {
                         headers: {

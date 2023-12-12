@@ -37,7 +37,7 @@ const Products = () => {
         // Lógica para obtener los productos desde la API
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:8090/product/listAll');
+                const response = await fetch('http://3.219.197.64:8090/product/listAll');
                 const data = await response.json();
                 setTotalProducts(data.length);
 
@@ -67,7 +67,7 @@ const Products = () => {
         try {
             // Verificar si rol y token no son nulos
             if (rol && token) {
-                const response = await axios.post('http://localhost:8090/favorite/create', { id: productId }, {
+                const response = await axios.post('http://3.219.197.64:8090/favorite/create', { id: productId }, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -121,7 +121,7 @@ const Products = () => {
                     stock: stock
                 }
                 console.log(data);
-                const responsecar = await axios.post('http://localhost:8090/shoppingCar/create', data, {
+                const responsecar = await axios.post('http://3.219.197.64:8090/shoppingCar/create', data, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

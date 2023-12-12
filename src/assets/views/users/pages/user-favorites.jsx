@@ -51,7 +51,7 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
         try {
             const token = tokenn;
 
-            const response = await fetch('http://localhost:8090/favorite/list', {
+            const response = await fetch('http://3.219.197.64:8090/favorite/list', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Otros encabezados si es necesario
@@ -122,7 +122,7 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
                     stock: stock
                 }
                 console.log(data);
-                const responsecar = await axios.post('http://localhost:8090/shoppingCar/create', data, {
+                const responsecar = await axios.post('http://3.219.197.64:8090/shoppingCar/create', data, {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     }
@@ -174,7 +174,7 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
         try {
             // Verificar si token no son nulos
             if (tokenn) {
-                const responsedeletefav = await axios.delete('http://localhost:8090/favorite/delete', {
+                const responsedeletefav = await axios.delete('http://3.219.197.64:8090/favorite/delete', {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     },
