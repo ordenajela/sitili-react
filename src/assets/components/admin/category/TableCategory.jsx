@@ -94,7 +94,7 @@ const TableCagory = () => {
   const handleCreateCategorySubmit = async () => {
     console.log(editedCategory.name);
     try {
-      const response = await fetch("http://localhost:8090/categories/save", {
+      const response = await fetch("http://3.219.197.64:8090/categories/save", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,7 +139,7 @@ const TableCagory = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch("http://localhost:8090/categories/list", {
+        const res = await fetch("http://3.219.197.64:8090/categories/list", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -165,7 +165,7 @@ const TableCagory = () => {
 
   const toggleCategoryStatus = async (categoryId, currentStatus) => {
     try {
-      const response = await fetch("http://localhost:8090/categories/delete", {
+      const response = await fetch("http://3.219.197.64:8090/categories/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -218,7 +218,7 @@ const TableCagory = () => {
 
   const handleEditCategory = async () => {
     try {
-      const response = await fetch(`http://localhost:8090/categories/update`, {
+      const response = await fetch(`http://3.219.197.64:8090/categories/update`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

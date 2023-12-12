@@ -62,6 +62,9 @@ const ProductsTable = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImagesNames, setSelectedImagesNames] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -95,7 +98,7 @@ const ProductsTable = () => {
     try {
       const { product_id } = product;
 
-      const response = await fetch("http://localhost:8090/product/delete", {
+      const response = await fetch("http://3.219.197.64:8090/product/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -158,13 +161,11 @@ const ProductsTable = () => {
         new Blob([JSON.stringify(productData)], { type: "application/json" })
       );
   
-      // Append new images
       if (selectedImages.length > 0) {
         for (let i = 0; i < selectedImages.length; i++) {
           formData.append("files", selectedImages[i]);
         }
       } else {
-        // If no new images are selected, append existing images
         if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
           for (let i = 0; i < editedProduct.imagenes.length; i++) {
             formData.append("files", editedProduct.imagenes[i]);
@@ -172,7 +173,7 @@ const ProductsTable = () => {
         }
       }
   
-      const response = await fetch("http://localhost:8090/product/update", {
+      const response = await fetch("http://3.219.197.64:8090/product/update", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -202,7 +203,7 @@ const ProductsTable = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:8090/product/listAllVend", {
+        const res = await fetch("http://3.219.197.64:8090/product/listAllVend", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -234,7 +235,7 @@ const ProductsTable = () => {
         return;
       }
 
-      const res = await fetch("http://localhost:8090/product/deleteImages", {
+      const res = await fetch("http://3.219.197.64:8090/product/deleteImages", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

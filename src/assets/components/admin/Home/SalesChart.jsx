@@ -35,7 +35,7 @@ export default function SalesChart() {
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const res = await fetch("http://localhost:8090/order/sales", {
+        const res = await fetch("http://3.219.197.64:8090/order/sales", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

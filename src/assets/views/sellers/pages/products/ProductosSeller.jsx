@@ -37,7 +37,7 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
 
   const handleSaveChanges = async () => {
     try {
-      const res = await fetch(`http://localhost:8090/product/${editedProduct.product_id}`, {
+      const res = await fetch(`http://3.219.197.64:8090/product/${editedProduct.product_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const respuesta = await axios.get('http://localhost:8090/product/listAll');
+        const respuesta = await axios.get('http://3.219.197.64:8090/product/listAll');
         setProducts(respuesta.data);
       } catch (error) {
 

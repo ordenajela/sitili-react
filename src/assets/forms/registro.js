@@ -110,7 +110,7 @@ function Registro() {
     }
   
     setPasswordError(false);
-    const postApiUrl = 'http://localhost:8090/registerNewUser';
+    const postApiUrl = 'http://3.219.197.64:8090/registerNewUser';
   
     if (email === '' || password === '' || first_name === '' || last_name === '') {
       setErrorType('emptyFields');
