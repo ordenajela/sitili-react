@@ -12,43 +12,53 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const defaultTheme = createTheme();
 
 function Restore() {
   const [showAlert, setShowAlert] = useState(false);
-  const [token, setToken] = useState(''); // Nuevo estado para el token
-  const [newPassword, setNewPassword] = useState(''); // Nuevo estado para la nueva contraseña
+  const [token, setToken] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [errorType, setErrorType] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handlePasswordConfirm = async (event) => {
     event.preventDefault();
 
+    if (token === '' || newPassword === '') {
+      setShowAlert(true);
+      setErrorType('void');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await fetch('http://localhost:8090/api/resetPassword/confirm?token=' + token + '&newPassword=' + newPassword, {
+      const response = await fetch('http://3.219.197.64:8090/api/resetPassword/confirm?token=' + token + '&newPassword=' + newPassword, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      console.log('HTTP Status Code:', response.status);
 
-      if (response.ok) {
-        const responseData = await response.text();
-        console.log('Response Data:', responseData);
+      if (response.status === 200) {
         setShowAlert(true);
-        setErrorType(responseData || 'confirmError');
+        setErrorType('success');
+      } else if (response.status === 400) {
+        setShowAlert(true);
+        setErrorType('invalidToken');
       } else {
-        const responseData = await response.json();
-        console.log(responseData);
         setShowAlert(true);
-        setErrorType(responseData.message || 'confirmError');
+        setErrorType('confirmError');
       }
     } catch (error) {
-      console.error(error);
       setShowAlert(true);
       setErrorType('Entraste a Catch');
+    } finally {
+      setLoading(false);
+      setToken('');
+      setNewPassword('');
     }
   };
 
@@ -56,13 +66,20 @@ function Restore() {
     <>
       <Snackbar
         open={showAlert}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         onClose={() => setShowAlert(false)}
       >
-        <Alert severity="error" onClose={() => setShowAlert(false)} sx={{ borderRadius: '8px', border: '1px solid #DAE2ED', boxShadow: '0px 4px 12px rgba(0,0,0, 0.20)', padding: '1rem', color: '#434D5B', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, textAlign: 'start', position: 'relative' }}>
-          {errorType === 'invalidToken' && 'Token inválido o expirado.'}
-          {errorType === 'confirmError' && 'Error al confirmar la solicitud. Inténtalo de nuevo más tarde.'}
-        </Alert>
+        {errorType === 'success' ? (
+          <Alert severity="success" onClose={() => setShowAlert(false)}>
+            {'Se ha realizado el cambio correctamente. Puede Iniciar Sesión con la nueva contraseña.'}
+          </Alert>
+        ) : (
+          <Alert severity="error" onClose={() => setShowAlert(false)} sx={{ borderRadius: '8px', border: '1px solid #DAE2ED', boxShadow: '0px 4px 12px rgba(0,0,0, 0.20)', padding: '1rem', color: '#434D5B', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 500, textAlign: 'start', position: 'relative' }}>
+            {errorType === 'invalidToken' && 'Token inválido o expirado.'}
+            {errorType === 'void' && 'Todos Los Campos Son Obligatorios.'}
+            {errorType === 'confirmError' && 'Error al confirmar la solicitud. Inténtalo de nuevo más tarde.'}
+          </Alert>
+        )}
       </Snackbar>
 
       <Box
@@ -134,8 +151,9 @@ function Restore() {
                       variant="contained"
                       color="primary"
                       sx={{ mt: 3, mb: 3, color: '#FFFFF', backgroundColor: '#512D6D' }}
+                      disabled={loading}
                     >
-                      Confirmar Cambio
+                      {loading ? <CircularProgress size={24} color="inherit" /> : 'Ingresar'}
                     </Button>
                     <Grid container justifyContent="center" alignItems="center">
                       <Grid item xs={12} md={6} >

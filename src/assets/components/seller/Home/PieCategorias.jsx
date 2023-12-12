@@ -31,7 +31,7 @@ export default function PieCategorias() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/listAll", {
+        const response = await fetch("http://3.219.197.64:8090/categories/listAll", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,10 +43,8 @@ export default function PieCategorias() {
         }
 
         const data = await response.json();
-        console.log('Total de Esto:', data);
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 

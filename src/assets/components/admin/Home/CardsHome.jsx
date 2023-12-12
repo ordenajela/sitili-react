@@ -20,7 +20,7 @@ export default function CardsHome() {
   useEffect(() => {
     const fetchTotalVentas = async () => {
       try {
-        const response = await fetch("http://localhost:8090/order/saleAll", {
+        const response = await fetch("http://3.219.197.64:8090/order/saleAll", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -36,7 +36,6 @@ export default function CardsHome() {
           
         }
       } catch (error) {
-        console.log(error);
       }
     }
     fetchTotalVentas();
@@ -45,7 +44,7 @@ export default function CardsHome() {
   useEffect(() => {
     const fetchTotalProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8090/product/listAll", {
+        const response = await fetch("http://3.219.197.64:8090/product/listAll", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +70,7 @@ export default function CardsHome() {
   useEffect(() => {
     const fetchTotalUsers = async () => {
       try {
-        const response = await fetch("http://localhost:8090/users/totalUsers", {
+        const response = await fetch("http://3.219.197.64:8090/users/totalUsers", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

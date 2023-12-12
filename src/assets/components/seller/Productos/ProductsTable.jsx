@@ -62,6 +62,9 @@ const ProductsTable = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImagesNames, setSelectedImagesNames] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -95,7 +98,7 @@ const ProductsTable = () => {
     try {
       const { product_id } = product;
 
-      const response = await fetch("http://localhost:8090/product/delete", {
+      const response = await fetch("http://3.219.197.64:8090/product/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -118,12 +121,10 @@ const ProductsTable = () => {
 
         handleSnackbar("Estado del producto actualizado", "success");
       } else {
-        console.log("Error al cambiar el estado del producto");
         handleSnackbar("Error al cambiar el estado del producto", "error");
       }
     } catch (error) {
       handleSnackbar("Se ha realizado el cambio con exito", "success");
-      console.error("Error en la petición:", error);
     }
   };
 
@@ -142,7 +143,6 @@ const ProductsTable = () => {
         !editedProduct.comentarios
       ) {
         handleSnackbar("Todos los campos son obligatorios", "error");
-        console.log("Todos los campos son obligatorios");
         return;
       }
   
@@ -161,13 +161,11 @@ const ProductsTable = () => {
         new Blob([JSON.stringify(productData)], { type: "application/json" })
       );
   
-      // Append new images
       if (selectedImages.length > 0) {
         for (let i = 0; i < selectedImages.length; i++) {
           formData.append("files", selectedImages[i]);
         }
       } else {
-        // If no new images are selected, append existing images
         if (editedProduct.imagenes && editedProduct.imagenes.length > 0) {
           for (let i = 0; i < editedProduct.imagenes.length; i++) {
             formData.append("files", editedProduct.imagenes[i]);
@@ -175,7 +173,7 @@ const ProductsTable = () => {
         }
       }
   
-      const response = await fetch("http://localhost:8090/product/update", {
+      const response = await fetch("http://3.219.197.64:8090/product/update", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -185,14 +183,10 @@ const ProductsTable = () => {
   
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
-        console.log("Producto actualizado exitosamente");
         handleEditModalClose();
       } else {
-        console.log("Error al actualizar el producto");
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
     }
   };
 
@@ -209,7 +203,7 @@ const ProductsTable = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:8090/product/listAllVend", {
+        const res = await fetch("http://3.219.197.64:8090/product/listAllVend", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -218,9 +212,7 @@ const ProductsTable = () => {
         });
         const data = await res.json();
         setProducts(data);
-        console.log("Productos:", data);
       } catch (error) {
-        console.log("Error:", error);
       }
     };
 
@@ -242,10 +234,8 @@ const ProductsTable = () => {
         handleSnackbar("No se puede eliminar la última imagen", "error");
         return;
       }
-      console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
-      console.log("ID del producto:", editedProduct.product_id);
 
-      const res = await fetch("http://localhost:8090/product/deleteImages", {
+      const res = await fetch("http://3.219.197.64:8090/product/deleteImages", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

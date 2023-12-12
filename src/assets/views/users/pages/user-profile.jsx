@@ -42,7 +42,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
     // Get Datos del usuario
     const fetchDataUsuario = async () => {
         try {
-            const response = await fetch('http://localhost:8090/dataUser/listu',
+            const response = await fetch('http://3.219.197.64:8090/dataUser/listu',
                 {
                     headers: {
                         Authorization: `Bearer ${tokenn}`,
@@ -102,7 +102,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         try {
             // Verificar si token no son nulos
             if (tokenn) {
-                const response = await axios.put('http://localhost:8090/dataUser/update', objDataUser, {
+                const response = await axios.put('http://3.219.197.64:8090/dataUser/update', objDataUser, {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     }
@@ -141,7 +141,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
 
     const fetchDataDirections = async () => {
         try {
-            const response = await fetch('http://localhost:8090/address/list',
+            const response = await fetch('http://3.219.197.64:8090/address/list',
                 {
                     headers: {
                         Authorization: `Bearer ${tokenn}`,
@@ -204,7 +204,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         try {
             // Verificar si token no son nulos
             if (tokenn) {
-                const response = await axios.put('http://localhost:8090/address/update', objDataDirection, {
+                const response = await axios.put('http://3.219.197.64:8090/address/update', objDataDirection, {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     }
@@ -244,7 +244,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
 
     const fetchDataCC = async () => {
         try {
-            const response = await fetch('http://localhost:8090/paymentcc/list',
+            const response = await fetch('http://3.219.197.64:8090/paymentcc/list',
                 {
                     headers: {
                         Authorization: `Bearer ${tokenn}`,
@@ -296,7 +296,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         try {
             // Verificar si token no son nulos
             if (tokenn) {
-                const response = await axios.put('http://localhost:8090/paymentcc/update', objDataUserCC, {
+                const response = await axios.put('http://3.219.197.64:8090/paymentcc/update', objDataUserCC, {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     }

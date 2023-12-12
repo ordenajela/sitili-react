@@ -30,7 +30,7 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
   useEffect(() =>{
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:8090/dataUser/listu", {
+        const res = await fetch("http://3.219.197.64:8090/dataUser/listu", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,7 +44,7 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
         setCelular(data.phone);
 
       } catch (error) {
-        console.log("Error:", error)
+
       }
     }
     fetchUsers()

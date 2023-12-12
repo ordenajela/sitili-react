@@ -49,7 +49,7 @@ const CartItem = ({ item, fetchData }) => {
     const carDeleteClick = async (productiddel) => {
         try {
             if (tokenn) {
-                const responsedeletefav = await axios.delete('http://localhost:8090/shoppingCar/delete', {
+                const responsedeletefav = await axios.delete('http://3.219.197.64:8090/shoppingCar/delete', {
                     headers: {
                         Authorization: `Bearer ${tokenn}`,
                     },
@@ -178,7 +178,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
     const fetchData = async () => {
         try {
             const token = tokenn;
-            const response = await fetch('http://localhost:8090/shoppingCar/list', {
+            const response = await fetch('http://3.219.197.64:8090/shoppingCar/list', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     // Otros encabezados si es necesario
@@ -214,22 +214,6 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         justifyContent: 'space-between',
     }));
 
-    /*const cartItems = [
-        {
-            id: 1,
-            name: 'Play Station 5 Marvels Spiderman Edition',
-            price: '$19.99',
-            imageUrl: ProductImage,
-        },
-        {
-            id: 2,
-            name: 'Producto 2',
-            price: '$29.99',
-            imageUrl: ProductImage,
-        },
-        // More items...
-    ];*/
-
     //ID PARA CONFIRMAR O CANCELAR COMPRA
     const [idsproducts, setIdsProducts] = useState([]);
 
@@ -241,53 +225,55 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         setIdsProducts([]);
     };
     const handleBuyNowClick = async () => {
-        const compraData = [];
-        //Construir objeto para datos de producto
-        for (const item of data) {
-            const compraItem = {
-                description: item.producto,
-                amount: item.precio * 100,
-                currency: 'mxn',
-                payment_method_types: 'card',
-            };
-            compraData.push(compraItem);
-        }
-        try {
-            console.log(tokenn);
-            if (tokenn) {
-                const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/paymentintent',
-                    compraData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${tokenn}`
-                        }
-                    }
-
-                );
-                if (responsedeletefav.status === 200) {
-                    console.log(responsedeletefav);
-                    //fetchData();
-                    setShowCompraModal(true);
-                    /*for (const itemids of responsedeletefav.data) {
-                        console.log("OYEEEEEEEEE");
-                        console.log(itemids);
-                        idsproducts.push(itemids.id);
-                    }*/
-                    handleLlenarIds(responsedeletefav.data);
-
-                }
-            } else {
-                console.log('Usuario no autenticado');
-                //navigate('/login');
-            }
-        } catch (error) {
-            console.error('Error al guardar en Carrito de Compras:', error);
-        }
-
-
-        console.log('Datos de la compra:', compraData);
+        setShowCompraModal(true);
     };
+    //     const compraData = [];
+    //     //Construir objeto para datos de producto
+    //     for (const item of data) {
+    //         const compraItem = {
+    //             description: item.producto,
+    //             amount: item.precio * 100,
+    //             currency: 'mxn',
+    //             payment_method_types: 'card',
+    //         };
+    //         compraData.push(compraItem);
+    //     }
+    //     try {
+    //         console.log(tokenn);
+    //         if (tokenn) {
+    //             const responsedeletefav = await axios.post(
+    //                 'http://localhost:8090/stripe/paymentintent',
+    //                 compraData,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${tokenn}`
+    //                     }
+    //                 }
+
+    //             );
+    //             if (responsedeletefav.status === 200) {
+    //                 console.log(responsedeletefav);
+    //                 //fetchData();
+    //                 setShowCompraModal(true);
+    //                 /*for (const itemids of responsedeletefav.data) {
+    //                     console.log("OYEEEEEEEEE");
+    //                     console.log(itemids);
+    //                     idsproducts.push(itemids.id);
+    //                 }*/
+    //                 handleLlenarIds(responsedeletefav.data);
+
+    //             }
+    //         } else {
+    //             console.log('Usuario no autenticado');
+    //             //navigate('/login');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al guardar en Carrito de Compras:', error);
+    //     }
+
+
+    //     console.log('Datos de la compra:', compraData);
+    // };
 
     const [showCompraModal, setShowCompraModal] = useState(false);
 
@@ -295,13 +281,16 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         setShowCompraModal(false);
     };
 
+    // Alertas
+    const [mostrarAlertaCompra, setMostrarAlertaCompra] = useState('');
+    const [mostrarAlertaCompraCancel, setMostrarAlertaCompraCancel] = useState('');
+
     const handleFinalizarCompra = async () => {
         console.log(idsproducts);
         try {
             if (tokenn) {
-                const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/confirm',
-                    idsproducts,
+                const responsedeletefav = await axios.get(
+                    'http://3.219.197.64:8090/stripe/saleCar',
                     {
                         headers: {
                             Authorization: `Bearer ${tokenn}`
@@ -315,6 +304,13 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     console.log('Compra finalizada');
                     setShowCompraModal(false);
                     handleLimpiarIds();
+                    setMostrarAlertaCompra('success');
+                    setTimeout(() => {
+                        setMostrarAlertaCompra('none');
+                    }, 3000);
+                    setTimeout(() => {
+                        fetchData();
+                    }, 3000);
                 }
             } else {
                 console.log('Usuario no autenticado');
@@ -332,7 +328,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         try {
             if (tokenn) {
                 const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/cancel',
+                    'http://3.219.197.64:8090/stripe/cancel',
                     idsproducts,
                     {
                         headers: {
@@ -347,6 +343,11 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     console.log('Compra Cancelada');
                     setShowCompraModal(false);
                     handleLimpiarIds();
+                    setMostrarAlertaCompraCancel('error');
+                    setTimeout(() => {
+                        setMostrarAlertaCompraCancel('none');
+                        console.log("Se intentó pero no jaló");
+                    }, 3000);
                 }
             } else {
                 console.log('Usuario no autenticado');
@@ -412,6 +413,20 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                         padding: 4,
                         backgroundColor: darkMode ? '#1A2027' : '#fff',
                     }}>
+                        <div style={{ position: 'absolute', top: '10%', right: '10%', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+                            {mostrarAlertaCompra === 'success' && (
+                                <Alert severity="success">
+                                    <AlertTitle>¡Compra realizada!</AlertTitle>
+                                    Se ha realizado la compra.
+                                </Alert>
+                            )}
+                            {mostrarAlertaCompraCancel === 'error' && (
+                                <Alert severity="error">
+                                    <AlertTitle>¡Compra cancelada!</AlertTitle>
+                                    Se ha cancelado la compra.
+                                </Alert>
+                            )}
+                        </div>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px', }}>

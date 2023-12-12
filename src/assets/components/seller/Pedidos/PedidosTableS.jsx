@@ -31,10 +31,9 @@ const PedidosTableS = () => {
   };
 
   const handleEditClick = async (product) => {
-    console.log("orderDetail:", product.detalles);
     try {
       const response = await fetch(
-        "http://localhost:8090/orderDetail/statusOrderDetails",
+        "http://3.219.197.64:8090/orderDetail/statusOrderDetails",
         {
           method: "PUT",
           headers: {
@@ -49,12 +48,10 @@ const PedidosTableS = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
         setSnackbarSeverity("success");
         setSnackbarMessage("Estado de detalle modificado");
         setSnackbarOpen(true);
       } else {
-        console.log("Error al modificar el estado del detalle");
         setSnackbarSeverity("error");
         setSnackbarMessage("Error en modificar el estado del detalle");
         setSnackbarOpen(true);
@@ -63,7 +60,6 @@ const PedidosTableS = () => {
       setSnackbarSeverity("success");
       setSnackbarMessage("Estado del pedido se modifico exitosamente");
       setSnackbarOpen(true);
-      console.error("Error en la petición:", error);
     }
   };
 
@@ -71,7 +67,7 @@ const PedidosTableS = () => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8090/orderDetail/listOrderDetails",
+          "http://3.219.197.64:8090/orderDetail/listOrderDetails",
           {
             method: "GET",
             headers: {
@@ -82,9 +78,7 @@ const PedidosTableS = () => {
         );
         const data = await res.json();
         setProducts(data);
-        console.log("Productos:", data);
       } catch (error) {
-        console.log("Error:", error);
       }
     };
 

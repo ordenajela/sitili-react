@@ -44,7 +44,7 @@ export default function PedidosChart() {
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const res = await fetch("http://localhost:8090/order/sales", {
+        const res = await fetch("http://3.219.197.64:8090/order/sales", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -57,8 +57,6 @@ export default function PedidosChart() {
         }
 
         const data = await res.json();
-        console.log("Ventas:", data);
-
         const monthlySales = {};
 
         data.forEach((item) => {
@@ -79,7 +77,6 @@ export default function PedidosChart() {
 
         setSalesData(transformedData);
       } catch (error) {
-        console.log("Error:", error.message);
       }
     };
 

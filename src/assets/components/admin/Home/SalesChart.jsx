@@ -23,7 +23,6 @@ const RechartsBarChart = ({ data }) => {
           <Tooltip />
           <Legend />
           <Bar dataKey="total_Mes" fill="#6636A8" name="Total del Mes $" />
-
         </BarChart>
       </ResponsiveContainer>
     </Paper>
@@ -36,7 +35,7 @@ export default function SalesChart() {
   useEffect(() => {
     const fetchSales = async () => {
       try {
-        const res = await fetch("http://localhost:8090/order/sales", {
+        const res = await fetch("http://3.219.197.64:8090/order/sales", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -49,8 +48,6 @@ export default function SalesChart() {
         }
 
         const data = await res.json();
-        console.log("Ventas:", data);
-
         const monthlySales = {};
 
         data.forEach((item) => {
@@ -71,7 +68,6 @@ export default function SalesChart() {
 
         setSalesData(transformedData);
       } catch (error) {
-        console.log("Error:", error.message);
       }
     };
 

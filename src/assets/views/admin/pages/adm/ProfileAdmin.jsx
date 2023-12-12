@@ -18,9 +18,9 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Name = "Leo Messi";
+const Name = "Leo";
 const Correo = "leo.messi@gmail.com";
-const Pass = "****";
+const Pass = "Messi";
 
 const ProfileAdmin = ({ darkMode, setDarkMode }) => {
   const theme = createTheme({
@@ -78,11 +78,6 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                           <strong>Nombre:</strong> {Name}
                         </Typography>
                       </Grid>
-                      <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
-                      </Grid>
                     </Grid>
                   </Item>
                   <Item sx={{ marginTop: 1 }}>
@@ -97,36 +92,10 @@ const ProfileAdmin = ({ darkMode, setDarkMode }) => {
                           color="text.secondary"
                           sx={{ fontSize: "18px" }}
                         >
-                          <strong>Correo:</strong> {Correo}
+                          <strong>Apellido:</strong> {Pass}
                         </Typography>
                       </Grid>
-                      <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
-                      </Grid>
-                    </Grid>
-                  </Item>
-                  <Item sx={{ marginTop: 1 }}>
-                    <Grid
-                      container
-                      justifyContent="space-between"
-                      alignItems="center"
-                    >
-                      <Grid item>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{ fontSize: "18px" }}
-                        >
-                          <strong>Contraseña:</strong> {Pass}
-                        </Typography>
-                      </Grid>
-                      <Grid item>
-                        <IconButton>
-                          <EditIcon />
-                        </IconButton>
-                      </Grid>
+                      
                     </Grid>
                   </Item>
                   <Divider sx={{ marginTop: 5 }} />

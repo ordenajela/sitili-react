@@ -26,7 +26,7 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
   const [editedProduct, setEditedProduct] = useState(null);
   const handleEditModalOpen = (product) => {
     setSelectedProduct(product);
-    setEditedProduct({ ...product }); // Clonar el producto para editar sin modificar el original
+    setEditedProduct({ ...product });
     setIsEditModalOpen(true);
   };
 
@@ -37,13 +37,7 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
 
   const handleSaveChanges = async () => {
     try {
-      // Realiza una solicitud al servidor para actualizar el producto
-      // Puedes usar el método PUT o cualquier otro método adecuado
-      // Asegúrate de manejar la actualización del producto en el servidor
-      // y luego actualiza el estado `products` con la versión actualizada del producto
-      // y cierra el modal de edición
-      // Ejemplo ficticio (debes adaptarlo a tu backend):
-      const res = await fetch(`http://localhost:8090/product/${editedProduct.product_id}`, {
+      const res = await fetch(`http://3.219.197.64:8090/product/${editedProduct.product_id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -58,18 +52,16 @@ const ProductosSeller = ({ darkMode, setDarkMode }) => {
       );
       setIsEditModalOpen(false);
     } catch (error) {
-      console.error("Error al guardar cambios:", error);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const respuesta = await axios.get('http://localhost:8090/product/listAll');
+        const respuesta = await axios.get('http://3.219.197.64:8090/product/listAll');
         setProducts(respuesta.data);
-        console.log(respuesta.data);
       } catch (error) {
-        console.log(error);
+
       }
     }
     fetchData();

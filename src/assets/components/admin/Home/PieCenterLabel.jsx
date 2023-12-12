@@ -30,7 +30,7 @@ export default function PieChartWithCenterLabel() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8090/categories/listAll');
+        const response = await fetch('http://3.219.197.64:8090/categories/listAll');
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
         }
@@ -38,7 +38,6 @@ export default function PieChartWithCenterLabel() {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 
@@ -46,8 +45,8 @@ export default function PieChartWithCenterLabel() {
   }, []);
 
   const data = categories.map((category) => ({
-    value: 1, // Cada categoría tiene un valor de 1
-    label: category.name, // Supongo que el nombre de la categoría está en la propiedad "name"
+    value: 1, 
+    label: category.name,
   }));
 
   return (

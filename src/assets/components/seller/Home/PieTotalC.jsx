@@ -31,7 +31,7 @@ export default function PieTotalC() {
   useEffect(() => {
     const fetchTotalCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/catTotSeller", {
+        const response = await fetch("http://3.219.197.64:8090/categories/catTotSeller", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -44,10 +44,8 @@ export default function PieTotalC() {
         }
 
         const data = await response.json();
-        console.log('Total de Productos Por Categoria:', data);
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 
@@ -66,7 +64,7 @@ export default function PieTotalC() {
       sx={{
         [theme.breakpoints.down('sm')]: {
           width: '100%',
-          height: 300, // Puedes ajustar este valor según tus necesidades
+          height: 300,
         },
       }}
     >
@@ -75,8 +73,9 @@ export default function PieTotalC() {
           fontSize: 20,
           fontWeight: 'bold',
           mb: 1,
+
         }}
-      >cantidad</PieCenterLabel>
+      >Cantidad</PieCenterLabel>
     </PieChart>
   );
 }

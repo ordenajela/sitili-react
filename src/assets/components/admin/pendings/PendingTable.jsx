@@ -15,6 +15,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { Typography } from "@mui/material";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
 
 const PendingTable = () => {
   const [users, setUsers] = useState([]);
@@ -28,7 +29,7 @@ const PendingTable = () => {
 
   const fetchUsers = async () => {
     try {const res = await fetch(
-        "http://localhost:8090/aceptSeller/listSellersNa",{
+        "http://3.219.197.64:8090/aceptSeller/listSellersNa",{
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -39,7 +40,6 @@ const PendingTable = () => {
       const data = await res.json();
       setUsers(data);
     } catch (error) {
-      console.log("Error:", error);
     }
   };
 
@@ -59,7 +59,7 @@ const PendingTable = () => {
 
   const toggleUserStatus = async (user) => {
     try {
-      const response = await fetch("http://localhost:8090/users/delete", {
+      const response = await fetch("http://3.219.197.64:8090/users/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -70,7 +70,6 @@ const PendingTable = () => {
 
       if (response.ok) {
         fetchUsers();
-        console.log("Estado cambiado exitosamente.");
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -81,7 +80,6 @@ const PendingTable = () => {
           setAlert((prevAlert) => ({ ...prevAlert, open: false }));
         }, 3000);
       } else {
-        console.error("Error al cambiar el estado del usuario");
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -90,7 +88,6 @@ const PendingTable = () => {
         }));
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
       setAlert((prevAlert) => ({
         ...prevAlert,
         open: true,
@@ -208,11 +205,11 @@ const PendingTable = () => {
                       <Grid item>
                         <Button
                           variant="contained"
-                          startIcon={<EditIcon />}
+                          startIcon={<ViewStreamIcon/>}
                           sx={{ marginLeft: 2, width: "130px" }}
                           onClick={() => handleEditClick(user)}
                         >
-                          Editar
+                          Detalles
                         </Button>
                       </Grid>
                     </Grid>

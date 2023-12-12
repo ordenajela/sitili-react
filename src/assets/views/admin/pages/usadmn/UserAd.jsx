@@ -7,6 +7,7 @@ import ModalUsers from "../../../../components/admin/users/ModalUsers";
 import UsersTable from "../../../../components/admin/users/UsersTable";
 
 const UserAd = ({ darkMode, setDarkMode }) => {
+  console.clear();
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",

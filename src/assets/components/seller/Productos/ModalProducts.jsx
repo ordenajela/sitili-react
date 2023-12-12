@@ -74,7 +74,6 @@ const handleCloseAlert = () => {
     ) {
       setAlertSeverity('error');
       setAlertMessage('Todos los campos son obligatorios');
-      console.log("Todos los campos son obligatorios");
       return;
     }
 
@@ -102,7 +101,7 @@ const handleCloseAlert = () => {
         formData.append("files", selectedFiles[i]);
       }
 
-      const response = await fetch("http://localhost:8090/product/save", {
+      const response = await fetch("http://3.219.197.64:8090/product/save", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -119,7 +118,6 @@ const handleCloseAlert = () => {
     } catch (error) {
       setAlertSeverity('success');
       setAlertMessage('Se ha creado el producto exitosamente');
-      //Realizar reload de la página despues de 2 segundos
       setTimeout(() => {window.location.reload();}, 2000);
       
     }
@@ -129,7 +127,7 @@ const handleCloseAlert = () => {
 
   const getCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8090/categories/listAll");
+      const response = await fetch("http://3.219.197.64:8090/categories/listAll");
 
       if (!response.ok) {
         throw new Error("Error al obtener las categorías");
@@ -137,7 +135,6 @@ const handleCloseAlert = () => {
       const categoriesData = await response.json();
       setCategories(categoriesData);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -227,7 +224,7 @@ const handleCloseAlert = () => {
                 sx={{ textTransform: "none", marginTop: "16px" }}
               >
                 {selectedFilesNames.length > 0
-                  ? `Archivos Seleccionados: ${selectedFilesNames.join(', ')}`
+                  ? `Imagenes Seleccionados: ${selectedFilesNames.join(', ')}`
                   : 'Agregar Foto *Requerido'}
                 <VisuallyHiddenInput
                   type="file"

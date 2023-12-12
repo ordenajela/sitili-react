@@ -30,7 +30,7 @@ export default function PieTotalCategory() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/catTot", {
+        const response = await fetch("http://3.219.197.64:8090/categories/catTot", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -43,10 +43,8 @@ export default function PieTotalCategory() {
         }
 
         const data = await response.json();
-        console.log('Total de Esto:', data);
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 
