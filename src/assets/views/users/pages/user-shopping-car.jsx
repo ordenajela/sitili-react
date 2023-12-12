@@ -214,22 +214,6 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         justifyContent: 'space-between',
     }));
 
-    /*const cartItems = [
-        {
-            id: 1,
-            name: 'Play Station 5 Marvels Spiderman Edition',
-            price: '$19.99',
-            imageUrl: ProductImage,
-        },
-        {
-            id: 2,
-            name: 'Producto 2',
-            price: '$29.99',
-            imageUrl: ProductImage,
-        },
-        // More items...
-    ];*/
-
     //ID PARA CONFIRMAR O CANCELAR COMPRA
     const [idsproducts, setIdsProducts] = useState([]);
 
@@ -297,6 +281,10 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         setShowCompraModal(false);
     };
 
+    // Alertas
+    const [mostrarAlertaCompra, setMostrarAlertaCompra] = useState('');
+    const [mostrarAlertaCompraCancel, setMostrarAlertaCompraCancel] = useState('');
+
     const handleFinalizarCompra = async () => {
         console.log(idsproducts);
         try {
@@ -316,7 +304,13 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     console.log('Compra finalizada');
                     setShowCompraModal(false);
                     handleLimpiarIds();
-                    fetchData();
+                    setMostrarAlertaCompra('success');
+                    setTimeout(() => {
+                        setMostrarAlertaCompra('none');
+                    }, 3000);
+                    setTimeout(() => {
+                        fetchData();
+                    }, 3000);
                 }
             } else {
                 console.log('Usuario no autenticado');
@@ -349,6 +343,11 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     console.log('Compra Cancelada');
                     setShowCompraModal(false);
                     handleLimpiarIds();
+                    setMostrarAlertaCompraCancel('error');
+                    setTimeout(() => {
+                        setMostrarAlertaCompraCancel('none');
+                        console.log("Se intentó pero no jaló");
+                    }, 3000);
                 }
             } else {
                 console.log('Usuario no autenticado');
@@ -414,6 +413,20 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                         padding: 4,
                         backgroundColor: darkMode ? '#1A2027' : '#fff',
                     }}>
+                        <div style={{ position: 'absolute', top: '10%', right: '10%', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
+                            {mostrarAlertaCompra === 'success' && (
+                                <Alert severity="success">
+                                    <AlertTitle>¡Compra realizada!</AlertTitle>
+                                    Se ha realizado la compra.
+                                </Alert>
+                            )}
+                            {mostrarAlertaCompraCancel === 'error' && (
+                                <Alert severity="error">
+                                    <AlertTitle>¡Compra cancelada!</AlertTitle>
+                                    Se ha cancelado la compra.
+                                </Alert>
+                            )}
+                        </div>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
                                 <Typography variant="h4" gutterBottom sx={{ color: darkMode ? '#fff' : '#000', marginTop: '20px', }}>
