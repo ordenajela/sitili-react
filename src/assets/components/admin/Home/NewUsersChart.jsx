@@ -45,7 +45,6 @@ export default function NewUsersChart() {
         const data = await res.json();
         setUserData(data);
       } catch (error) {
-        console.log("Error:", error.message);
       }
     };
 

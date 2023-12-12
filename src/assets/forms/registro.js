@@ -143,9 +143,6 @@ function Registro() {
       });
   
       if (postResponse.status === 200) {
-        console.log('Usuario creado exitosamente');
-        console.log(postResponse);
-  
         const authToken = postResponse.data.token;
         localStorage.setItem('token', authToken);
   
@@ -160,7 +157,6 @@ function Registro() {
       }
     } catch (error) {
       setErrorType('requestError');
-      console.log('Error en la solicitud:', error);
     } finally {
       setIsLoading(false);
     }

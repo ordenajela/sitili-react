@@ -38,7 +38,6 @@ export default function PieChartWithCenterLabel() {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 
@@ -46,8 +45,8 @@ export default function PieChartWithCenterLabel() {
   }, []);
 
   const data = categories.map((category) => ({
-    value: 1, // Cada categoría tiene un valor de 1
-    label: category.name, // Supongo que el nombre de la categoría está en la propiedad "name"
+    value: 1, 
+    label: category.name,
   }));
 
   return (

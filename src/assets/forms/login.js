@@ -49,36 +49,23 @@ function Login() {
       });
 
       if (response.status === 200) {
-        console.log("Peticion correcta");
-        console.log(response.data.user.role[0].roleName);
-        console.log("Los datos", response.data);
-        console.log("El token:", response.data.jwtToken);
-
         localStorage.setItem("token", response.data.jwtToken);
         localStorage.setItem("rol", response.data.user.role[0].roleName)
         localStorage.setItem("correo", response.data.user.email);
         
         setLoginError(false);
-        console.log(response);
         
         if (response.data.user.role[0].roleName === "Admin") {
-          console.log("Eres admin");
           navigate('/dashboard/home');
         } else if (response.data.user.role[0].roleName === "User") {
-          console.log("Eres User");
           navigate('/user/home');
         } else if (response.data.user.role[0].roleName === "Seller") {
           if (response.data.user.status === true) {
-            console.log("Eres Vendedor");
-            console.log("Vista de Vendedor");
             navigate('/seller/home');
           } else if (response.data.user.status === false) {
-            console.log("Eres Vendedor");
-            console.log("Vista de Vendedor");
             setShowAlert(true);
           }
         } else if (response.data.user.role[0].roleName === "Root") {
-          console.log("Eres Root");
         }
       } else {
         setLoginError(true);

@@ -36,7 +36,6 @@ export default function CardsHome() {
           
         }
       } catch (error) {
-        console.log(error);
       }
     }
     fetchTotalVentas();

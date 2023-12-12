@@ -57,8 +57,6 @@ export default function PedidosChart() {
         }
 
         const data = await res.json();
-        console.log("Ventas:", data);
-
         const monthlySales = {};
 
         data.forEach((item) => {
@@ -79,7 +77,6 @@ export default function PedidosChart() {
 
         setSalesData(transformedData);
       } catch (error) {
-        console.log("Error:", error.message);
       }
     };
 

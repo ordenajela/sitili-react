@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import NavbarAdmin from "../../../../components/admin/NavbarAdmin";
 import { SidenavAdmin } from "../../../../components/admin/SidenavAdmin";
 import TableCategory from "../../../../components/admin/category/TableCategory";
 
-
 const CategoryAdmin = ({ darkMode, setDarkMode }) => {
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",

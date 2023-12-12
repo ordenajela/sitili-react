@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PendingTable from "../../../../components/admin/pendings/PendingTable";
 
 const UserAdmin = ({ darkMode, setDarkMode }) => {
+  console.clear();
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",

@@ -74,7 +74,6 @@ const handleCloseAlert = () => {
     ) {
       setAlertSeverity('error');
       setAlertMessage('Todos los campos son obligatorios');
-      console.log("Todos los campos son obligatorios");
       return;
     }
 
@@ -137,7 +136,6 @@ const handleCloseAlert = () => {
       const categoriesData = await response.json();
       setCategories(categoriesData);
     } catch (error) {
-      console.error(error);
     }
   };
 

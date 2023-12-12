@@ -14,9 +14,14 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import TablePagination from "@mui/material/TablePagination";
 import EditIcon from "@mui/icons-material/Edit";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
 
 const TableCagory = () => {
-
   const [alert, setAlert] = useState({
     open: false,
     type: "success",
@@ -25,9 +30,14 @@ const TableCagory = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [category, setCategory] = useState([]);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editedCategory, setEditedCategory] = useState({
+    id: null,
+    name: "",
+  });
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchCategories = async () => {
       try {
         const res = await fetch("http://localhost:8090/categories/list", {
           method: "GET",
@@ -38,15 +48,11 @@ const TableCagory = () => {
         });
         const data = await res.json();
         setCategory(data);
-        console.log("Usuarios:", data);
-      } catch (error) {
-        console.log("Error:", error);
-      }
+      } catch (error) {}
     };
 
-    fetchUsers();
+    fetchCategories();
   }, []);
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -57,36 +63,33 @@ const TableCagory = () => {
     setPage(0);
   };
 
-  const toggleCategoryStatus = async (categoryId) => {
-    console.log("categoryId:", categoryId);
+  const toggleCategoryStatus = async (categoryId, currentStatus) => {
     try {
-      const response = await fetch(
-        `http://localhost:8090/categories/delete/${categoryId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:8090/categories/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ id: categoryId }),
+      });
 
       if (response.ok) {
-        // Handle success
         const updatedCategories = category.map((c) =>
-          c.id === categoryId ? { ...c, status: !c.status } : c
+          c.id === categoryId ? { ...c, status: !currentStatus } : c
         );
         setCategory(updatedCategories);
         setAlert({
           open: true,
           type: "success",
-          message: "Estado cambiado exitosamente.",
+          message: `Categoría ${
+            currentStatus ? "desactivada" : "activada"
+          } exitosamente.`,
         });
         setTimeout(() => {
           setAlert({ ...alert, open: false });
         }, 3000);
       } else {
-        console.error("Error al cambiar el estado de la categoría");
         setAlert({
           open: true,
           type: "error",
@@ -94,8 +97,62 @@ const TableCagory = () => {
         });
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
       setAlert({ open: true, type: "error", message: "Error en la petición." });
+    }
+  };
+
+  const handleEditModalOpen = (categoryId, categoryName) => {
+    setEditedCategory({
+      id: categoryId,
+      name: categoryName,
+    });
+    setEditModalOpen(true);
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    setEditedCategory({
+      id: null,
+      name: "",
+    });
+  };
+
+  const handleEditCategory = async () => {
+    try {
+      const response = await fetch(`http://localhost:8090/categories/update`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(editedCategory),
+      });
+
+      if (response.ok) {
+        // Manejar éxito
+        const updatedCategories = category.map((c) =>
+          c.id === editedCategory.id ? { ...c, name: editedCategory.name } : c
+        );
+        setCategory(updatedCategories);
+        setAlert({
+          open: true,
+          type: "success",
+          message: "Categoría actualizada exitosamente.",
+        });
+        setTimeout(() => {
+          setAlert({ ...alert, open: false });
+        }, 3000);
+      } else {
+        setAlert({
+          open: true,
+          type: "error",
+          message: "Error al actualizar la categoría.",
+        });
+      }
+    } catch (error) {
+      setAlert({ open: true, type: "error", message: "Error en la petición." });
+    } finally {
+      handleEditModalClose();
     }
   };
 
@@ -186,7 +243,10 @@ const TableCagory = () => {
                           }
                           sx={{ width: "130px" }}
                           onClick={() =>
-                            toggleCategoryStatus(currentCategory.id)
+                            toggleCategoryStatus(
+                              currentCategory.id,
+                              currentCategory.status
+                            )
                           }
                         >
                           {currentCategory.status ? "Desactivar" : "Activar"}
@@ -197,7 +257,10 @@ const TableCagory = () => {
                           variant="contained"
                           startIcon={<EditIcon />}
                           sx={{ marginLeft: 2, width: "130px" }}
-                          onClick={() => {}}
+                          onClick={() => handleEditModalOpen(
+                            currentCategory.id,
+                            currentCategory.name
+                          )}
                         >
                           Editar
                         </Button>
@@ -224,6 +287,36 @@ const TableCagory = () => {
           `${from}-${to} de ${count !== -1 ? count : `más de ${to}`}`
         }
       />
+
+      <Dialog
+        open={editModalOpen}
+        onClose={handleEditModalClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Editar Categoría</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Nombre de la Categoría"
+            type="text"
+            fullWidth
+            value={editedCategory.name}
+            onChange={(e) =>
+              setEditedCategory({ ...editedCategory, name: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditModalClose} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleEditCategory} color="primary">
+            Guardar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

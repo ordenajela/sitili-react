@@ -44,10 +44,8 @@ export default function PieTotalC() {
         }
 
         const data = await response.json();
-        console.log('Total de Productos Por Categoria:', data);
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 

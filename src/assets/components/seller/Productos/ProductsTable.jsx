@@ -118,12 +118,10 @@ const ProductsTable = () => {
 
         handleSnackbar("Estado del producto actualizado", "success");
       } else {
-        console.log("Error al cambiar el estado del producto");
         handleSnackbar("Error al cambiar el estado del producto", "error");
       }
     } catch (error) {
       handleSnackbar("Se ha realizado el cambio con exito", "success");
-      console.error("Error en la petición:", error);
     }
   };
 
@@ -142,7 +140,6 @@ const ProductsTable = () => {
         !editedProduct.comentarios
       ) {
         handleSnackbar("Todos los campos son obligatorios", "error");
-        console.log("Todos los campos son obligatorios");
         return;
       }
   
@@ -185,14 +182,10 @@ const ProductsTable = () => {
   
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
-        console.log("Producto actualizado exitosamente");
         handleEditModalClose();
       } else {
-        console.log("Error al actualizar el producto");
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
     }
   };
 
@@ -218,9 +211,7 @@ const ProductsTable = () => {
         });
         const data = await res.json();
         setProducts(data);
-        console.log("Productos:", data);
       } catch (error) {
-        console.log("Error:", error);
       }
     };
 
@@ -242,8 +233,6 @@ const ProductsTable = () => {
         handleSnackbar("No se puede eliminar la última imagen", "error");
         return;
       }
-      console.log("Imagen a eliminar:", editedProduct.imagenes[indexToRemove]);
-      console.log("ID del producto:", editedProduct.product_id);
 
       const res = await fetch("http://localhost:8090/product/deleteImages", {
         method: "PUT",
