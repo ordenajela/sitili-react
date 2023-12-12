@@ -35,9 +35,7 @@ const UsersTable = () => {
         });
         const data = await res.json();
         setUsers(data);
-        console.log("Usuarios:", data);
       } catch (error) {
-        console.log("Error:", error);
       }
     };
 
@@ -79,7 +77,6 @@ const UsersTable = () => {
           setAlert({ ...alert, open: false });
         }, 3000);
       } else {
-        console.error("Error al cambiar el estado del usuario");
         setAlert({
           open: true,
           type: "error",
@@ -87,7 +84,6 @@ const UsersTable = () => {
         });
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
       setAlert({ open: true, type: "error", message: "Error en la petición." });
     }
   };

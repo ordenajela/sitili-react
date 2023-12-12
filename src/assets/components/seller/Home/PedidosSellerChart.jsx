@@ -48,8 +48,6 @@ const PedidosSellerChart = () => {
           }
   
           const data = await res.json();
-          console.log("Pedidos Seller:", data);
-  
           const monthlySales = {};
   
           for (let i = 1; i <= 12; i++) {
@@ -69,7 +67,6 @@ const PedidosSellerChart = () => {
   
           setSalesData(transformedData);
         } catch (error) {
-          console.error("Error:", error.message);
         }
       };
   

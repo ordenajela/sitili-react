@@ -12,14 +12,14 @@ import PieTotalCategory from "../../../../components/admin/Home/PieTotalCategory
 import NewUsersChart from "../../../../components/admin/Home/NewUsersChart";
 
 const Home = ({ darkMode, setDarkMode }) => {
+  console.clear();
+
   const theme = createTheme({
     palette: {
       mode: darkMode ? "dark" : "light",
     },
   });
 
-  const tokenAdmin = localStorage.getItem("token");
-  console.log(tokenAdmin);
 
   return (
     <ThemeProvider theme={theme}>

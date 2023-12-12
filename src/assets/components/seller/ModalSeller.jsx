@@ -15,9 +15,6 @@ export default function ModalSeller() {
   const [userType, setUserType] = React.useState('');
 
   const handleAddUser = () => {
-    console.log('Email:', email);
-    console.log('Contraseña:', password);
-    console.log('Tipo de usuario:', userType);
     handleClose();
   };
 

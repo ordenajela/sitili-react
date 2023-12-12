@@ -12,6 +12,7 @@ import VentasSellerChart from "../../../../components/seller/Home/VentasSellerCh
 import PedidosSellerChart from "../../../../components/seller/Home/PedidosSellerChart";
 
 const HomeSeller = ({ darkMode, setDarkMode }) => {
+  console.clear();
 
   const [errorMessages, setErrorMessages] = useState({
     company: "",
@@ -43,17 +44,14 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data.email);
           setCompanyName(data.company);
 
           if (!data.company || data.company.trim() === "") {
             setShowCompanyModal(true);
           }
         } else {
-          console.log("Checale algo anda mal");
         }
       } catch (error) {
-        console.log("Error En el get:", error);
       }
     };
 
@@ -96,14 +94,17 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
       });
 
       if (response.ok) {
-        console.log("Company updated successfully");
         setErrorMessages({});
         setShowCompanyModal(false);
       } else {
-        console.log("Checale algo anda mal");
+        const data = await response.json();
+        setErrorMessages(data);
       }
     } catch (error) {
-      console.log("Error:", error);
+      setErrorMessages({
+        company: "Error en la petición.",
+        phone: "Error en la petición.",
+      });
     }
     setIsRequesting(false);
   };

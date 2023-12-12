@@ -44,7 +44,7 @@ const ProfileSeller = ({ darkMode, setDarkMode }) => {
         setCelular(data.phone);
 
       } catch (error) {
-        console.log("Error:", error)
+
       }
     }
     fetchUsers()

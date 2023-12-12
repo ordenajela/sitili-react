@@ -39,7 +39,6 @@ const PendingTable = () => {
       const data = await res.json();
       setUsers(data);
     } catch (error) {
-      console.log("Error:", error);
     }
   };
 
@@ -70,7 +69,6 @@ const PendingTable = () => {
 
       if (response.ok) {
         fetchUsers();
-        console.log("Estado cambiado exitosamente.");
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -81,7 +79,6 @@ const PendingTable = () => {
           setAlert((prevAlert) => ({ ...prevAlert, open: false }));
         }, 3000);
       } else {
-        console.error("Error al cambiar el estado del usuario");
         setAlert((prevAlert) => ({
           ...prevAlert,
           open: true,
@@ -90,7 +87,6 @@ const PendingTable = () => {
         }));
       }
     } catch (error) {
-      console.error("Error en la petición:", error);
       setAlert((prevAlert) => ({
         ...prevAlert,
         open: true,

@@ -43,10 +43,8 @@ export default function PieCategorias() {
         }
 
         const data = await response.json();
-        console.log('Total de Esto:', data);
         setCategories(data);
       } catch (error) {
-        console.error('Error al obtener las categorías:', error.message);
       }
     };
 

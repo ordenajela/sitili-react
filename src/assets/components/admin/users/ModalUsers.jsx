@@ -47,7 +47,6 @@ export default function ModalUsers({ handleUserAdded }) {
       lastName === "" ||
       userType === ""
     ) {
-      console.log("Debe completar todos los campos.");
       setLoading(false);
       return;
     }
@@ -65,16 +64,12 @@ export default function ModalUsers({ handleUserAdded }) {
       );
 
       if (response.status === 200) {
-        console.log("Usuario registrado exitosamente:", response.data);
         handleUserAdded(response.data);
         handleClose();
         window.location.reload();
       } else {
-        console.error("Error al registrar usuario:", response.statusText);
-
       }
     } catch (error) {
-      console.error("Error durante el registro de usuario:", error);
       
     } finally {
       setLoading(false);
