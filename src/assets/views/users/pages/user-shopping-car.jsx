@@ -241,53 +241,55 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         setIdsProducts([]);
     };
     const handleBuyNowClick = async () => {
-        const compraData = [];
-        //Construir objeto para datos de producto
-        for (const item of data) {
-            const compraItem = {
-                description: item.producto,
-                amount: item.precio * 100,
-                currency: 'mxn',
-                payment_method_types: 'card',
-            };
-            compraData.push(compraItem);
-        }
-        try {
-            console.log(tokenn);
-            if (tokenn) {
-                const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/paymentintent',
-                    compraData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${tokenn}`
-                        }
-                    }
-
-                );
-                if (responsedeletefav.status === 200) {
-                    console.log(responsedeletefav);
-                    //fetchData();
-                    setShowCompraModal(true);
-                    /*for (const itemids of responsedeletefav.data) {
-                        console.log("OYEEEEEEEEE");
-                        console.log(itemids);
-                        idsproducts.push(itemids.id);
-                    }*/
-                    handleLlenarIds(responsedeletefav.data);
-
-                }
-            } else {
-                console.log('Usuario no autenticado');
-                //navigate('/login');
-            }
-        } catch (error) {
-            console.error('Error al guardar en Carrito de Compras:', error);
-        }
-
-
-        console.log('Datos de la compra:', compraData);
+        setShowCompraModal(true);
     };
+    //     const compraData = [];
+    //     //Construir objeto para datos de producto
+    //     for (const item of data) {
+    //         const compraItem = {
+    //             description: item.producto,
+    //             amount: item.precio * 100,
+    //             currency: 'mxn',
+    //             payment_method_types: 'card',
+    //         };
+    //         compraData.push(compraItem);
+    //     }
+    //     try {
+    //         console.log(tokenn);
+    //         if (tokenn) {
+    //             const responsedeletefav = await axios.post(
+    //                 'http://localhost:8090/stripe/paymentintent',
+    //                 compraData,
+    //                 {
+    //                     headers: {
+    //                         Authorization: `Bearer ${tokenn}`
+    //                     }
+    //                 }
+
+    //             );
+    //             if (responsedeletefav.status === 200) {
+    //                 console.log(responsedeletefav);
+    //                 //fetchData();
+    //                 setShowCompraModal(true);
+    //                 /*for (const itemids of responsedeletefav.data) {
+    //                     console.log("OYEEEEEEEEE");
+    //                     console.log(itemids);
+    //                     idsproducts.push(itemids.id);
+    //                 }*/
+    //                 handleLlenarIds(responsedeletefav.data);
+
+    //             }
+    //         } else {
+    //             console.log('Usuario no autenticado');
+    //             //navigate('/login');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al guardar en Carrito de Compras:', error);
+    //     }
+
+
+    //     console.log('Datos de la compra:', compraData);
+    // };
 
     const [showCompraModal, setShowCompraModal] = useState(false);
 
@@ -299,9 +301,8 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
         console.log(idsproducts);
         try {
             if (tokenn) {
-                const responsedeletefav = await axios.post(
-                    'http://localhost:8090/stripe/confirm',
-                    idsproducts,
+                const responsedeletefav = await axios.get(
+                    'http://localhost:8090/stripe/saleCar',
                     {
                         headers: {
                             Authorization: `Bearer ${tokenn}`
@@ -315,6 +316,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                     console.log('Compra finalizada');
                     setShowCompraModal(false);
                     handleLimpiarIds();
+                    fetchData();
                 }
             } else {
                 console.log('Usuario no autenticado');
