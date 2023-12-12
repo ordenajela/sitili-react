@@ -10,53 +10,83 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import { Link } from 'react-router-dom';
 import logoImage from '../../assets/images/logo.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
 const defaultTheme = createTheme();
 
-function Forget() {
+function RecuperatePassword() {
   const [showAlert, setShowAlert] = useState(false);
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
   const [datosError, setDatosError] = useState(false);
   const [correoError, setCorreoError] = useState(false);
   const [errorType, setErrorType] = useState('');
 
-  const handleForgetPassword = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const data = new FormData(event.currentTarget);
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
     
     try {
-      const response = await fetch('http://localhost:8090/api/resetPassword/request?email=' + email, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      if (data.get('email') === '' || data.get('password') === '') {
+        setErrorType('emptyFields');
+        setDatosError(true);
+        return;
+      }
+
+      if (data.get('email').indexOf('@') === -1) {
+        setErrorType('invalidEmail');
+        setCorreoError(true);
+        return;
+      }
+      const response = await axios.post('http://localhost:8090/authenticate', {
+        email: data.get('email'),
+        password: data.get('password'),
       });
-    
-      console.log('HTTP Status Code:', response.status);
-    
-      if (response.ok) {
-        const responseData = await response.text(); 
-        console.log('Response Data:', responseData);
-        setShowAlert(true);
-        setErrorType(responseData || 'requestError'); 
+
+      if (response.status === 200) {
+        console.log("Peticion correcta");
+        console.log(response.data.user.role[0].roleName);
+        console.log("Los datos", response.data);
+        console.log("El token:", response.data.jwtToken);
+
+        localStorage.setItem("token", response.data.jwtToken);
+        localStorage.setItem("rol", response.data.user.role[0].roleName)
+        localStorage.setItem("correo", response.data.user.email);
+        
+        setLoginError(false);
+        console.log(response);
+        
+        if (response.data.user.role[0].roleName === "Admin") {
+          console.log("Eres admin");
+          navigate('/dashboard/home');
+        } else if (response.data.user.role[0].roleName === "User") {
+          console.log("Eres User");
+          navigate('/user/home');
+        } else if (response.data.user.role[0].roleName === "Seller") {
+          if (response.data.user.status === true) {
+            console.log("Eres Vendedor");
+            console.log("Vista de Vendedor");
+            navigate('/seller/home');
+          } else if (response.data.user.status === false) {
+            console.log("Eres Vendedor");
+            console.log("Vista de Vendedor");
+            setShowAlert(true);
+          }
+        } else if (response.data.user.role[0].roleName === "Root") {
+          console.log("Eres Root");
+        }
       } else {
-        const responseData = await response.json();
-        console.log(responseData); 
-        setShowAlert(true);
-        setErrorType(responseData.message || 'requestError');
+        setLoginError(true);
       }
     } catch (error) {
-      console.error(error);
-      setShowAlert(true);
-      setErrorType('Entraste a Catch');
+      setLoginError(true);
     }
   };
-  
-  
 
   return (
     <>
@@ -109,7 +139,7 @@ function Forget() {
                   paddingTop: '5%'}}>
                   Recuperar Contraseña
                 </Typography>
-                <Box component="form" onSubmit={handleForgetPassword} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                   <TextField
                     margin="normal"
                     required
@@ -120,8 +150,6 @@ function Forget() {
                     autoComplete="email"
                     autoFocus
                     pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                   />
                   {loginError && (
                     <Typography variant="body2" color="error">
@@ -149,8 +177,8 @@ function Forget() {
                   </Button>
                   <Grid container justifyContent="center" alignItems="center">
                     <Grid item xs={12} md={6} >
-                      <Link to="/restore" variant="body2" style={{ textAlign: 'center' }} >
-                        {"Cambiar Contraseña"}
+                      <Link to="/login" variant="body2" style={{ textAlign: 'center' }} >
+                        {"Iniciar Sesión"}
                       </Link>
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -170,4 +198,4 @@ function Forget() {
   );
 }
 
-export default Forget;
+export default RecuperatePassword;
