@@ -33,7 +33,7 @@ function Forget() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     try {
-      const response = await fetch('http://localhost:8090/api/resetPassword/request?email=' + email, {
+      const response = await fetch('http://3.219.197.64:8090/api/resetPassword/request?email=' + email, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

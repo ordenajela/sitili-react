@@ -34,7 +34,7 @@ function Restore() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:8090/api/resetPassword/confirm?token=' + token + '&newPassword=' + newPassword, {
+      const response = await fetch('http://3.219.197.64:8090/api/resetPassword/confirm?token=' + token + '&newPassword=' + newPassword, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

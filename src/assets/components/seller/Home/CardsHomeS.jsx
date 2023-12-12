@@ -21,7 +21,7 @@ export default function CardsHomeS() {
     const fetchTotalVentas = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8090/order/sellerSales",
+          "http://3.219.197.64:8090/order/sellerSales",
           {
             method: "GET",
             headers: {
@@ -50,7 +50,7 @@ export default function CardsHomeS() {
     const fetchTotalProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8090/product/totSeller",
+          "http://3.219.197.64:8090/product/totSeller",
           {
             method: "GET",
             headers: {
@@ -78,7 +78,7 @@ export default function CardsHomeS() {
   useEffect(() => {
     const fetchTotalEnvios = async () => {
       try {
-        const response = await fetch("http://localhost:8090/order/sellerEnvs", {
+        const response = await fetch("http://3.219.197.64:8090/order/sellerEnvs", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export default function CardsHomeS() {
   useEffect(() => {
     const fetchEstrellas = async () => {
       try {
-        const response = await fetch("http://localhost:8090/raiting/rateSeller", {
+        const response = await fetch("http://3.219.197.64:8090/raiting/rateSeller", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

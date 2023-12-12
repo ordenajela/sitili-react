@@ -101,7 +101,7 @@ const handleCloseAlert = () => {
         formData.append("files", selectedFiles[i]);
       }
 
-      const response = await fetch("http://localhost:8090/product/save", {
+      const response = await fetch("http://3.219.197.64:8090/product/save", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -127,7 +127,7 @@ const handleCloseAlert = () => {
 
   const getCategories = async () => {
     try {
-      const response = await fetch("http://localhost:8090/categories/listAll");
+      const response = await fetch("http://3.219.197.64:8090/categories/listAll");
 
       if (!response.ok) {
         throw new Error("Error al obtener las categorías");

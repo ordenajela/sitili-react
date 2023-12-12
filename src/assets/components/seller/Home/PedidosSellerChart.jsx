@@ -35,7 +35,7 @@ const PedidosSellerChart = () => {
     useEffect(() => {
       const fetchSales = async () => {
         try {
-          const res = await fetch("http://localhost:8090/order/sellerDeliveryMonth", {
+          const res = await fetch("http://3.219.197.64:8090/order/sellerDeliveryMonth", {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

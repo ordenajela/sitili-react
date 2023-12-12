@@ -43,7 +43,7 @@ function Login() {
         setCorreoError(true);
         return;
       }
-      const response = await axios.post('http://localhost:8090/authenticate', {
+      const response = await axios.post('http://3.219.197.64:8090/authenticate', {
         email: data.get('email'),
         password: data.get('password'),
       });

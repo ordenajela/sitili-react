@@ -31,7 +31,7 @@ export default function PieTotalC() {
   useEffect(() => {
     const fetchTotalCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8090/categories/catTotSeller", {
+        const response = await fetch("http://3.219.197.64:8090/categories/catTotSeller", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

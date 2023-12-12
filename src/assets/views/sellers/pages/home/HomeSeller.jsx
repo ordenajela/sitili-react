@@ -32,7 +32,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
     const fetchCompanyInfo = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8090/users/validateCompany",
+          "http://3.219.197.64:8090/users/validateCompany",
           {
             method: "GET",
             headers: {
@@ -84,7 +84,7 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:8090/dataUser/updateCompany", {
+      const response = await fetch("http://3.219.197.64:8090/dataUser/updateCompany", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

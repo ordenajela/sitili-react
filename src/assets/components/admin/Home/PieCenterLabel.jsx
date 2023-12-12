@@ -30,7 +30,7 @@ export default function PieChartWithCenterLabel() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8090/categories/listAll');
+        const response = await fetch('http://3.219.197.64:8090/categories/listAll');
         if (!response.ok) {
           throw new Error(`Error en la solicitud: ${response.status}`);
         }

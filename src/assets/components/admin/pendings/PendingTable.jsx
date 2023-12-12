@@ -29,7 +29,7 @@ const PendingTable = () => {
 
   const fetchUsers = async () => {
     try {const res = await fetch(
-        "http://localhost:8090/aceptSeller/listSellersNa",{
+        "http://3.219.197.64:8090/aceptSeller/listSellersNa",{
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -59,7 +59,7 @@ const PendingTable = () => {
 
   const toggleUserStatus = async (user) => {
     try {
-      const response = await fetch("http://localhost:8090/users/delete", {
+      const response = await fetch("http://3.219.197.64:8090/users/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -53,7 +53,7 @@ export default function ModalUsers({ handleUserAdded }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:8090/registerNewUser",
+        "http://3.219.197.64:8090/registerNewUser",
         {
           email: email,
           password: password,

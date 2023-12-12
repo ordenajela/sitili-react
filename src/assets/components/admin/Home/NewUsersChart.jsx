@@ -30,7 +30,7 @@ export default function NewUsersChart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:8090/dataUser/usuTot", {
+        const res = await fetch("http://3.219.197.64:8090/dataUser/usuTot", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

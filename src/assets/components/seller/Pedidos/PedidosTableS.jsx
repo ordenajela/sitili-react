@@ -33,7 +33,7 @@ const PedidosTableS = () => {
   const handleEditClick = async (product) => {
     try {
       const response = await fetch(
-        "http://localhost:8090/orderDetail/statusOrderDetails",
+        "http://3.219.197.64:8090/orderDetail/statusOrderDetails",
         {
           method: "PUT",
           headers: {
@@ -67,7 +67,7 @@ const PedidosTableS = () => {
     const fetchProducts = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8090/orderDetail/listOrderDetails",
+          "http://3.219.197.64:8090/orderDetail/listOrderDetails",
           {
             method: "GET",
             headers: {

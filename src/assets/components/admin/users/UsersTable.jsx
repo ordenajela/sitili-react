@@ -26,7 +26,7 @@ const UsersTable = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {const res = await fetch("http://localhost:8090/users/list", {
+      try {const res = await fetch("http://3.219.197.64:8090/users/list", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const UsersTable = () => {
 
   const toggleUserStatus = async (user) => {
     try {
-      const response = await fetch("http://localhost:8090/users/delete", {
+      const response = await fetch("http://3.219.197.64:8090/users/delete", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
