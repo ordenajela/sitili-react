@@ -22,7 +22,6 @@ const CategoryAdmin = ({ darkMode, setDarkMode }) => {
         <Box sx={{ display: "flex", flex: 1, width: "100%" }}>
           <SidenavAdmin />
           <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }}>
-            <h1>Category Admin</h1>
            <TableCategory/>
           </Box>
         </Box>

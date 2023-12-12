@@ -17,9 +17,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
+import { styled } from '@mui/system';
+import { css } from '@mui/system';
+import BaseModal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
 
 const TableCagory = () => {
   const [alert, setAlert] = useState({
@@ -35,6 +38,103 @@ const TableCagory = () => {
     id: null,
     name: "",
   });
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const CreateCategoryButton = styled('button')(
+    ({ theme }) => css`
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 150ms ease;
+      cursor: pointer;
+      background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+      border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
+      color: ${theme.palette.mode === 'dark' ? grey[200] : grey[900]};
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  
+      &:hover {
+        background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
+        border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+      }
+  
+      &:active {
+        background: ${theme.palette.mode === 'dark' ? grey[700] : grey[100]};
+      }
+  
+      &:focus-visible {
+        box-shadow: 0 0 0 4px ${theme.palette.mode === 'dark' ? blue[300] : blue[200]};
+        outline: none;
+      }
+    `,
+  );
+  const blue = {
+    200: '#99CCFF',
+    300: '#66B2FF',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    700: '#0066CC',
+  };
+
+  const grey = {
+    50: '#F3F6F9',
+    100: '#E5EAF2',
+    200: '#DAE2ED',
+    300: '#C7D0DD',
+    400: '#B0B8C4',
+    500: '#9DA8B7',
+    600: '#6B7A90',
+    700: '#434D5B',
+    800: '#303740',
+    900: '#1C2025',
+  };
+
+  const handleCreateCategorySubmit = async () => {
+    console.log(editedCategory.name);
+    try {
+      const response = await fetch("http://localhost:8090/categories/save", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ name: editedCategory.name }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setCategory([...category, data]);
+        setAlert({
+          open: true,
+          type: "success",
+          message: "Categoría creada exitosamente.",
+        });
+        setTimeout(() => {
+          setAlert({ ...alert, open: false });
+        }, 3000);
+      } else {
+        setAlert({
+          open: true,
+          type: "error",
+          message: "Error al crear la categoría.",
+        });
+      }
+    } catch (error) {
+      setAlert({ open: true, type: "success", message: "Categoría creada exitosamente." });
+    } finally {
+      handleCreateModalClose();
+    }
+  };
+
+  const handleCreateCategory = () => {
+    setCreateModalOpen(true);
+  };
+
+  const handleCreateModalClose = () => {
+    setCreateModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -48,7 +148,7 @@ const TableCagory = () => {
         });
         const data = await res.json();
         setCategory(data);
-      } catch (error) {}
+      } catch (error) { }
     };
 
     fetchCategories();
@@ -82,9 +182,8 @@ const TableCagory = () => {
         setAlert({
           open: true,
           type: "success",
-          message: `Categoría ${
-            currentStatus ? "desactivada" : "activada"
-          } exitosamente.`,
+          message: `Categoría ${currentStatus ? "desactivada" : "activada"
+            } exitosamente.`,
         });
         setTimeout(() => {
           setAlert({ ...alert, open: false });
@@ -129,7 +228,6 @@ const TableCagory = () => {
       });
 
       if (response.ok) {
-        // Manejar éxito
         const updatedCategories = category.map((c) =>
           c.id === editedCategory.id ? { ...c, name: editedCategory.name } : c
         );
@@ -176,6 +274,21 @@ const TableCagory = () => {
       )}
 
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Grid container spacing={2} alignItems="center">
+  <Grid item xs={12} md={6}>
+    <h1>Categorías Admin</h1>
+  </Grid>
+  <Grid item xs={12} md={6} textAlign="right">
+    <CreateCategoryButton
+      variant="contained"
+      color="primary"
+      onClick={() => handleCreateCategory()}
+    >
+      Crear Categoría
+    </CreateCategoryButton>
+  </Grid>
+</Grid>
+        
         <TableContainer
           component={Paper}
           sx={{
@@ -204,9 +317,9 @@ const TableCagory = () => {
             <TableBody>
               {(rowsPerPage > 0
                 ? category.slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                  )
+                  page * rowsPerPage,
+                  page * rowsPerPage + rowsPerPage
+                )
                 : category
               ).map((currentCategory) => (
                 <TableRow
@@ -317,6 +430,36 @@ const TableCagory = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <Dialog
+        open={createModalOpen}
+        onClose={handleCreateModalClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Crear Categoría</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Nombre de la Categoría"
+            type="text"
+            fullWidth
+            value={editedCategory.name}
+            onChange={(e) =>
+              setEditedCategory({ ...editedCategory, name: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCreateModalClose} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleCreateCategorySubmit} color="primary">
+            Crear
+          </Button>
+        </DialogActions>
+      </Dialog>
+
     </div>
   );
 };

@@ -20,7 +20,6 @@ const Home = ({ darkMode, setDarkMode }) => {
     },
   });
 
-  const tokenAdmin = localStorage.getItem("token");
 
   return (
     <ThemeProvider theme={theme}>
