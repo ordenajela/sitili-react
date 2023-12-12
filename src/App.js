@@ -9,11 +9,33 @@ import React, { useState } from 'react';
 import RoutesError from './assets/routes/RoutesError';
 import UserActions from './assets/views/users/user-view';
 import Forget from './assets/forms/forget';
+import Offline from './offline';
+import Restore from './assets/forms/restore';
 
 function App() {
+
+  const [online, setOnline] = React.useState(navigator.onLine);
+
+  React.useEffect(() => {
+    const handleOnlineStatus = () => {
+      setOnline(navigator.onLine);
+    };
+
+    window.addEventListener('online', handleOnlineStatus);
+    window.addEventListener('offline', handleOnlineStatus);
+
+    return () => {
+      window.removeEventListener('online', handleOnlineStatus);
+      window.removeEventListener('offline', handleOnlineStatus);
+    };
+  }, []);
+
+
   const [darkMode, setDarkMode] = useState(false);
 
   return (
+    <div>
+      {online ? (
     <Router>
       <Routes>
         <Route path="/registro" element={<Registro />} />
@@ -23,10 +45,15 @@ function App() {
         <Route path="/seller/*" element={<DashboardSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetPasswordSitili" element={<Forget />} />
+        <Route path="/restore" element={<Restore/>} />
         <Route path='/error/*' element={<RoutesError/>} />
         <Route path="/user/*" element={<UserActions darkMode={darkMode} setDarkMode={setDarkMode}/>} />
       </Routes>
     </Router>
+    ) : (
+      <Offline />
+      )}
+    </div>
   );
 }
 

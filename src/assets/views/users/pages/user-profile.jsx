@@ -338,6 +338,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                     flexDirection: "column",
                     flexGrow: 1,
                     backgroundColor: darkMode ? '#1A2027' : '#fff',
+                    paddingBottom: '50px',
                 }}
             >
                 <div style={{ position: 'absolute', top: '10%', right: '10%', width: 300, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
@@ -376,7 +377,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             p: 2,
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2">
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
                             Editar datos personales
                         </Typography>
                         <Box sx={{ mt: 2 }}>
@@ -432,7 +433,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             maxHeight: '80vh'
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2">
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
                             Editar dirección
                         </Typography>
                         <Box sx={{ mt: 2 }}>
@@ -520,7 +521,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             p: 2,
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2">
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
                             Editar datos de tarjeta
                         </Typography>
                         <Box sx={{ mt: 2 }}>
@@ -651,7 +652,6 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                         </Grid>
                     </Grid>
                 </Box>
-                <StickyFooter />
             </Box>
         </ThemeProvider>
     );

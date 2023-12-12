@@ -44,7 +44,7 @@ export default function FilterTags() {
                 sx={{ width: '400px' }}
                 style={{ margin: '1%' }}
             />
-            <Autocomplete
+            {/* <Autocomplete
                 multiple
                 limitTags={3}
                 id="multiple-limit-tags-2"
@@ -56,7 +56,7 @@ export default function FilterTags() {
                 )}
                 sx={{ width: '400px' }}
                 style={{ margin: '1%' }}
-            />
+            /> */}
             {/* <Slider
                 getAriaLabel={() => 'Minimum distance'}
                 value={value1}
@@ -69,10 +69,10 @@ export default function FilterTags() {
     );
 }
 
-const stores = [
-    { id: 1, company: 'Apple' },
-    { id: 2, company: 'AOC' },
-    { id: 3, company: 'Standhome' },
-    { id: 4, company: 'Vans' },
-    { id: 5, company: 'Adidas' },
-];
+// const stores = [
+//     { id: 1, company: 'Apple' },
+//     { id: 2, company: 'AOC' },
+//     { id: 3, company: 'Standhome' },
+//     { id: 4, company: 'Vans' },
+//     { id: 5, company: 'Adidas' },
+// ];

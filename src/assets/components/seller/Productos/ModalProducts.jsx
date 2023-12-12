@@ -20,8 +20,6 @@ export default function ModalProducts() {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState('error'); 
   const [selectedFilesNames, setSelectedFilesNames] = useState([]);
-  const [selectedImages, setSelectedImages] = useState([]);
-const [selectedImagesNames, setSelectedImagesNames] = useState([]);
 
 
 const handleCloseAlert = () => {

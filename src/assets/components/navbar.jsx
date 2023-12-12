@@ -172,7 +172,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                     <Link to="/">
                         <img src={logoImage} alt="Logo" style={{ height: '50px', marginTop: '3%' }} />
                     </Link>
-                    <Search style={{ marginLeft: '5%' }}>
+                    {/* <Search style={{ marginLeft: '5%' }}>
                         <SearchIconWrapper>
                             <SearchIcon />
                         </SearchIconWrapper>
@@ -180,7 +180,7 @@ export default function PrimarySearchAppBar({ darkMode, setDarkMode }) {
                             placeholder="Busca tu producto..."
                             inputProps={{ 'aria-label': 'search' }}
                         />
-                    </Search>
+                    </Search> */}
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton
