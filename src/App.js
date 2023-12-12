@@ -10,6 +10,7 @@ import RoutesError from './assets/routes/RoutesError';
 import UserActions from './assets/views/users/user-view';
 import Forget from './assets/forms/forget';
 import Offline from './offline';
+import Restore from './assets/forms/restore';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
         <Route path="/seller/*" element={<DashboardSeller darkMode={darkMode} setDarkMode={setDarkMode} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgetPasswordSitili" element={<Forget />} />
+        <Route path="/restore" element={<Restore/>} />
         <Route path='/error/*' element={<RoutesError/>} />
         <Route path="/user/*" element={<UserActions darkMode={darkMode} setDarkMode={setDarkMode}/>} />
       </Routes>
