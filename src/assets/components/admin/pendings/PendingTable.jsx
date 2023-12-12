@@ -15,6 +15,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import { Typography } from "@mui/material";
+import ViewStreamIcon from '@mui/icons-material/ViewStream';
 
 const PendingTable = () => {
   const [users, setUsers] = useState([]);
@@ -204,11 +205,11 @@ const PendingTable = () => {
                       <Grid item>
                         <Button
                           variant="contained"
-                          startIcon={<EditIcon />}
+                          startIcon={<ViewStreamIcon/>}
                           sx={{ marginLeft: 2, width: "130px" }}
                           onClick={() => handleEditClick(user)}
                         >
-                          Editar
+                          Detalles
                         </Button>
                       </Grid>
                     </Grid>

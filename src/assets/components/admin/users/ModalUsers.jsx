@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
-import {
-  styled,
-  Box,
-  TextField,
-  Select,
-  MenuItem,
-  Button,
-  Alert,
-} from "@mui/material";
+import {styled,Box,TextField,Select,MenuItem,Button,Alert,} from "@mui/material";
 import { Modal as BaseModal } from "@mui/base/Modal";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import MuiModal from "@mui/material/Modal";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 
 export default function ModalUsers({ handleUserAdded }) {
   const [open, setOpen] = useState(false);
@@ -24,6 +20,9 @@ export default function ModalUsers({ handleUserAdded }) {
   const [lastName, setLastName] = useState("");
   const [userType, setUserType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   const userTypeMap = {
@@ -47,6 +46,7 @@ export default function ModalUsers({ handleUserAdded }) {
       lastName === "" ||
       userType === ""
     ) {
+      setShowAlert(true);
       setLoading(false);
       return;
     }
@@ -70,7 +70,8 @@ export default function ModalUsers({ handleUserAdded }) {
       } else {
       }
     } catch (error) {
-      
+      setErrorMessage("Se ha creado exitosamente el usuario");
+      setErrorModalOpen(true);
     } finally {
       setLoading(false);
     }
@@ -84,7 +85,13 @@ export default function ModalUsers({ handleUserAdded }) {
       setName("");
       setLastName("");
       setUserType("");
+      setShowAlert(false);
     }
+  };
+
+  const handleModalClose = () => {
+    setErrorModalOpen(false);
+    window.location.reload();
   };
 
 
@@ -101,6 +108,17 @@ export default function ModalUsers({ handleUserAdded }) {
           "Agregar Usuario"
         )}
       </TriggerButton>
+      <MuiModal open={errorModalOpen} onClose={handleModalClose}>
+        <ModalContent sx={{ ...style, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+          <div style={{ textAlign: "center" }}>
+            <CheckCircleIcon sx={{ fontSize: 100, color: "green" }} />
+            <h3>Usuario SITILI Creado!</h3>
+            <p>{errorMessage}</p>
+            <Button onClick={handleModalClose}>Aceptar</Button>
+          </div>
+        </ModalContent>
+      </MuiModal>
+
       <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -151,6 +169,9 @@ export default function ModalUsers({ handleUserAdded }) {
               sx={{ marginBottom: "16px" }}
               fullWidth
             />
+            <InputLabel htmlFor="user-type" sx={{ marginBottom: "8px" }}>
+              Tipo de Usuario
+            </InputLabel>
             <Select
               label="Tipo de Usuario"
               variant="outlined"
@@ -165,23 +186,20 @@ export default function ModalUsers({ handleUserAdded }) {
             </Select>
             
 
-            <Alert
-          action={
-            <IconButton
-              aria-label="close"
-              color="inherit"
-              size="small"
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-          sx={{ mb: 2 }}
-        >
-          Close me!
-        </Alert>
+            {showAlert && (
+              <Alert severity="error" sx={{ marginBottom: 2 }}>
+                Todos los campos son requeridos.
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => setShowAlert(false)}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              </Alert>
+            )}
+
             <Button
               variant="contained"
               color="primary"
