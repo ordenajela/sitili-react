@@ -39,7 +39,7 @@ function UserProductos({ darkMode, setDarkMode, userData }) {
           <PrimarySearchAppBar darkMode={darkMode} setDarkMode={setDarkMode}/>
           {/* <CarouselCategories /> */}
           <ResponsiveGridWithPagination />
-          <StickyFooter />
+          {/* <StickyFooter /> */}
         </div>
       </Box>
     </ThemeProvider>
