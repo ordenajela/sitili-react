@@ -258,7 +258,7 @@ const Products = () => {
                     )}
                 </div>
             </Modal>
-            <FilterTags onSelectCategories={setSelectedCategories} />
+            {/* <FilterTags onSelectCategories={setSelectedCategories} /> */}
 
             <Grid container spacing={2} justifyContent="center">
                 {filteredProducts.slice(startIndex, endIndex).map((product, index) => (

@@ -284,6 +284,7 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
     // Alertas
     const [mostrarAlertaCompra, setMostrarAlertaCompra] = useState('');
     const [mostrarAlertaCompraCancel, setMostrarAlertaCompraCancel] = useState('');
+    const [mostrarAlertaCompraError, setMostrarAlertaCompraError] = useState('');
 
     const handleFinalizarCompra = async () => {
         console.log(idsproducts);
@@ -318,6 +319,11 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
             }
         } catch (error) {
             console.error('Error al Confirmar Compra:', error);
+            setMostrarAlertaCompraError('success');
+            setTimeout(() => {
+                setMostrarAlertaCompraError('none');
+                console.log("Se intentó pero no jaló");
+            }, 3000);
         }
 
 
@@ -424,6 +430,12 @@ const ShopingCar = ({ darkMode, setDarkMode, userData }) => {
                                 <Alert severity="error">
                                     <AlertTitle>¡Compra cancelada!</AlertTitle>
                                     Se ha cancelado la compra.
+                                </Alert>
+                            )}
+                            {mostrarAlertaCompraError === 'success' && (
+                                <Alert severity="error">
+                                    <AlertTitle>¡Faltan datos personales!</AlertTitle>
+                                    Completa tu perfil de usuario.
                                 </Alert>
                             )}
                         </div>
