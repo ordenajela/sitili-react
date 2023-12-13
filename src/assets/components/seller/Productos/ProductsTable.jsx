@@ -65,6 +65,8 @@ const ProductsTable = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleSnackbarClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -135,6 +137,7 @@ const ProductsTable = () => {
   };
 
   const handleUpdateProduct = async () => {
+    setLoading(true);
     try {
       if (
         !editedProduct.producto ||
@@ -143,6 +146,7 @@ const ProductsTable = () => {
         !editedProduct.comentarios
       ) {
         handleSnackbar("Todos los campos son obligatorios", "error");
+        setLoading(false);
         return;
       }
   
@@ -187,6 +191,12 @@ const ProductsTable = () => {
       } else {
       }
     } catch (error) {
+      setErrorMessage("Se ha creado exitosamente el producto");
+      setErrorModalOpen(true);
+      //recargar la pagina
+      window.location.reload();
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -198,6 +208,18 @@ const ProductsTable = () => {
   const handleEditModalClose = () => {
     setEditedProduct(null);
     setIsEditModalOpen(false);
+  };
+
+  const handleClose = () => {
+    if (!loading) {
+      setOpen(false);
+      setShowAlert(false);
+    }
+  };
+
+  const handleModalClose = () => {
+    setErrorModalOpen(false);
+    window.location.reload();
   };
 
   useEffect(() => {
