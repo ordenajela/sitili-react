@@ -141,7 +141,6 @@ const HomeSeller = ({ darkMode, setDarkMode }) => {
             </Grid>
             <VentasSellerChart/>
             <PedidosSellerChart/>
-            {/* Modal */}
             <Modal
                open={showCompanyModal}
                onClose={() => !isRequesting && setShowCompanyModal(false)}

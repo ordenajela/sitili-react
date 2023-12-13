@@ -141,13 +141,13 @@ function Registro() {
       const postResponse = await axios.post(postApiUrl, userData, {
         headers: { 'Content-Type': 'application/json' },
       });
-  
+      console.log("Usertype: " + userType);
       if (postResponse.status === 200) {
         const authToken = postResponse.data.token;
         localStorage.setItem('token', authToken);
   
         if (userType === 'cliente') {
-          navigate('/user/home');
+          navigate('/login');
         } else if (userType === 'vendedor') {
           setShowAlert(true);
           setShowModal(true);
