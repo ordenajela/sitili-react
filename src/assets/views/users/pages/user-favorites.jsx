@@ -64,6 +64,7 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
 
             const jsonData = await response.json();
             setData(jsonData);
+            console.log(jsonData);
             setTotalItems(jsonData.length);
         } catch (error) {
             console.error('Error:', error);
@@ -122,7 +123,7 @@ const UserFavoritos = ({ darkMode, setDarkMode, userData }) => {
                     stock: stock
                 }
                 console.log(data);
-                const responsecar = await axios.post('http://3.219.197.64:8090/shoppingCar/create', data, {
+                const responsecar = await axios.post('http://3.219.197.64:8090/shoppingCar/create2', data, {
                     headers: {
                         'Authorization': `Bearer ${tokenn}`
                     }
