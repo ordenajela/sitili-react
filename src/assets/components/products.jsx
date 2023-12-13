@@ -120,7 +120,7 @@ const Products = () => {
                     id: productId,
                     stock: stock
                 }
-                console.log(data);
+                console.log("Carrito",data);
                 const responsecar = await axios.post('http://3.219.197.64:8090/shoppingCar/create', data, {
                     headers: {
                         'Authorization': `Bearer ${token}`
