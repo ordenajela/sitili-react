@@ -8,6 +8,9 @@ import StickyFooter from "../../../components/footer";
 import ProductImage from "../../../images/template-product.png";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 // Datos estáticos
 
@@ -277,6 +280,8 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
     const yearRef = useRef(null);
     const cvvRef = useRef(null);
 
+    const [selectedMonth, setSelectedMonth] = useState(userDataCC.month);
+
     const handleClicCC = async () => {
         // Accedemos a los valores de los campos de texto utilizando las referencias
         const ccLabel = ccRef.current.value;
@@ -327,7 +332,37 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         }
     };
 
+    const [creditCardNumber, setCreditCardNumber] = useState(userDataCC.cc);
+    const handleInputChangeCC = (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        value = value.slice(0, 16);
+        setCreditCardNumber(value);
+    };
 
+
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+
+    const handleInputChangeMonth = (event) => {
+        setSelectedMonth(event.target.value);
+    };
+
+    const [yearNumber, setYearNumber] = useState(userDataCC.year);
+    const handleInputChangeYear = (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        value = value.slice(0, 2);
+        setYearNumber(value);
+    };
+
+    const [cvvNumber, setCvvNumber] = useState(userDataCC.cvv);
+    const handleInputChangeCVV = (e) => {
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        value = value.slice(0, 3);
+        setCvvNumber(value);
+    };
     // Fin - Ver y Editar Tarjetas
 
     return (
@@ -377,7 +412,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             p: 2,
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000' }}>
                             Editar datos personales
                         </Typography>
                         <Box sx={{ mt: 2 }}>
@@ -433,7 +468,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             maxHeight: '80vh'
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000' }}>
                             Editar dirección
                         </Typography>
                         <Box sx={{ mt: 2 }}>
@@ -521,34 +556,60 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                             p: 2,
                         }}
                     >
-                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000'}}>
+                        <Typography id="modal-title" variant="h6" component="h2" sx={{ color: darkMode ? '#fff' : '#000' }}>
                             Editar datos de tarjeta
                         </Typography>
                         <Box sx={{ mt: 2 }}>
                             <TextField
+                                type="text"
+                                onChange={handleInputChangeCC}
                                 fullWidth
                                 defaultValue={userDataCC.cc}
+                                // defaultValue={userDataCC.cc}
+                                value={creditCardNumber}
                                 label="Número de tarjeta"
                                 inputRef={ccRef}
                                 sx={{ mb: 2 }}
                             />
-                            <TextField
+                            <Select style={{ marginBottom: '20px' }}
+                                fullWidth
+                                labelId="month-select-label"
+                                id="month-select"
+                                inputRef={monthRef}
+                                defaultValue={userDataCC.month}
+                                value={selectedMonth}
+                                label="Mes"
+                                onChange={handleInputChangeMonth}
+                            >
+                                {months.map((month, index) => (
+                                    <MenuItem key={index + 1} value={String(index + 1).padStart(2, '0')}>
+                                        {month}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            {/* <TextField
                                 fullWidth
                                 defaultValue={userDataCC.month}
                                 label="Mes"
                                 inputRef={monthRef}
                                 sx={{ mb: 2 }}
-                            />
+                            /> */}
                             <TextField
+                                type="text"
+                                onChange={handleInputChangeYear}
                                 fullWidth
                                 defaultValue={userDataCC.year}
+                                value={yearNumber}
                                 label="Año"
                                 inputRef={yearRef}
                                 sx={{ mb: 2 }}
                             />
                             <TextField
+                                type="text"
+                                onChange={handleInputChangeCVV}
                                 fullWidth
                                 defaultValue={userDataCC.cvv}
+                                value={cvvNumber}
                                 label="CVV"
                                 inputRef={cvvRef}
                                 sx={{ mb: 2 }}
