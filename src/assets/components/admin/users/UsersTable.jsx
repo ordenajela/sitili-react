@@ -163,7 +163,7 @@ const UsersTable = () => {
                             : user.role[0].roleName === "User"
                             ? "gray"
                             : user.role[0].roleName === "Seller"
-                            ? "#ADD8E6"
+                            ? "#1976D2"
                             : "gray",
                       }}
                     >

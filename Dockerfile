@@ -13,7 +13,7 @@ RUN npm install
 # Copia los archivos del proyecto al contenedor
 COPY . .
 
-# Expone el puerto en el que se ejecutará la aplicación
+# Expone el puerto en el que se ejecutará la aplicación,
 EXPOSE 3000
 
 # Comando para iniciar la aplicación
