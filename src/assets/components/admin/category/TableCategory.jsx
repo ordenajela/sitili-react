@@ -33,6 +33,7 @@ const TableCagory = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [category, setCategory] = useState([]);
+  const [shouldUpdateTable, setShouldUpdateTable] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedCategory, setEditedCategory] = useState({
     id: null,
@@ -92,7 +93,6 @@ const TableCagory = () => {
   };
 
   const handleCreateCategorySubmit = async () => {
-    console.log(editedCategory.name);
     try {
       const response = await fetch("http://3.219.197.64:8090/categories/save", {
         method: "POST",
@@ -123,6 +123,7 @@ const TableCagory = () => {
       }
     } catch (error) {
       setAlert({ open: true, type: "success", message: "Categoría creada exitosamente." });
+      setShouldUpdateTable(true);
     } finally {
       handleCreateModalClose();
     }
@@ -148,11 +149,12 @@ const TableCagory = () => {
         });
         const data = await res.json();
         setCategory(data);
+        setShouldUpdateTable(false);
       } catch (error) { }
     };
 
     fetchCategories();
-  }, []);
+  }, [shouldUpdateTable]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

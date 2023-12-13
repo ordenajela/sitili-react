@@ -40,7 +40,7 @@ const Products = () => {
                 const response = await fetch('http://3.219.197.64:8090/product/listAll');
                 const data = await response.json();
                 setTotalProducts(data.length);
-
+                console.log(data);
                 setProducts(data);
             } catch (error) {
                 console.error('Error al obtener productos:', error);
@@ -288,9 +288,6 @@ const Products = () => {
                             <CardContent>
                                 <Typography variant="h6" component="div">
                                     {product.producto}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {product.nombreVendedor}  {product.apellidoVendedor}
                                 </Typography>
                                 <Typography variant="body1" color="text.secondary">
                                     {product.comentarios}
