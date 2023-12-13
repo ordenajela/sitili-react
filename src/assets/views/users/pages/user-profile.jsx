@@ -67,6 +67,7 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         fetchDataUsuario();
         fetchDataDirections();
         fetchDataCC();
+        fetchDataHistorial();
     }, []);
 
     const [open, setOpen] = useState(false);
@@ -364,6 +365,37 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
         setCvvNumber(value);
     };
     // Fin - Ver y Editar Tarjetas
+
+    // Inicio - Ver y Editar datos personales 
+    const navigatehHistorial = useNavigate();
+    const [userDataHistorial, setUserDataHistorial] = useState([]);
+
+    const formattedDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+      };
+
+    // GET historial
+    const fetchDataHistorial = async () => {
+        try {
+            const response = await fetch('http://3.219.197.64:8090/order/listUser',
+                {
+                    headers: {
+                        Authorization: `Bearer ${tokenn}`,
+
+                    },
+                });
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            const data = await response.json();
+            setUserDataHistorial(data);
+        } catch (error) {
+            console.error('Error fetching DataUserHistorial:', error);
+        }
+    };
+    //    // Fin de GET historial
 
     return (
         <ThemeProvider theme={theme}>
@@ -682,10 +714,20 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                                     </Button>
                                 </Box>
                                 <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+
                                 <Typography variant="h6" gutterBottom>
-                                    Historial de Compras
+                                    Historial de compras
                                 </Typography>
-                                {/* Renderizar las compras */}
+                                {userDataHistorial.map((item, index) => (
+                                    <div key={index}>
+                                    <Item label={"Status: "} value={item.status} />
+                                    <Item label={"Repartidor: "} value={item.repartidor} />
+                                    <Item label={"Fecha de compra: "} value={formattedDate(item.date_order)} />
+                                    <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
+                                    </div>
+                                ))}
+
+                                {/* Renderizar las compras 
                                 {compras.map((compra, index) => (
                                     <div key={index}>
                                         <Grid container alignItems="center" spacing={2}>
@@ -704,6 +746,8 @@ const UserProfile = ({ darkMode, setDarkMode }) => {
                                         <Divider sx={{ marginTop: 2, marginBottom: 2 }} />
                                     </div>
                                 ))}
+                                */}
+
                                 {/* <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button variant="outlined">
                                         Ver Historial de Compras
